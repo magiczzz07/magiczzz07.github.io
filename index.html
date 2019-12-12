@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<title>Home | MagicZ Site</title>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="Erilisdesign.com">
+
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="assets/css/style.css">
+		<link rel="stylesheet" href="assets/css/utilities.css">
+
+		<link rel="stylesheet" href="assets/css/custom.css">
+
+		<link rel="stylesheet" href="assets/css/jquery.fullpage.min.css" type="text/css">
+		<link rel="stylesheet" href="assets/css/slick.min.css" type="text/css">
+		<link rel="stylesheet" href="assets/css/vegas.min.css" type="text/css">
+		<link rel="stylesheet" href="assets/css/fontawesome/all.min.css" type="text/css">
+		<link rel="stylesheet" href="assets/css/themify-icons.css" type="text/css">
+
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,700%7CMRoboto:300,400,500,700" rel="stylesheet">
+
+		<link rel="shortcut icon" href="assets/images/favicon.ico">
+
+	</head>
+	<body class="slideshow-background">
+
+		<div id="preloader" class="preloader preloader-dark">
+			<div class="loader-status">
+				<div class="circle-side"></div>
+			</div>
+		</div>
+
+		<!-- Global Overlay -->
+		<div class="global-overlay">
+			<div class="overlay-inner bg-black opacity-75"></div>
+		</div>
+
+		<!-- Frame -->
+		<div class="frame d-none d-lg-block">
+			<div class="frame-left"></div>
+			<div class="frame-right"></div>
+			<div class="frame-top"></div>
+			<div class="frame-bottom"></div>
+		</div>
+
+		<div class="site-container">
+
+			<!-- Site Header -->
+			<header class="site-header header-fixed">
+				<div class="overlay d-xl-none">
+					<div class="overlay-inner bg-dark opacity-95"></div>
+				</div>
+				<nav class="navbar navbar-expand-xl navbar-dark">
+					<!-- Logo -->
+					<a href="#" class="navbar-brand logo">
+						<img src="assets/images/logo-light.png" alt="">
+					</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#site-navbar" aria-controls="siteNavbar" aria-expanded="false" aria-label="Toggle navigation">
+						<span></span>
+					</button>
+					<div class="collapse navbar-collapse" id="site-navbar">
+						<ul id="navigation" class="navbar-nav ml-auto">
+							<li data-menuanchor="home" class="nav-item">
+								<a href="#home" class="nav-link">Home</a>
+							</li>
+							<li data-menuanchor="subscribe" class="nav-item">
+								<a href="#subscribe" class="nav-link">Subscribe</a>
+							</li>
+							<li data-menuanchor="about" class="nav-item">
+								<a href="#about" class="nav-link">About</a>
+							</li>
+							<li data-menuanchor="services" class="nav-item">
+								<a href="#services" class="nav-link">Services</a>
+							</li>
+							<li data-menuanchor="contact" class="nav-item">
+								<a href="#contact" class="nav-link">Contact</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</header>
+
+			<!-- Button - Back to Top -->
+			<button type="button" class="back-to-top">
+				<i class="fas fa-angle-up"></i>
+			</button>
+
+			<!-- Page Content - Fullpage -->
+			<div class="oli-fullpage">
+
+				<section class="oli-section d-flex min-vh--100" data-anchor="home" data-tooltip="Home">
+					<div class="container align-self-center text-center text-white">
+						<div class="row">
+							<div class="col-12 col-lg-9 mx-lg-auto">
+								<div class="slider mb-3" data-slick='{"adaptiveHeight":true,"arrows":false,"autoplay":true,"autoplaySpeed":4000,"fade":true}'>
+									<div>
+										<h1 class="display--lg-3 font-extralight">I'd love <span class="font-medium">sharing<br>Tweaks</span> from any site</h1>
+									</div>
+									<div>
+										<h1 class="display--lg-3 font-extralight"><span class="font-medium">Awesome</span> apps<br>on <span class="font-medium">my repository</span></h1>
+									</div>
+								</div>
+								<p class="lead mb-5">I would provide all apps, tweaks, cracked and unique method for mobile phone</p>
+								<a href="#about" class="btn rounded-0 btn-white btn-shadow scrollto">Cydia & Sileo & Zebra</a>
+								<a href="#subscribe" class="btn btn-outline-white rounded-0 scrollto">Notify Me</a>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="oli-section d-flex min-vh-lg--100" data-anchor="subscribe" data-tooltip="Subscribe">
+					<div class="container align-self-center text-white">
+						<div class="row mb-5">
+							<div class="col-12 col-lg-9 mx-lg-auto text-center">
+								<h2 class="mb-3">Get our latest content in your inbox</h2>
+								<p>Fill in your email and subcribe from my site</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-5 mx-lg-auto">
+								<div class="subscribe-form">
+									<form class="mb-0" id="sf" name="sf" action="include/subscribe.php" method="post" autocomplete="off">
+										<div class="row">
+
+											<div class="form-process"></div>
+
+											<div class="col-12">
+												<div class="form-group text-white mb-0">
+													<input type="email" id="sf-email" name="sf-email" placeholder="Enter Your Email Address" class="form-control rounded-0 border--transparent required">
+												</div>
+											</div>
+
+											<div class="col-12 d-none">
+												<input type="text" id="sf-botcheck" name="sf-botcheck" value="" class="form-control">
+											</div>
+
+											<div class="col-12">
+												<button class="btn btn-primary rounded-0 btn-block" type="submit" id="sf-submit" name="sf-submit">Notify Me</button>
+											</div>
+
+										</div>
+									</form>
+									<div class="subscribe-form-result"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="oli-section d-flex min-vh-lg--100" data-anchor="about" data-tooltip="About">
+					<div class="container align-self-center text-white">
+						<div class="row mb-4">
+							<div class="col-12 col-lg-10 mx-lg-auto text-center">
+								<h2 class="mb-3">My Repository</h2>
+								<p> <a href="cydia://url/https://cydia.saurik.com/api/share#?source=https://magiczzz07.github.io/ios/" target="_blank">
+									<img class="icon" src="//magiczzz07.github.io/icon/CydiaIcon.png" />
+									<div>
+									<div>
+									<label>
+									<p>Add in Cydia<sup><small>™</small></sup></p>
+									</label>
+									</div>
+									</div>
+									</a>
+									<a href="sileo://source/https://magiczzz07.github.io/ios/" target="_blank">
+									<img class="icon" src="//magiczzz07.github.io/icon/SileoIcon2.png" />
+									<div>
+									<div>
+									<label>
+									<p>Add in Sileo<sup><small>™</small></sup></p>
+									</label>
+									</div>
+									</div>
+									</a>
+									<a href="zbra://sources/add/https://magiczzz07.github.io/ios/" target="_blank">
+									<img class="icon" src="//magiczzz07.github.io/icon/ZebraIcon2.png" />
+									<div>
+									<div>
+									<label>
+									<p>Add in Zebra<sup><small>™</small></sup></p>
+									</label>
+									</div>
+									</div>
+									</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="oli-section d-flex min-vh-lg--100" data-anchor="services" data-tooltip="Services">
+					<div class="container align-self-center text-white">
+						<div class="row mb-5">
+							<div class="col-12 col-lg-10 mx-lg-auto text-center">
+								<h2 class="mb-3">What we Do</h2>
+								<p>Fusce massa dolor, mattis sed ultrices ut, placerat ut leo. Donec sed fringilla lectus, non vulputate orci. Integer id libero euismod, interdum ligula vel, porttitor magna. Sed euismod maximus finibus.</p>
+							</div>
+						</div>
+						<div class="row">
+
+							<div class="col-12 col-md-6">
+								<div class="feature-block d-flex mb-5">
+									<div class="feature-icon text-primary mb-3 mr-4">
+										<div>
+											<i class="ti-timer"></i>
+										</div>
+									</div>
+									<div>
+										<h3 class="h4 mb-2">Launch Quickly</h3>
+										<p>Quisque ultrices non velit sit amet consectetur. Cras turpis dolor, facilisis a nibh non, ullamcorper facilisis mauris. Nulla rutrum arcu sed ligula malesuada.</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-12 col-md-6">
+								<div class="feature-block d-flex mb-5">
+									<div class="feature-icon text-primary mb-3 mr-4">
+										<div>
+											<i class="ti-brush-alt"></i>
+										</div>
+									</div>
+									<div>
+										<h3 class="h4 mb-2">Stylish Design</h3>
+										<p>Quisque ultrices non velit sit amet consectetur. Cras turpis dolor, facilisis a nibh non, ullamcorper facilisis mauris. Nulla rutrum arcu sed ligula malesuada.</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-12 col-md-6">
+								<div class="feature-block d-flex mb-5 mb-md-0">
+									<div class="feature-icon text-primary mb-3 mr-4">
+										<div>
+											<i class="ti-book"></i>
+										</div>
+									</div>
+									<div>
+										<h3 class="h4 mb-2">Well Documented</h3>
+										<p>Quisque ultrices non velit sit amet consectetur. Cras turpis dolor, facilisis a nibh non, ullamcorper facilisis mauris. Nulla rutrum arcu sed ligula malesuada.</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-12 col-md-6">
+								<div class="feature-block d-flex">
+									<div class="feature-icon text-primary mb-3 mr-4">
+										<div>
+											<i class="ti-layers"></i>
+										</div>
+									</div>
+									<div>
+										<h3 class="h4 mb-2">Multiple Styles</h3>
+										<p>Quisque ultrices non velit sit amet consectetur. Cras turpis dolor, facilisis a nibh non, ullamcorper facilisis mauris. Nulla rutrum arcu sed ligula malesuada.</p>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</section>
+
+				<section class="oli-section d-flex min-vh-lg--100" data-anchor="contact" data-tooltip="Contact">
+					<div class="container align-self-center text-white">
+						<div class="row mb-5">
+							<div class="col-12 col-lg-9 col-xl-12 mx-lg-auto text-center">
+								<h2 class="mb-3">Got a Question?</h2>
+								<p>You needs a little push. I strive to figure out ways to help you grow.</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-10 mx-lg-auto">
+								<div class="contact-form">
+									<form class="mb-0" id="cf" name="cf" action="include/sendemail.php" method="post" autocomplete="off">
+										<div class="form-process"></div>
+
+										<div class="form-row">
+
+											<div class="col-12 col-md-6 form-group">
+												<input type="text" id="cf-name" name="cf-name" placeholder="Enter your name" class="form-control fc-semi-white rounded-0 required">
+											</div>
+
+											<div class="col-12 col-md-6 form-group">
+												<input type="email" id="cf-email" name="cf-email" placeholder="Enter your email address" class="form-control fc-semi-white rounded-0 required">
+											</div>
+
+											<div class="col-12 form-group">
+												<input type="text" id="cf-subject" name="cf-subject" placeholder="Subject (Optional)" class="form-control fc-semi-white rounded-0">
+											</div>
+
+											<div class="col-12 mb-4 form-group mb-5">
+												<textarea name="cf-message" id="cf-message" placeholder="Here goes your message" class="form-control fc-semi-white rounded-0 required" rows="7"></textarea>
+											</div>
+
+											<div class="col-12 d-none">
+												<input type="text" id="cf-botcheck" name="cf-botcheck" value="" class="form-control fc-semi-white rounded-0" />
+											</div>
+
+											<div class="col-12 text-center">
+												<button class="btn btn-primary btn-shadow rounded-0" type="submit" id="cf-submit" name="cf-submit">Send Message</button>
+											</div>
+
+										</div>
+									</form>
+									<div class="contact-form-result"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+			</div><!-- .oli-fullpage end -->
+
+			<!-- Site Footer -->
+			<footer class="site-footer footer-fixed footer-mobile-dark footer-light">
+				<div class="container-fluid d-md-flex align-items-md-center justify-content-md-between">
+					<nav class="social-nav social-nav-pinned">
+						<ul>
+							<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+							<li><a href="https://twitter.com/magiczzz07"><i class="fab fa-twitter"></i></a></li>
+							<li><a href="https://www.instagram.com/tuann207"><i class="fab fa-instagram"></i></a></li>
+							<li><a href="https://www.pinterest.com/magiczzz07"><i class="fab fa-pinterest"></i></a></li>
+						</ul>
+					</nav>
+					<p class="mb-2 mb-xl-0">© 2019 MagicZ</p>
+					<nav class="usefull-nav">
+						<ul>
+							<li><a href="#">Terms of Service</a></li>
+							<li><a href="#">Privacy Policy</a></li>
+						</ul>
+					</nav>
+				</div>
+			</footer>
+
+		</div>
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.easing.min.js"></script>
+		<script src="assets/js/bootstrap.bundle.min.js"></script>
+		<script src="assets/js/scrolloverflow.min.js"></script>
+		<script src="assets/js/jquery.fullpage.min.js"></script>
+		<script src="assets/js/jquery.validate.min.js"></script>
+		<script src="assets/js/jquery.form.min.js"></script>
+		<script src="assets/js/jquery.countdown.min.js"></script>
+		<script src="assets/js/granim.min.js"></script>
+		<script src="assets/js/slick.min.js"></script>
+		<script src="assets/js/vegas.min.js"></script>
+		<script src="assets/js/jquery.mb.YTPlayer.min.js"></script>
+
+		<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

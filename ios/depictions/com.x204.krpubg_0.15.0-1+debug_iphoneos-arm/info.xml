@@ -1,0 +1,22 @@
+<package>
+	<id> com.x204.krpubg_0.15.0-1+debug_iphoneos-arm </id>
+	<name>Pubg Korean menu mod</name>
+	<version>1.0</version>
+	<compatibility>
+		<firmware>
+			<maxiOS>12</maxiOS>
+			<otherVersions>unsupported</otherVersions>
+			<!--
+			for otherVersions, you can put either unsupported or unconfirmed
+			-->
+		</firmware>
+	</compatibility>
+	<dependencies></dependencies>
+	<descriptionlist>
+		<description>PUBG KOREAN no recoil no grass x2.3</description>
+	</descriptionlist>
+	<changelog>
+		<change>Initial release</change>
+	</changelog>
+	<links></links>
+</package>

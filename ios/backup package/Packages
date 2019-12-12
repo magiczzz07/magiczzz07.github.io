@@ -1,0 +1,181 @@
+Package: com.supermamon.newpackage
+Version: 2.0.0-1
+Section: Tweaks
+Maintainer: Reposi3 <reposithree@gmail.com>
+Depends: firmware (>7.0), mobilesubstrate
+Architecture: iphoneos-arm
+Filename: ./debs/com.supermamon.newpackage_2.0.0-1_iphoneos-arm.deb
+Size: 854
+MD5sum: 85a01c41aaaa72b48b08d9d0a67f3016
+Description: This is a sample new package. Firmware should be greater than 7.0
+Name: New Package
+Author: Reposi3 <reposithree@gmail.com>
+Depiction: https://supermamon.github.io/Reposi3/depictions/?p=com.supermamon.newpackage
+
+Package: com.supermamon.oldpackage
+Version: 1.0.0-1
+Section: Tweaks
+Maintainer: Reposi3 <reposithree@gmail.com>
+Depends: firmware (<7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/com.supermamon.oldpackage_1.0.0-1_iphoneos-arm.deb
+Size: 860
+MD5sum: 8c606f0c05217aa2a20949091fe516f0
+Description: This is a sample old package. Firmware should be lower than 7.0
+Name: Old Package
+Author: Reposi3 <reposithree@gmail.com>
+Depiction: https://supermamon.github.io/Reposi3/depictions/?p=com.supermamon.oldpackage
+
+Package: com.pubgios0.15.1
+Version: 1.0
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/com.pubgios0.15.1.deb
+Size: 1809724
+MD5sum: b6d7caa65f374c4bef16a0da4041136b
+Description: IOSGODS Pubg Global Cheat (Slider, No recoil, No Shake camera, Better Aim...) 
+Name: IOSGODS Pubg Cheat V 15.0
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/pubgiosgod
+
+Package: com.aimbotpubg15mod
+Version: 1.0+
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/com.aimbotpubg15mod.deb
+Size: 362006
+MD5sum: adbfc145301944ed3d0eb2c53ef8ca00
+Description: Aim bot, Norecoil Pubg 15.0 (Aim bot, no recoil with Antiban) 
+Name: Pubg Aimbot and No recoil Mod 15.0
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/pubgaimbot
+
+Package: com.IosmodsPremiumFixed15
+Version: 1.0+
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/com.IosmodsPremiumFixed15.deb
+Size: 1053452
+MD5sum: 27cd11c99c96dd7b64edae128f86e7d1
+Description: Iosmods Premium Pubg 15.0 
+Name: Iosmods Premium Pubg 15.0
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/iosmodpremiumfix15
+
+Package: appsyncnochimera
+Version: 1.0
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/appsyncnochimera.deb
+Size: 34266
+MD5sum: 284d037691db9ab1361e8fabae28ea3e
+Description: Appsync Unified 48 ( No Chimera Support) 
+Name: Appsync Unified No Chimera support
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/appsyncnochimera
+
+Package: Disabletweak
+Version: 1.0
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/Disabletweak.deb
+Size: 670454
+MD5sum: 5bba3c75412d70419be4040fc8bb016c
+Description: Disable Tweak Cydia
+Name: Disable Tweak Cydia
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/Disabletweak
+
+Package: antibanpubg
+Version: 1.0
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/antibanpubg.deb
+Size: 2658
+MD5sum: 65f2418cfbdb326e384d19def904269c
+Description: Antiban PUBG v15
+Name: Antiban PUBG v15
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/antibanpubg
+
+Package: icleancracked
+Version: 1.0
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/icleancracked.deb
+Size: 4270238
+MD5sum: 5dc7064ac4dd0226d887ccc0b5de77c6
+Description: Iclean tweak for deepclean all phone
+Name: Icleaner Pro
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/icleancracked
+
+Package: newterm
+Version: 1.0
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/newterm.deb
+Size: 1286708
+MD5sum: 8baef9f7d73c21d0e17c95ded0c2cac8
+Description: continuation of the Mobile Terminal project, a versatile terminal emulator for iOS
+Name: New Term2
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/newterm
+
+Package: filzacracked3.7
+Version: 3.7
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/filzacracked3.7.deb
+Size: 16306170
+MD5sum: e3207b8b4d070ef6cefd4eeda6fc0ef9
+Description: Filza Manager Cracked 3.7
+Name: Filza Manager Cracked 3.7
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/filzacracked3.7
+
+Package: dlgmemorinjected_up12
+Version: 2.0
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/dlgmemorinjected_up12.deb
+Size: 200994
+MD5sum: 20c6e6b1d51d0c2d22be495c2b6d9c19
+Description: DLG memory up to ios12
+Name: DLG memory up to ios12
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/dlgmemorinjected_up12
+
+Package: sliderboss
+Version: 2.0
+Section: Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/sliderboss.deb
+Size: 19250
+MD5sum: 20c6e6b1d51d0c2d22be495c2b6d9c19
+Description: Slider v15
+Name: Slider V15
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/sliderboss

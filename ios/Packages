@@ -1,0 +1,169 @@
+Package:  com.FlipFlop-PUBG.com
+Version: 1.0
+Section: MAGIC.Games
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/com.aimbotpubg15mod.deb
+Size: 362006
+MD5sum: adbfc145301944ed3d0eb2c53ef8ca00
+SHA1: ca6ed6e79c043fd77dfde5c7c27e5fa72057cb01
+SHA256: 79879e3d90d22e95a2be79f184d039c1fca3d5d682eff032004a8f2369b036f0
+Description: Aim bot, Norecoil Pubg 15.0 (Aim bot, no recoil with Antiban) 
+Name: Pubg Aimbot and No recoil Mod 15.0
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=pubgaimbot
+
+Package: net.angelxwind.appsyncunified
+Version: 1.0
+Section: MAGIC.Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/appsyncnochimera.deb
+Size: 34266
+MD5sum: 284d037691db9ab1361e8fabae28ea3e
+SHA1: 0070cd2dc6c5f879f81b5ec6384d9145df9253a2
+SHA256: 88900f9ac2b00f09ef3dcf0caa9aeaeab0e8a6c2dfac13d1934ae16241dc20cf
+Description: Appsync Unified 48 ( No Chimera Support) 
+Name: Appsync Unified No Chimera support
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=appsyncnochimera
+
+Package: com.iphone.com
+Version: 1.0
+Section: MAGIC.Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/Disabletweak.deb
+Size: 670454
+MD5sum: 5bba3c75412d70419be4040fc8bb016c
+SHA1: bf9a775ee66457340691aa462e40bf63727b784d
+SHA256: 70a24ed9dbef3bcc2dc812943620ca25988ed56059f9f7ae50d5972df0b4d405
+Description: Disable Tweak Cydia
+Name: Disable Tweak Cydia
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=Disabletweak
+
+Package: com.appweleux.repo.antibanpubg0150
+Version: 1.0
+Section: MAGIC.Games
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/antibanpubg.deb
+Size: 2658
+MD5sum: 65f2418cfbdb326e384d19def904269c
+SHA1: a4145be4dd3ec6e85d787b7f071ef446dcf102be
+SHA256: 5a7a538e92deac511b8a3979c03d065a7f7e8a00a32860f28a37eedbc1a467fd
+Description: Antiban PUBG v15
+Name: Antiban PUBG v15
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=antibanpubg
+
+Package: com.iphone.com
+Version: 1.0
+Section: MAGIC.Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/icleancracked.deb
+Size: 4270238
+MD5sum: 5dc7064ac4dd0226d887ccc0b5de77c6
+SHA1: 286b40acaad7c2e9e71302347fba7563d55b4734
+SHA256: 672f86c76c70fb06a080b643d11c775cf3b8ed015da2b71e6112fcb803c74c25
+Description: Iclean tweak for deepclean all phone
+Name: Icleaner Pro
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=icleancracked
+
+Package: ws.hbang.newterm2
+Version: 2.2-2
+Section: MAGIC.Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/newterm.deb
+Size: 1286708
+MD5sum: 8baef9f7d73c21d0e17c95ded0c2cac8
+Description: continuation of the Mobile Terminal project, a versatile terminal emulator for iOS
+Name: New Term2
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=newterm
+
+Package: cydia.kiiimo.org.filzafilemanager
+Version: 3.7
+Section: MAGIC.Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/filzacracked3.7.deb
+Size: 16306170
+MD5sum: e3207b8b4d070ef6cefd4eeda6fc0ef9
+SHA1: 0f66b8a9dc19f268d672a05f857d138496cc5a62
+SHA256: 2dfc76cf91528935338393aa5a7b9403382107bc2fe26b7cbb0256c0dd49316a
+Description: Filza Manager Cracked 3.7
+Name: Filza Manager Cracked 3.7
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=filzacracked3.7
+
+Package: com.anonymousx.dlgmemorinjected
+Version: 1.0
+Section: MAGIC.Tweaks
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/dlgmemorinjectedios12.deb
+Size: 200994
+MD5sum: 20c6e6b1d51d0c2d22be495c2b6d9c19
+SHA1: 1b394f410c30a50efe41e839fbbcb704e2692882
+SHA256: adb9f8b7bce323b6104b163e3e6dd1b750ae19bdb014847e0872f1aa2e974f97
+Description: DLG memory up to ios12
+Name: DLG memory up to ios12
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=dlgmemorinjectedios12
+
+Package: com.magicz.icon
+Version: 1.0
+Section: MAGIC
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/com.magicz.icon.deb
+Size: 99416
+MD5sum: f97e3d9c34e1d4706c3a39e2c982bd78
+SHA1: 1c2115c75d31db29a5af7ff3a521b7c02dca076c
+SHA256: 7c6d8b59e697ef57b0a59985eb9ff80a5987850602c56d3fc1a4a9810937e7c6
+Description: Official Magicz Icon Repo
+Name: Magicz Icon Repo
+Author: MagiczZz
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=iconrepo
+
+Package: com.spark.snowboard
+Version: 1.0
+Section: MAGIC.ThemeIP
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/com.spark.snowboard1.2.4.deb
+Size: 1419708
+MD5sum: 9777db1050f9229a0d64a5e7d7cffeaa
+Description: Theme tool for Ios
+Name: Snowboard
+Author: Spark
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.spark.snowboard1.2.4
+
+Package: com.slider.magic
+Version: 1.0
+Section: MAGIC.Games
+Maintainer: MagiczZz <magiczzz07@gmail.com>
+Depends: firmware (>7.0)
+Architecture: iphoneos-arm
+Filename: ./debs/com.slider.magic_0.0.1-1+debug_iphoneos-arm.deb
+Size: 19238
+MD5sum: c79fa8b1819c169814134a5e2816cacf
+Description: Pubg Slider for all pubg version
+Name: PUBG Slider v15.5
+Author: MagicZ
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=magicslider

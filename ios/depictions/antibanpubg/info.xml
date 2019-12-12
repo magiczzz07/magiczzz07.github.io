@@ -1,0 +1,29 @@
+<package>
+    <id>antibanpubg</id>
+    <name>Antiban PUBG 15.0</name>
+    <version>1.0</version>
+    <compatibility>
+        <firmware>
+            <miniOS>5.0</miniOS>
+            <maxiOS>13.0</maxiOS>
+            <otherVersions>unsupported</otherVersions>
+            <!--
+            for otherVersions, you can put either unsupported or unconfirmed
+            -->
+        </firmware>
+    </compatibility>
+    <dependencies></dependencies>
+    <descriptionlist>
+        <description>Antiban Pubg For IOS 15</description>
+    </descriptionlist>
+    <screenshots>
+	<screenshot>
+			<description>This is a description for screenshot</description>
+			<image>mod.jpg</image>
+		</screenshot>	
+	</screenshots>
+    <changelog>
+        <change>Initial release</change>
+    </changelog>
+    <links></links>
+</package>
