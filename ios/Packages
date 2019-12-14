@@ -42,7 +42,7 @@ Size: 670454
 MD5sum: 5bba3c75412d70419be4040fc8bb016c
 SHA1: bf9a775ee66457340691aa462e40bf63727b784d
 SHA256: 70a24ed9dbef3bcc2dc812943620ca25988ed56059f9f7ae50d5972df0b4d405
-Section: MAGIC.Utilities
+Section: MAGIC.Ultilities
 Description: Disable / enable tweaks
 Priority: optional
 Author: MagicZ
@@ -62,7 +62,7 @@ Size: 4270238
 MD5sum: 5dc7064ac4dd0226d887ccc0b5de77c6
 SHA1: 286b40acaad7c2e9e71302347fba7563d55b4734
 SHA256: 672f86c76c70fb06a080b643d11c775cf3b8ed015da2b71e6112fcb803c74c25
-Section: MAGIC.Utilities
+Section: MAGIC.Ultilities
 Author: Ivano Bilenchi <support@ib-soft.net>
 Name: iCleaner Pro
 Depiction: https://magiczzz07.github.io/ios/depictions/?p= icleancracked
