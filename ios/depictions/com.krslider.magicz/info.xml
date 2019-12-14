@@ -1,6 +1,6 @@
 <package>
-    <id>sliderboss</id>
-    <name>HSK SLIDER For PUBG</name>
+    <id> com.krslider.magicz </id>
+    <name>Magicz Pubg Korean Slider</name>
     <version>1.0</version>
     <compatibility>
         <firmware>
@@ -14,7 +14,7 @@
     </compatibility>
     <dependencies></dependencies>
     <descriptionlist>
-        <description>HSK SLIDER For PUBG</description>
+        <description>MAGICZ Pubg Korean Slider </description>
     </descriptionlist>
     <screenshots>
 	<screenshot>

@@ -1,6 +1,6 @@
 <package>
-    <id>com.slider.magic</id>
-    <name>PUBG Slider For All version</name>
+    <id> com.globalslider.magicz </id>
+    <name>Magicz Pubg Global Slider</name>
     <version>1.0</version>
     <compatibility>
         <firmware>
@@ -14,7 +14,7 @@
     </compatibility>
     <dependencies></dependencies>
     <descriptionlist>
-        <description>Pubg slider for all version</description>
+        <description>MAGICZ Pubg Global Slider </description>
     </descriptionlist>
     <screenshots>
 	<screenshot>
