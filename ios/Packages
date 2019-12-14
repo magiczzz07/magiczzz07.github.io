@@ -113,7 +113,7 @@ Architecture: iphoneos-arm
 Maintainer: Magicz
 Installed-Size: 156
 Depends: mobilesubstrate
-Filename: ./debs/com.slider.magic_0.0.1-1+debug_iphoneos-arm.deb
+Filename: ./debs/com.globalslider.magicz.deb
 Size: 19238
 MD5sum: c79fa8b1819c169814134a5e2816cacf
 SHA1: ab39ff39ecb7682e8cc5216150c4315176e2b741
@@ -122,7 +122,7 @@ Section: MAGIC.Games
 Description: Big Slider for PUBG Global
 Author: Magicz
 Name: PUGB Slider v16
-Depiction: https://magiczzz07.github.io/ios/depictions/?p=magicslider
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.globalslider.magicz
 
 Package: com.spark.snowboard
 Version: 1.2.74~Beta1
