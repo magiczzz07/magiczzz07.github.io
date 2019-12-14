@@ -97,7 +97,7 @@ Size: 1286734
 MD5sum: 6663ed13b4a3f0dc5f6d33bf5ff9bb54
 SHA1: ffaeed58cd19154c4c0c31f61543df36dcfa7b91
 SHA256: 541b620c210f060e061e05c9945b7a84bdea8318af5809f72928c70f5ed3867b
-Section: Terminal Support
+Section: MAGIC.Tweaks
 Description: A powerful terminal app for iOS
 Tag: compatible::ios10, compatible::ios11, compatible::ios12
 Author: HASHBANG Productions <support@hbang.ws>
@@ -117,7 +117,7 @@ Size: 19238
 MD5sum: c79fa8b1819c169814134a5e2816cacf
 SHA1: ab39ff39ecb7682e8cc5216150c4315176e2b741
 SHA256: 58547cab7e35ceed15eb75be61c600106179526e75c8da960c440ec4cd3aad17
-Section: Tweaks
+Section: MAGIC.Games
 Description: Big Slider for PUBG Global
 Author: Magicz
 Name: PUGB Slider v16
@@ -171,7 +171,7 @@ Size: 1053452
 MD5sum: 27cd11c99c96dd7b64edae128f86e7d1
 SHA1: 5a4ed83c2d2915ebf0f65218a619842e7806bd40
 SHA256: e458df6a6f68489495d9037c6e5c8d9eae5e3dc42c305bf5d0cc05d99cfeef78
-Section: Tweaks
+Section: MAGIC.Games
 Homepage: https://www.iosmods.com
 Description: PUBGM 0.15 Mod Menu from iOSMods.com
 Author: Maskman
@@ -209,7 +209,7 @@ Size: 48894
 MD5sum: 08ca2b90158e8e8ac427009a147dbc01
 SHA1: 6797aa7fce71255cbda0d24855386b638dbf7608
 SHA256: 5f3685a5627980873b95f07f70fdd262aa1f1a4c3f1ba738533ca6b0fd127ed2
-Section: MAGIC.Games
+Section: MAGIC.Tweaks
 Description: Super Jailbreak detection bypass!
 Author: Magicz
 Name: A-Bypass
@@ -261,7 +261,7 @@ Size: 19238
 MD5sum: c79fa8b1819c169814134a5e2816cacf
 SHA1: ab39ff39ecb7682e8cc5216150c4315176e2b741
 SHA256: 58547cab7e35ceed15eb75be61c600106179526e75c8da960c440ec4cd3aad17
-Section: Tweaks
+Section: MAGIC.Games
 Description: Big Slider for PUBG Global
 Author: Magicz
 Name: PUGB Slider 16.0
