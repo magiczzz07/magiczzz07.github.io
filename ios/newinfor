@@ -1,80 +1,19 @@
-Package: com.abypass.magicz
-Version: 1.0.4
+Package: org.cydia.kiimo.pasitheaa2
+Version: 2.1.3
 Architecture: iphoneos-arm
-Maintainer: Baw Appie <pp121324@gmail.com>
-Installed-Size: 388
-Depends: mobilesubstrate, applist (>= 1.5.15~beta1)
-Filename: ./debs/com.abypass.magicz.deb
-Size: 48894
-MD5sum: 08ca2b90158e8e8ac427009a147dbc01
-SHA1: 6797aa7fce71255cbda0d24855386b638dbf7608
-SHA256: 5f3685a5627980873b95f07f70fdd262aa1f1a4c3f1ba738533ca6b0fd127ed2
-Section: MAGIC.Tweaks
-Description: Super Jailbreak detection bypass!
-Author: Magicz
-Name: A-Bypass
-
-Package: com.krslider.MAGICZ
-Version: 0.0.1-1+debug
-Architecture: iphoneos-arm
-Maintainer: MAGICZ
-Installed-Size: 156
-Depends: mobilesubstrate
-Filename: ./debs/com.krslider.magicz.deb
-Size: 18904
-MD5sum: 4ff93a55cb8e82f1ba99c3737a353178
-SHA1: 3d78f08509cdf0d8d6169fe56107d4ce42a9873e
-SHA256: 91ee1a653f3125d59d0ee92b91c64b76c4dba788091b5adaaf2bf3aa4f250bed
-Section: Tweaks
-Description: MAGICZ SLIDER FOR PUBG KOREAN
-Author: MAGICZ
-Name: MAGICZ PUBG KOREAN SLIDER
-
-Package: com.magickorean.pubg
-Version: 0.16.0
-Architecture: iphoneos-arm
-Maintainer: Magicz
-Installed-Size: 644
-Depends: mobilesubstrate
-Filename: ./debs/com.x204kr.magicz.deb
-Size: 360120
-MD5sum: 0757d2b27cf80e206684f5c5480e2f48
-SHA1: db8e5ae64d7952654233d33feda07aedb0ed781e
-SHA256: 82a9ec1a0d64d86bd1852ac3da7a8fe064a3c358bd1bbd31480670833707f7b7
-Section: Hacks Game
-Author: X204
-Name: PUBG MOBILE HACK KOREAN v0.16.0
-Sponsor: Magicz
-
-Package: com.slider.magic
-Version: 0.0.1-1+debug
-Architecture: iphoneos-arm
-Maintainer: Magicz
-Installed-Size: 156
-Depends: mobilesubstrate
-Filename: ./debs/com.globalslider.magicz.deb
-Size: 19238
-MD5sum: c79fa8b1819c169814134a5e2816cacf
-SHA1: ab39ff39ecb7682e8cc5216150c4315176e2b741
-SHA256: 58547cab7e35ceed15eb75be61c600106179526e75c8da960c440ec4cd3aad17
-Section: Tweaks
-Description: Big Slider for PUBG Global
-Author: Magicz
-Name: PUGB Slider 15.5
-
-Package: com.vngslider.magicz
-Version: 0.0.1-1+debug
-Architecture: iphoneos-arm
-Maintainer: MAGICZ
-Installed-Size: 156
-Depends: mobilesubstrate
-Filename: ./debs/com.vngslider.magicz.deb
-Size: 18920
-MD5sum: 349a681c394b4f8c59028ff912c5dc86
-SHA1: 000de34fc2a1302174f1f4f5b776d9ad81f04522
-SHA256: d9662d1ffee13f4df5b8661282c7eef5a0809d408f2af0e26f24ca6a1f49a6bd
-Section: MAGIC.Games
-Description: MAGICZ SLIDER for VNG PUBG
-Author: MAGICZ
-Name: MAGICZ VNG SLIDER
+Maintainer: Kiiimo <support@kiiimo.org>
+Installed-Size: 1808
+Depends: firmware (>= 10.0), mobilesubstrate (>= 0.9.5001), preferenceloader (>= 2.2.2), applist (>= 1.5.9), net.angelxwind.karenlocalizer, firmware (>= 11.0) | com.ichitaso.pasithea2flipswitch
+Conflicts: com.ichitaso.pasteboardswitch, com.ichitaso.pasithea
+Replaces: com.ichitaso.pasithea2
+Filename: ./temp/com.pasithea2.magicz.deb
+Size: 540052
+MD5sum: 018f20706fcda2e16ed057edba2c8819
+SHA1: 11a4fb77efae3af4b5e94e8279cca4b8d35224cf
+SHA256: a0067d4efc5cc99d3792f63e0bbec3a96115b54a193b435ec7e4fa1dd7e1639e
+Section: iOS 12
+Author: Cannathea <csupport@cannathea.com>
+Icon: file:///Library/PreferenceBundles/PasitheaSettings.bundle/Pasithea@2x.png
+Name: Pasithea 2 Cracked
+Sponsor: kiiimo.org <http://kiiimo.org>
 

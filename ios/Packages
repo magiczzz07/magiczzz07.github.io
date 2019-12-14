@@ -63,6 +63,7 @@ MD5sum: 5dc7064ac4dd0226d887ccc0b5de77c6
 SHA1: 286b40acaad7c2e9e71302347fba7563d55b4734
 SHA256: 672f86c76c70fb06a080b643d11c775cf3b8ed015da2b71e6112fcb803c74c25
 Section: MAGIC.Ultilities
+Description: Deep clean and more fucntion for IOS 
 Author: Ivano Bilenchi <support@ib-soft.net>
 Name: iCleaner Pro
 Depiction: https://magiczzz07.github.io/ios/depictions/?p= icleancracked
@@ -156,6 +157,7 @@ MD5sum: e3207b8b4d070ef6cefd4eeda6fc0ef9
 SHA1: 0f66b8a9dc19f268d672a05f857d138496cc5a62
 SHA256: 2dfc76cf91528935338393aa5a7b9403382107bc2fe26b7cbb0256c0dd49316a
 Section: MAGIC.Ultilities
+Description: Filza File Manager Cracked
 Author: TIGI Software
 Name: Filza File Manager Cracked
 Sponsor: https://magiczzz07.github.io
@@ -177,7 +179,7 @@ Description: PUBGM 0.15 Mod Menu from iOSMods.com
 Author: Maskman
 Name: PUBGM 0.15
 
-Package: net.angelxwind.appsyncunified
+Package: com.appsyncnochimera.magicz
 Version: 48.0-NoChimera
 Architecture: iphoneos-arm
 Maintainer: Karen/あけみ <karen@akemi.ai>
@@ -282,5 +284,25 @@ Section: MAGIC.Games
 Description: MAGICZ SLIDER for VNG PUBG
 Author: MAGICZ
 Name: MAGICZ VNG SLIDER
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.vngslider.magicz
+
+Package: com.pasithea2.magicz
+Version: 2.1.3
+Architecture: iphoneos-arm
+Maintainer: MagicZ
+Installed-Size: 1808
+Depends: firmware (>= 10.0), mobilesubstrate (>= 0.9.5001), preferenceloader (>= 2.2.2), applist (>= 1.5.9), net.angelxwind.karenlocalizer, firmware (>= 11.0) | com.ichitaso.pasithea2flipswitch
+Conflicts: com.ichitaso.pasteboardswitch, com.ichitaso.pasithea
+Replaces: com.ichitaso.pasithea2
+Filename: ./debs/com.pasithea2.magicz.deb
+Size: 540052
+MD5sum: 018f20706fcda2e16ed057edba2c8819
+SHA1: 11a4fb77efae3af4b5e94e8279cca4b8d35224cf
+SHA256: a0067d4efc5cc99d3792f63e0bbec3a96115b54a193b435ec7e4fa1dd7e1639e
+Section: MAGIC.Tweaks
+Description: Multifunctional copy and paste on IOS
+Author: Cannathea <csupport@cannathea.com>
+Name: Pasithea 2 Cracked
+Sponsor: https://magiczzz07.github.io/ios/depictions/?p=com.vngslider.magicz
 Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.vngslider.magicz
 
