@@ -306,3 +306,19 @@ Name: Pasithea 2 Cracked
 Sponsor: https://magiczzz07.github.io/ios/depictions/?p=com.vngslider.magicz
 Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.vngslider.magicz
 
+Package: com.ikilledappl3.theostips
+Version: 1.0-1
+Architecture: iphoneos-arm
+Maintainer: MagicZ 
+Depends: mobilesubstrate
+Filename: ./debs/com.theostip.magicz.deb
+Size: 5455742
+MD5sum: 34fc73ac672df8f3a234fe31c502279d
+SHA1: b30effaf489fce2f8ef2c329ed051dcdfcac1283
+SHA256: 4f4025a29d7d522e103b2f579f61b8d7d0b74a1ef687b2fc1bcfd1d57ee91d47
+Section: MAGIC.Tweaks
+Description: Learn how to make tweaks with ease!
+Author: iKilledAppl3 <ipodnewbee234@icloud.com>
+Name: TheosTips
+Website: https://magiczzz07.github.io
+Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.theostip.magicz
