@@ -1,0 +1,10 @@
+Package: com.abypass.magicz
+Name: A-Bypass
+Depends: mobilesubstrate
+Architecture: iphoneos-arm
+Description: Super Jailbreak detection bypass!
+Maintainer: Baw Appie <pp121324@gmail.com>
+Author: Magicz
+Section: MAGIC.Tweaks
+Version: 1.0.4
+Installed-Size: 388
