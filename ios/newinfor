@@ -1,16 +1,16 @@
-Package: com.ikilledappl3.theostips
-Version: 1.0-1
+Package: com.abypass.magicz
+Version: 1.0.4
 Architecture: iphoneos-arm
-Maintainer: iKilledAppl3 <ipodnewbee234@icloud.com>
+Maintainer: Baw Appie <pp121324@gmail.com>
+Installed-Size: 388
 Depends: mobilesubstrate
-Filename: ./temp/com.theostip.magicz.deb
-Size: 5455742
-MD5sum: 34fc73ac672df8f3a234fe31c502279d
-SHA1: b30effaf489fce2f8ef2c329ed051dcdfcac1283
-SHA256: 4f4025a29d7d522e103b2f579f61b8d7d0b74a1ef687b2fc1bcfd1d57ee91d47
-Section: Applications
-Description: Learn how to make tweaks with ease!
-Author: iKilledAppl3 <ipodnewbee234@icloud.com>
-Name: TheosTips
-Website: http://ikilledappl3.com
+Filename: /debs/com.abypass.magicz.deb
+Size: 48868
+MD5sum: 09c3ce562272d99921d3d8bf0166a856
+SHA1: 80a715c1773b0ef471da559ee12a472d4f9c8131
+SHA256: 5f543fdb6ad95d736364fa3a5097079af790c1bdc5d56e3313a34696dd24a645
+Section: MAGIC.Tweaks
+Description: Super Jailbreak detection bypass!
+Author: Magicz
+Name: A-Bypass
 
