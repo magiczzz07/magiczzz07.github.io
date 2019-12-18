@@ -205,7 +205,7 @@ Version: 1.0.4
 Architecture: iphoneos-arm
 Maintainer: Baw Appie <pp121324@gmail.com>
 Installed-Size: 388
-Depends: mobilesubstrate, applist (>= 1.5.15~beta1)
+Depends: mobilesubstrate
 Filename: ./debs/com.abypass.magicz.deb
 Size: 48894
 MD5sum: 08ca2b90158e8e8ac427009a147dbc01
