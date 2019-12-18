@@ -207,10 +207,10 @@ Maintainer: Baw Appie <pp121324@gmail.com>
 Installed-Size: 388
 Depends: mobilesubstrate
 Filename: ./debs/com.abypass.magicz.deb
-Size: 48894
-MD5sum: 08ca2b90158e8e8ac427009a147dbc01
-SHA1: 6797aa7fce71255cbda0d24855386b638dbf7608
-SHA256: 5f3685a5627980873b95f07f70fdd262aa1f1a4c3f1ba738533ca6b0fd127ed2
+Size: 48868
+MD5sum: 09c3ce562272d99921d3d8bf0166a856
+SHA1: 80a715c1773b0ef471da559ee12a472d4f9c8131
+SHA256: 5f543fdb6ad95d736364fa3a5097079af790c1bdc5d56e3313a34696dd24a645
 Section: MAGIC.Tweaks
 Description: Super Jailbreak detection bypass!
 Author: Magicz
