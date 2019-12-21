@@ -350,9 +350,9 @@ MD5sum: 465118ede537aab4d047deed6ad5cb25
 SHA1: fc9c27f08374b99ec1cb4e952933d7c17522c151
 SHA256: 29c720bfea192cef8728e7c469f4e7ecf4f3882d2cd05bfbe566a1df05df76a0
 Section: MAGIC.Tweaks
+Description: Make your own IPA
 Author: SarahH12099
 Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.cracker.magicz
-Icon: file:///Applications/crackerxi.app/AppIcon.png
 Name: CrackerXI+ New
 
 Package: com.hidejb.magicz
