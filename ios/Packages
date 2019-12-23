@@ -413,4 +413,23 @@ Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.thireus.hostsclean
 Author: Thireus <repo@thireus.com>
 Name: Hosts Cleaner
 
+Package: com.julioverne.ntspeed
+Version: 0.2~beta7
+Architecture: iphoneos-arm
+Maintainer: Julio
+Depends: firmware (>= 6.0), mobilesubstrate, preferenceloader
+Filename: ./debs/com.julioverne.ntspeed.deb
+Size: 110766
+MD5sum: 0ade405ad379a22e1391d69fe5b558c0
+SHA1: c426cc0f2f3fb66fed8e3219491b545be5ee3295
+SHA256: 23b629aacc9448e58d1922fb8ab36f62416835fd8a3568759ca57f396edaa4a4
+Section: MAGIC.Tweaks
+Homepage: http://twitter.com/magiczzz07
+Description: See Active Traffic Network Speed
+Author: julioverne
+Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.julioverne.ntspeed
+Name: NtSpeed
+
+
+
 
