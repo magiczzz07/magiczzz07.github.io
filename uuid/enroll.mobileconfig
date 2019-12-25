@@ -16,18 +16,18 @@
             </array>
         </dict>
         <key>PayloadOrganization</key>
-        <string>example</string>
-        <key>PayloadDisplayName</key>
         <string>HSKRegister</string>
+        <key>PayloadDisplayName</key>
+        <string>HSKRegister UUID</string>
         <key>PayloadVersion</key>
         <integer>1</integer>
         <key>PayloadUUID</key>
         <string>D84C2DBF-2E70-4D91-A55A-4AB4D56C6E5A</string>
         <key>PayloadIdentifier</key>
-        <string>example.com</string>
+        <string>com.magicz.mobileconfig.profile-service</string>
         <key>PayloadDescription</key>
         <string>example</string>
         <key>PayloadType</key>
-        <string>HSKRegister</string>
+        <string>Profile Service</string>
     </dict>
 </plist>
