@@ -28,6 +28,6 @@
         <key>PayloadDescription</key>
         <string>example</string>
         <key>PayloadType</key>
-        <string>HSKRegisterUUID</string>
+        <string>HSKUUID</string>
     </dict>
 </plist>
