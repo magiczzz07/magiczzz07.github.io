@@ -430,6 +430,38 @@ Author: julioverne
 Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.julioverne.ntspeed
 Name: NtSpeed
 
+Package: com.Magicz.group
+Version: 0.16.0
+Architecture: iphoneos-arm
+Installed-Size: 2000
+Depends: mobilesubstrate
+Filename: ./debs/com.magicz.anti.deb
+Size: 25992
+MD5sum: 26bd5c55e27d2e20ca60e99b9f101ad9
+SHA1: 0974e6e23353a6077b85bc1401a0a222592fccbe
+SHA256: 95598cba9802fb30ba20ac3a5d26acbcf8dddacd5da2638887cd783c0b7b86c6
+Section: MAGIC.Tweaks
+Homepage: https://magiczzz07.github.com
+Description: Anti-Ban
+Author: Magicz
+Name: Anti-Ban
+Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.anti
+
+Package: com.pubgslidersmall.magicz
+Version: 0.16.0
+Architecture: iphoneos-arm
+Maintainer: Magicz
+Depends: mobilesubstrate
+Filename: ./debs/com.smallslider.magicz.deb
+Size: 27058
+MD5sum: 3574bb754947267c402a10992a5ee961
+SHA1: 7ad8ec11f4dbda38f7964a8281e9aa31bb96f081
+SHA256: b237b83d903ae4fe833de7198580bd7df8c49d105571cd29c6244a792fbe7ab7
+Section: MAGIC.Tweaks
+Description: PUBG slider
+Author: MAGICZ
+Name: Pubg Slider 0.16.0
+Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.smallslider.magicz
 
 
 
