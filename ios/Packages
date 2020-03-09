@@ -469,7 +469,7 @@ Architecture: iphoneos-arm
 Maintainer: magicz.info
 Installed-Size: 156
 Depends: mobilesubstrate
-Filename: ./temp/com.magicz.slider_0.17.deb
+Filename: ./debs/com.magicz.slider_0.17.deb
 Size: 17606
 MD5sum: 25a7bf2abf2756413e2efd1bdf5dc18e
 SHA1: d3bf73e55a51f3ffa712ca6b5e4e264ef581d560
@@ -485,7 +485,7 @@ Version: 0.17.0
 Architecture: iphoneos-arm
 Maintainer: Magicz.info
 Depends: mobilesubstrate
-Filename: ./temp/com.magicz.smallslider_0.17.0.deb
+Filename: ./debs/com.magicz.smallslider_0.17.0.deb
 Size: 27074
 MD5sum: 761345daf1e6b699dc4559d010b88519
 SHA1: 8414d2a64fb03487bd455788de25c7714d810579
