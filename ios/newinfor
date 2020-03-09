@@ -1,31 +1,31 @@
-Package: com.Magicz.group
-Version: 0.16.0
+Package: com.magicz.slider
+Version: 0.0.1-2+debug
 Architecture: iphoneos-arm
-Installed-Size: 2000
+Maintainer: magicz.info
+Installed-Size: 156
 Depends: mobilesubstrate
-Filename: ./temp/com.magicz.anti.deb
-Size: 25992
-MD5sum: 26bd5c55e27d2e20ca60e99b9f101ad9
-SHA1: 0974e6e23353a6077b85bc1401a0a222592fccbe
-SHA256: 95598cba9802fb30ba20ac3a5d26acbcf8dddacd5da2638887cd783c0b7b86c6
-Section: MAGIC.Tweaks
-Homepage: https://magiczzz07.github.com
-Description: Anti-Ban
-Author: Magicz
-Name: Anti-Ban
+Filename: ./temp/com.magicz.slider_0.17.deb
+Size: 17606
+MD5sum: 25a7bf2abf2756413e2efd1bdf5dc18e
+SHA1: d3bf73e55a51f3ffa712ca6b5e4e264ef581d560
+SHA256: f3b1d77fe168907c22bae687bbe10481e46352baba8837c75fc7a8c7a00b9e4c
+Section: MAGIC.Games
+Description: SLIDER FOR GLOBAL-VNG-KOREAN
+Author: magicz.info
+Name: PUBG SLIDER 0.17.0(3 version)
 
 Package: com.pubgslidersmall.magicz
-Version: 0.16.0
+Version: 0.17.0
 Architecture: iphoneos-arm
-Maintainer: Magicz
+Maintainer: Magicz.info
 Depends: mobilesubstrate
-Filename: ./temp/com.smallslider.magicz.deb
-Size: 27058
-MD5sum: 3574bb754947267c402a10992a5ee961
-SHA1: 7ad8ec11f4dbda38f7964a8281e9aa31bb96f081
-SHA256: b237b83d903ae4fe833de7198580bd7df8c49d105571cd29c6244a792fbe7ab7
-Section: MAGIC.Tweaks
-Description: PUBG slider
-Author: MAGICZ
-Name: Pubg Slider 0.16.0
+Filename: ./temp/com.magicz.smallslider_0.17.0.deb
+Size: 27074
+MD5sum: 761345daf1e6b699dc4559d010b88519
+SHA1: 8414d2a64fb03487bd455788de25c7714d810579
+SHA256: 68a4e96f50eedfc3a8cc00ef8a970f863376caee60f7fab99486c498954c53d3
+Section: MAGIC.Games
+Description: SMALL SLIDER FOR 3 version
+Author: Magicz.info
+Name: PUBG SMALL SLIDER 0.17
 
