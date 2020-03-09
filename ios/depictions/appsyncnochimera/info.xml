@@ -1,11 +1,11 @@
 <package>
-    <id>appsyncnochimerag</id>
-    <name>Appsync Unified NoChimera</name>
+    <id> appsyncnochimera </id>
+    <name>Appsync 48</name>
     <version>1.0</version>
     <compatibility>
         <firmware>
             <miniOS>5.0</miniOS>
-            <maxiOS>13.0</maxiOS>
+            <maxiOS>14.0</maxiOS>
             <otherVersions>unsupported</otherVersions>
             <!--
             for otherVersions, you can put either unsupported or unconfirmed
@@ -14,7 +14,7 @@
     </compatibility>
     <dependencies></dependencies>
     <descriptionlist>
-        <description>Appsync Support install IPA</description>
+        <description>APPSYNC 48-50 </description>
     </descriptionlist>
     <screenshots>
 	<screenshot>
