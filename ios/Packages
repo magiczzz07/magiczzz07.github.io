@@ -15,21 +15,6 @@ Author: MagicZ
 Name: DLGMemor Injected
 Depiction: https://magiczzz07.github.io/ios/depictions/?p=dlgmemorinjectedios12
 
-Package: com.antiban.magicz
-Version: 0.15.0
-Architecture: iphoneos-arm
-Depends: mobilesubstrate
-Filename: ./debs/antibanpubg.deb
-Size: 2658
-MD5sum: 65f2418cfbdb326e384d19def904269c
-SHA1: a4145be4dd3ec6e85d787b7f071ef446dcf102be
-SHA256: 5a7a538e92deac511b8a3979c03d065a7f7e8a00a32860f28a37eedbc1a467fd
-Section: MAGIC.Games
-Description: Anti-Ban Pubg 0.15.0
-Author: MagicZ
-Name: Anti-Ban Pubg 0.15.0
-Depiction: https://magiczzz07.github.io/ios/depictions/?p=antibanpubg
-
 Package: com.iphone.com
 Version: 3.0
 Architecture: iphoneos-arm
@@ -430,23 +415,6 @@ Author: julioverne
 Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.julioverne.ntspeed
 Name: NtSpeed
 
-Package: com.Magicz.group
-Version: 0.16.0
-Architecture: iphoneos-arm
-Installed-Size: 2000
-Depends: mobilesubstrate
-Filename: ./debs/com.magicz.anti.deb
-Size: 25992
-MD5sum: 26bd5c55e27d2e20ca60e99b9f101ad9
-SHA1: 0974e6e23353a6077b85bc1401a0a222592fccbe
-SHA256: 95598cba9802fb30ba20ac3a5d26acbcf8dddacd5da2638887cd783c0b7b86c6
-Section: MAGIC.Tweaks
-Homepage: https://magiczzz07.github.com
-Description: Anti-Ban
-Author: Magicz
-Name: Anti-Ban
-Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.anti
-
 Package: com.pubgslidersmall.magicz
 Version: 0.16.0
 Architecture: iphoneos-arm
@@ -508,7 +476,7 @@ SHA1: c49276dfd42630ff128f1c35c3129577a072c934
 SHA256: 235ca9aef4f3220dad0605e499591a6c3dd33bd8d54b7a15e8e1a0ded16fbd1e
 Section: MAGIC.Tweaks
 Homepage: magicz.info
-Description: Anti-Ban
+Description: Anti-Ban 17.0
 Author: Magicz.info
 Name: Anti-Ban for 17.0
 Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.host0.17.0
