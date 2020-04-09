@@ -496,5 +496,22 @@ Author: Magicz.info
 Name: PUBG SMALL SLIDER 0.17
 Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.smallslider_0.17.0
 
+Package: com.Magicz.info
+Version: 0.17.0
+Architecture: iphoneos-arm
+Installed-Size: 2000
+Depends: mobilesubstrate
+Filename: ./debs/com.magicz.host0.17.0.deb
+Size: 17408
+MD5sum: 9ac7bbe63fae180ac48b8915a5e8acf0
+SHA1: c49276dfd42630ff128f1c35c3129577a072c934
+SHA256: 235ca9aef4f3220dad0605e499591a6c3dd33bd8d54b7a15e8e1a0ded16fbd1e
+Section: MAGIC.Tweaks
+Homepage: magicz.info
+Description: Anti-Ban
+Author: Magicz.info
+Name: Anti-Ban for 17.0
+Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.host0.17.0
+
 
 
