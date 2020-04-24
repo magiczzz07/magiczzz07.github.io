@@ -481,5 +481,112 @@ Author: Magicz.info
 Name: Anti-Ban for 17.0
 Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.host0.17.0
 
+Package: AMR.free
+Version: 0.17.5
+Architecture: iphoneos-arm
+Maintainer: AMR
+Installed-Size: 332
+Depends: mobilesubstrate
+Filename: ./debs/com.magicz.amr.deb
+Size: 132468
+MD5sum: 6f71c22c004d174592087afe8951fb5e
+SHA1: 3edb718bbd5db4db466e5eae42006299f9bd0dfe
+SHA256: aee6b9105fe5ae10cb7ca333e43e3a77fecbd43b701eb6372802a3c271b1bc46
+Section: Tweaks
+Description: hackem Mod Menu by AMR - Hsk!
+Author: AMR
+Name: Hack Mod Menu 0.17.5
+Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.amr
+
+Package: com.baby.GFYM
+Version: 0.20.3
+Architecture: iphoneos-arm
+Maintainer: Baby
+Installed-Size: 644
+Depends: mobilesubstrate
+Filename: ./debs/com.baby.deb
+Size: 73676
+MD5sum: 9edae3f60468b32cbf3a2b2733bfe04c
+SHA1: 75409a3100911a1591ed25225665d44cf01a5827
+SHA256: 7374e22836f8e917a2639e63af9f06ecd5da45a0c422f28337360310f4931e56
+Section: G.O.D.神罚者
+Homepage: http://47.112.200.23
+Description: 佚名制作 免费 多功能 内没有安置防封 没有内置防封 三根手指连续三次点击屏幕 唤醒菜单 默认注入台服 国际服 韩服
+Author: Baby Hack
+Name: IGG Hack PUBG 17.5
+http://magiczzz07.github.io/ios/depictions/?p=com.baby
+
+Package: com.kwtap.dylib
+Version: 0.10
+Architecture: iphoneos-arm
+Maintainer: kwtap
+Installed-Size: 348
+Depends: mobilesubstrate
+Filename: ./debs/com.kwtap.deb
+Size: 811350
+MD5sum: 4cc91426a5f815e0b2071b73a54abf85
+SHA1: 5d87668ef22feba13abaaacb9710f857e363452e
+SHA256: f27f0aedce944fe92e875fe0d3be919459c2961a2c4a7a02f982e76c0e65c49d
+Section: Tweaks
+Homepage: kwtap
+Description: kwtap
+Author: kwtap
+Name: Black Sky slider 0.17.5
+http://magiczzz07.github.io/ios/depictions/?p=com.kwtap
+
+Package: com.magicz.sharp
+Version: 1.9.1
+Architecture: iphoneos-arm
+Depends: firmware (>= 5.0), mobilesubstrate
+Filename: ./debs/com.magicz.sharp.deb
+Size: 1290476
+MD5sum: 07ff03a63ff83fe309f6d9af8ec18f98
+SHA1: f2e7533f2475112c241c487db59b34bfd53ed75f
+SHA256: 58b4bd1cd3b9a5c024ef7b38e08d97fa57d66ffdc457b89f9554adbb9b42209f
+Section: Tweaks
+Priority: optional
+Homepage: https://magicz.info
+Author: MagicZ
+Depiction: Cracked By Lord
+Name: ISTEC Cracked by Lord
+http://magiczzz07.github.io/ios/depictions/?p=com.magicz.sharp
+
+Package: com.pukgfunne.com
+Version: 1.0
+Architecture: iphoneos-arm
+Maintainer: AMR
+Installed-Size: 1064
+Depends: mobilesubstrate
+Filename: ./debs/com.pukgfunne.deb
+Size: 2502176
+MD5sum: 4646aebed6865ad33cd6826dc77448c2
+SHA1: b43a4ea92f21dfa64481eef7910919a771149552
+SHA256: 3911fa691c5761e467404f45e0804c2f72aa38b8b2d33e26d221970ebd017edc
+Section: hack
+Description: Pubg
+Author: AMR
+Name: Gm cracked by Arabic developer
+http://magiczzz07.github.io/ios/depictions/?p=com.pukgfunne
+
+Package: com.x204.krpubg
+Version: 0.17.0
+Architecture: iphoneos-arm
+Maintainer: X204
+Installed-Size: 624
+Depends: mobilesubstrate
+Filename: ./debs/com.x204.krpubg.deb
+Size: 339944
+MD5sum: 74cf9548b988946f1856671ebade5ac2
+SHA1: cfe078fdde325f27da960dbe4d5d06de8009f8a0
+SHA256: adc8f1d35506418360260ce0176049a9937c403b57b24c915bce1582f4a44efc
+Section: Tweaks
+Homepage: https://magicz.info
+Description: KR-PUBG Mod Menu by X204!
+Author: X204
+Name: KR-PUBG Mod Menu
+http://magiczzz07.github.io/ios/depictions/?p=com.x204.krpubg
+
+
+
 
 
