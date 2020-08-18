@@ -628,7 +628,7 @@ Architecture: iphoneos-arm
 Maintainer: Magicz
 Installed-Size: 7318
 Depends: mobilesubstrate
-Filename: /Users/macmini/magiczzz07.github.io/ios/temp/4tgkoreanesp1775.deb
+Filename: ./debs/4tgkoreanesp1775.deb
 Size: 2593852
 MD5sum: 5d04b919a95158ccd6ee432e0f059e6d
 SHA1: 1780cbb8e75467bfb5918ad99f3363aa5a32aebd
@@ -639,3 +639,20 @@ Description: 4TG 배틀그라운드 0.19.0 region: KR
 Author: Magicz
 Name: 4TG Kr 배틀그라운드 0.19.0
 Depiction: http://magiczzz07.github.io/ios/depictions/?p=4tgkoreanesp
+
+Package: com.magicz.4tg
+Version: 0.19.0
+Architecture: iphoneos-arm
+Maintainer: 4TGAMING
+Installed-Size: 580
+Depends: mobilesubstrate
+Filename: ./debs/4tgmodemenuvng.deb
+Size: 122654
+MD5sum: 97a5e885f6829492c6ae4283e0e82cd4
+SHA1: dbc18f045300c7bb7518c7482f019ac4d91bfb47
+SHA256: 347b23fb01e790d516febe64a26ca4606d1a543999e94909c54af37b174fb309
+Section: MAGIC.Tweaks
+Homepage: http://store.shop4t.com
+Description: PUBG Mod Menu by 4TGAMING
+Author: 4TGAMING
+Name: PUBG MODE MENU 4TGAMINGVIP

@@ -1,17 +1,17 @@
-Package: com.magicz.4tGl
-Version: 1922-5add3315-GLOBAL-93
+Package: com.magicz.4tg
+Version: 0.19.0
 Architecture: iphoneos-arm
-Maintainer: Magicz
-Installed-Size: 7384
+Maintainer: 4TGAMING
+Installed-Size: 580
 Depends: mobilesubstrate
-Filename: /Users/macmini/magiczzz07.github.io/ios/temp/4tglobalesp1922.deb
-Size: 2608644
-MD5sum: 16c5093018c5f42d40f43e8de4c1980e
-SHA1: fe66e41c65e4eae415d27e9f952dae140d456d13
-SHA256: 55bd16cd75eb76cae91cae386080e98922dcbe76987e5afee53133151799c7b6
-Section: ESP
-Homepage: https://store.shop4t.com
-Description: PUBGM 0.19.0 region: GLOBAL
-Author: Magicz
-Name: 4TG PUBGM 0.19.0 Global
+Filename: /Users/macmini/magiczzz07.github.io/ios/temp/4tgmodemenuvng.deb
+Size: 122654
+MD5sum: 97a5e885f6829492c6ae4283e0e82cd4
+SHA1: dbc18f045300c7bb7518c7482f019ac4d91bfb47
+SHA256: 347b23fb01e790d516febe64a26ca4606d1a543999e94909c54af37b174fb309
+Section: MAGIC.Tweaks
+Homepage: http://store.shop4t.com
+Description: PUBG Mod Menu by 4TGAMING
+Author: 4TGAMING
+Name: PUBG MODE MENU 4TGAMINGVIP
 
