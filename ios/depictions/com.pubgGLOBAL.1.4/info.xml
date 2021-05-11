@@ -1,0 +1,29 @@
+<package>
+    <id> com.magicz.info_1.4.0_iphoneos-arm </id>
+    <name>PUBG GLOBAL MODE MENU 1.4.0</name>
+    <version>1.0</version>
+    <compatibility>
+        <firmware>
+            <miniOS>5.0</miniOS>
+            <maxiOS>15.0</maxiOS>
+            <otherVersions>unsupported</otherVersions>
+            <!--
+            for otherVersions, you can put either unsupported or unconfirmed
+            -->
+        </firmware>
+    </compatibility>
+    <dependencies></dependencies>
+    <descriptionlist>
+        <description>PUBG GLOBAL MODE MENU 1.4.0</description>
+    </descriptionlist>
+    <screenshots>
+	<screenshot>
+			<description>This is a description for screenshot</description>
+			<image>mod.jpg</image>
+		</screenshot>	
+	</screenshots>
+    <changelog>
+        <change>Initial release</change>
+    </changelog>
+    <links></links>
+</package>

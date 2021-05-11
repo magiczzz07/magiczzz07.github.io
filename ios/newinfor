@@ -1,0 +1,34 @@
+Package: com.magicz.info
+Version: 1.4.0
+Architecture: iphoneos-arm
+Maintainer: magicz
+Installed-Size: 596
+Depends: mobilesubstrate
+Filename: ./1/com.magicz.info_1.4.0_iphoneos-armvng.deb
+Size: 125588
+MD5sum: 9679cf2934b1a88ca5a1a4eb98646027
+SHA1: 2b38a8a451639284d0dfba0e9e5603ae03e1446e
+SHA256: 513287d2a40f1d9c846ebcc24e69ad6ef08f45ed8ab77862f91b217d9627cb43
+Section: Tweaks
+Homepage: 99
+Description: PUBG Mod Menu by magicz
+Author: magicz
+Name: magicz
+
+Package: com.magicz.info
+Version: 1.4.0
+Architecture: iphoneos-arm
+Maintainer: magicz
+Installed-Size: 596
+Depends: mobilesubstrate
+Filename: ./1/com.magicz.info_1.4.0_iphoneos-arm.deb
+Size: 125826
+MD5sum: 993d6c38536f423b40852077ec7d70c7
+SHA1: 29d4b5b83f949f21cc0b26c387deaef71632ac7c
+SHA256: 7e7f8aa33afe70ebd8e32a903c1740a609f3935cfdf0920e1f33e7ea7593ffb2
+Section: Tweaks
+Homepage: 99
+Description: PUBG Mod Menu by magicz
+Author: magicz
+Name: magicz
+
