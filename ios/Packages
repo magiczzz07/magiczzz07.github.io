@@ -49,8 +49,8 @@ Section: MAGIC
 Homepage: https://magiczzz07.github.io/ios/depiction/?=iconrepo
 Description: Officials Magicz Repo Icons
 Author: Magicz<magiczzz07@gmail.com>
-Depiction: https://magiczzz07.github.io/ios/depiction/?=iconrepo
 Name: Magicz Repo Icons
+Depiction: https://magiczzz07.github.io/ios/depiction/?=iconrepo
 
 Package: com.newterm.magicz
 Version: 2.2-2
@@ -73,23 +73,6 @@ Depiction: https://magiczzz07.github.io/ios/depictions/?p=newterm
 Icon: file:///Applications/NewTerm.app/AppIcon60x60@3x.png
 Name: NewTerm 2 (iOS 10 – 12)
 Support: https://magiczzz07.github.io/
-
-Package: com.slider.magic
-Version: 0.0.1-1+debug
-Architecture: iphoneos-arm
-Maintainer: Magicz
-Installed-Size: 156
-Depends: mobilesubstrate
-Filename: ./debs/com.globalslider.magicz.deb
-Size: 19238
-MD5sum: c79fa8b1819c169814134a5e2816cacf
-SHA1: ab39ff39ecb7682e8cc5216150c4315176e2b741
-SHA256: 58547cab7e35ceed15eb75be61c600106179526e75c8da960c440ec4cd3aad17
-Section: MAGIC.Games
-Description: Big Slider for PUBG Global
-Author: Magicz
-Name: PUGB Slider v16
-Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.globalslider.magicz
 
 Package: com.spark.snowboard
 Version: 1.2.74~Beta1
@@ -148,77 +131,6 @@ Description: Super Jailbreak detection bypass!
 Author: Magicz
 Name: A-Bypass
 Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.abypass.magicz
-
-Package: com.krslider.MAGICZ
-Version: 0.0.1-1+debug
-Architecture: iphoneos-arm
-Maintainer: MAGICZ
-Installed-Size: 156
-Depends: mobilesubstrate
-Filename: ./debs/com.krslider.magicz.deb
-Size: 18904
-MD5sum: 4ff93a55cb8e82f1ba99c3737a353178
-SHA1: 3d78f08509cdf0d8d6169fe56107d4ce42a9873e
-SHA256: 91ee1a653f3125d59d0ee92b91c64b76c4dba788091b5adaaf2bf3aa4f250bed
-Section: MAGIC.Games
-Description: MAGICZ SLIDER FOR PUBG KOREAN
-Author: MAGICZ
-Name: MAGICZ PUBG KOREAN SLIDER
-Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.krslider.magicz
-
-Package: com.magickorean.pubg
-Version: 0.16.0
-Architecture: iphoneos-arm
-Maintainer: Magicz
-Installed-Size: 644
-Depends: mobilesubstrate
-Filename: ./debs/com.x204kr.magicz.deb
-Size: 360120
-MD5sum: 0757d2b27cf80e206684f5c5480e2f48
-SHA1: db8e5ae64d7952654233d33feda07aedb0ed781e
-SHA256: 82a9ec1a0d64d86bd1852ac3da7a8fe064a3c358bd1bbd31480670833707f7b7
-Section: MAGIC.Games
-Description: Pubg Hack Korean Mod Menu : no recoil, no grass....
-Author: X204
-Name: PUBG MOBILE HACK KOREAN v0.16.0
-Sponsor: Magicz
-Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.x204kr.magicz
-
-Package: com.slider.magic
-Version: 0.0.1-1+debug
-Architecture: iphoneos-arm
-Maintainer: Magicz
-Installed-Size: 156
-Depends: mobilesubstrate
-Filename: ./debs/com.globalslider.magicz.deb
-Size: 19238
-MD5sum: c79fa8b1819c169814134a5e2816cacf
-SHA1: ab39ff39ecb7682e8cc5216150c4315176e2b741
-SHA256: 58547cab7e35ceed15eb75be61c600106179526e75c8da960c440ec4cd3aad17
-Section: MAGIC.Games
-Description: Big Slider for PUBG Global
-Author: Magicz
-Name: PUGB Slider 16.0
-Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.globalslider.magicz
-
-Package: com.vngslider.magicz
-Version: 0.0.1-1+debug
-Architecture: iphoneos-arm
-Maintainer: MAGICZ
-Installed-Size: 156
-Depends: mobilesubstrate
-Filename: ./debs/com.vngslider.magicz.deb
-Size: 18920
-MD5sum: 349a681c394b4f8c59028ff912c5dc86
-SHA1: 000de34fc2a1302174f1f4f5b776d9ad81f04522
-SHA256: d9662d1ffee13f4df5b8661282c7eef5a0809d408f2af0e26f24ca6a1f49a6bd
-Section: MAGIC.Games
-Description: MAGICZ SLIDER for VNG PUBG
-Author: MAGICZ
-Name: MAGICZ VNG SLIDER
-Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.vngslider.magicz
-
-
 
 Package: com.ikilledappl3.theostips
 Version: 1.0-1
@@ -289,23 +201,6 @@ Depiction:  https://magiczzz07.github.io/ios/depictions/?p=com.hidejb.magicz
 Dev: MagicZ 
 Name: HideJB
 
-Package: com.pasta.magicz
-Version: 0.1.4
-Architecture: iphoneos-arm
-Maintainer: MagicZ
-Installed-Size: 376
-Depends: mobilesubstrate, ws.hbang.common (>= 1.11), firmware (>= 11.0), applist
-Filename: ./debs/com.pasta.magicz.deb
-Size: 77314
-MD5sum: 4d25c1d71e9a759385b50c05f91c25b9
-SHA1: babd1ba08b54a88c920b4d358b5f5d46c2ea2005
-SHA256: ce0f88d31f6d00122353175ae171e47cab05df973fba82686bbbc6ea1b47ee9e
-Section: MAGIC.Tweaks
-Description: Minimalist clipboard manager
-Author: Nepeta
-Name: Copypasta
-Depiction: https://magiczzz07.github.io/ios/depictions/?p=com.pasta.magicz
-
 Package: com.thireus.hostscleaner
 Version: 1.4.1
 Architecture: iphoneos-arm
@@ -360,23 +255,6 @@ Author: MAGICZ
 Name: Pubg Slider 0.16.0
 Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.smallslider.magicz
 
-Package: com.magicz.slider
-Version: 0.0.1-2+debug
-Architecture: iphoneos-arm
-Maintainer: magicz.info
-Installed-Size: 156
-Depends: mobilesubstrate
-Filename: ./debs/com.magicz.slider_0.17.deb
-Size: 17606
-MD5sum: 25a7bf2abf2756413e2efd1bdf5dc18e
-SHA1: d3bf73e55a51f3ffa712ca6b5e4e264ef581d560
-SHA256: f3b1d77fe168907c22bae687bbe10481e46352baba8837c75fc7a8c7a00b9e4c
-Section: MAGIC.Games
-Description: SLIDER FOR GLOBAL-VNG-KOREAN
-Author: magicz.info
-Name: PUBG SLIDER 0.17.0(3 version)
-Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.slider_0.17
-
 Package: com.pubgslidersmall.magicz
 Version: 0.17.0
 Architecture: iphoneos-arm
@@ -392,40 +270,6 @@ Description: SMALL SLIDER FOR 3 version
 Author: Magicz.info
 Name: PUBG SMALL SLIDER 0.17
 Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.smallslider_0.17.0
-
-Package: com.Magicz.info
-Version: 0.17.0
-Architecture: iphoneos-arm
-Installed-Size: 2000
-Depends: mobilesubstrate
-Filename: ./debs/com.magicz.host0.17.0.deb
-Size: 17408
-MD5sum: 9ac7bbe63fae180ac48b8915a5e8acf0
-SHA1: c49276dfd42630ff128f1c35c3129577a072c934
-SHA256: 235ca9aef4f3220dad0605e499591a6c3dd33bd8d54b7a15e8e1a0ded16fbd1e
-Section: MAGIC.Tweaks
-Homepage: magicz.info
-Description: Anti-Ban 17.0
-Author: Magicz.info
-Name: Anti-Ban for 17.0
-Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.host0.17.0
-
-Package: AMR.free
-Version: 0.17.5
-Architecture: iphoneos-arm
-Maintainer: AMR
-Installed-Size: 332
-Depends: mobilesubstrate
-Filename: ./debs/com.magicz.amr.deb
-Size: 132468
-MD5sum: 6f71c22c004d174592087afe8951fb5e
-SHA1: 3edb718bbd5db4db466e5eae42006299f9bd0dfe
-SHA256: aee6b9105fe5ae10cb7ca333e43e3a77fecbd43b701eb6372802a3c271b1bc46
-Section: MAGIC.Games
-Description: hackem Mod Menu by AMR - Hsk!
-Author: AMR
-Name: Hack Mod Menu 0.17.5
-Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.magicz.amr
 
 Package: com.baby.GFYM
 Version: 0.20.3
@@ -443,7 +287,7 @@ Homepage: http://47.112.200.23
 Description: 佚名制作 免费 多功能 内没有安置防封 没有内置防封 三根手指连续三次点击屏幕 唤醒菜单 默认注入台服 国际服 韩服
 Author: Baby Hack
 Name: IGG Hack PUBG 17.5
-http://magiczzz07.github.io/ios/depictions/?p=com.baby
+Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.baby
 
 Package: com.kwtap.dylib
 Version: 0.10
@@ -461,41 +305,7 @@ Homepage: kwtap
 Description: kwtap
 Author: kwtap
 Name: Black Sky slider 0.17.5
-http://magiczzz07.github.io/ios/depictions/?p=com.kwtap
-
-Package: com.magicz.sharp
-Version: 1.9.1
-Architecture: iphoneos-arm
-Depends: firmware (>= 5.0), mobilesubstrate
-Filename: ./debs/com.magicz.sharp.deb
-Size: 1290476
-MD5sum: 07ff03a63ff83fe309f6d9af8ec18f98
-SHA1: f2e7533f2475112c241c487db59b34bfd53ed75f
-SHA256: 58b4bd1cd3b9a5c024ef7b38e08d97fa57d66ffdc457b89f9554adbb9b42209f
-Section: MAGIC.Games
-Priority: optional
-Homepage: https://magicz.info
-Author: MagicZ
-Depiction: Cracked By Lord
-Name: ISTEC Cracked by Lord
-http://magiczzz07.github.io/ios/depictions/?p=com.magicz.sharp
-
-Package: com.pukgfunne.com
-Version: 1.0
-Architecture: iphoneos-arm
-Maintainer: AMR
-Installed-Size: 1064
-Depends: mobilesubstrate
-Filename: ./debs/com.pukgfunne.deb
-Size: 2502176
-MD5sum: 4646aebed6865ad33cd6826dc77448c2
-SHA1: b43a4ea92f21dfa64481eef7910919a771149552
-SHA256: 3911fa691c5761e467404f45e0804c2f72aa38b8b2d33e26d221970ebd017edc
-Section: MAGIC.Games
-Description: Pubg
-Author: AMR
-Name: Gm cracked by Arabic developer
-http://magiczzz07.github.io/ios/depictions/?p=com.pukgfunne
+Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.kwtap
 
 Package: com.magicz.vng
 Version: 1.4.0
@@ -513,7 +323,7 @@ Homepage: http://magicz.info
 Description: PUBG VNG Mod Menu by magicz
 Author: magicz
 Name: PUBG VNG Mod Menu by magicz
-http://magiczzz07.github.io/ios/depictions/?p=com.pubgvng.1.4
+Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.pubgvng.1.4
 
 Package: com.magicz.GLOBAL
 Version: 1.4.0
@@ -531,5 +341,5 @@ Homepage: http://magicz.info
 Description: PUBG GLOBAL Mod Menu by magicz
 Author: magicz
 Name: PUBG GLOBAL Mod Menu by magicz
-http://magiczzz07.github.io/ios/depictions/?p=com.pubgGLOBAL.1.4
+Depiction: http://magiczzz07.github.io/ios/depictions/?p=com.pubgGLOBAL.1.4
 
