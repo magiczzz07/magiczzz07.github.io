@@ -497,39 +497,39 @@ Author: AMR
 Name: Gm cracked by Arabic developer
 http://magiczzz07.github.io/ios/depictions/?p=com.pukgfunne
 
-Package: com.magicz.info
+Package: com.magicz.vng
 Version: 1.4.0
 Architecture: iphoneos-arm
 Maintainer: magicz
 Installed-Size: 596
 Depends: mobilesubstrate
-Filename: ./debs/com.magicz.info_1.4.0_iphoneos-armvng.deb
-Size: 125588
-MD5sum: 9679cf2934b1a88ca5a1a4eb98646027
-SHA1: 2b38a8a451639284d0dfba0e9e5603ae03e1446e
-SHA256: 513287d2a40f1d9c846ebcc24e69ad6ef08f45ed8ab77862f91b217d9627cb43
+Filename: ./debs/com.pubgvng.1.4.deb
+Size: 125900
+MD5sum: 8e04e06d9229dd830882a37e5a6df34f
+SHA1: 426fd5c05219670b1e8e635d3aa62c185146e244
+SHA256: a598949d93ac021e91d84d8e8e2d99a3a4276c20610111cec670d55f7b0a2458
 Section: MAGIC.Games
-Homepage: magicz.info
+Homepage: http://magicz.info
 Description: PUBG VNG Mod Menu by magicz
 Author: magicz
-Name: magicz
+Name: PUBG VNG Mod Menu by magicz
 http://magiczzz07.github.io/ios/depictions/?p=com.pubgvng.1.4
 
-Package: com.magicz.info
+Package: com.magicz.GLOBAL
 Version: 1.4.0
 Architecture: iphoneos-arm
 Maintainer: magicz
 Installed-Size: 596
 Depends: mobilesubstrate
 Filename: ./debs/com.magicz.info_1.4.0_iphoneos-arm.deb
-Size: 125826
-MD5sum: 993d6c38536f423b40852077ec7d70c7
-SHA1: 29d4b5b83f949f21cc0b26c387deaef71632ac7c
-SHA256: 7e7f8aa33afe70ebd8e32a903c1740a609f3935cfdf0920e1f33e7ea7593ffb2
+Size: 125938
+MD5sum: 1508b53b7247357e7abec79b6d2f49c4
+SHA1: 7ea7e7b2f4304a95552a8bd0b60eb2b7d8301cca
+SHA256: ca10d79ca440835e194c707cf9354f31737580234fb27f2b37dbf84dddecb643
 Section: MAGIC.Games
-Homepage: magicz.info
+Homepage: http://magicz.info
 Description: PUBG GLOBAL Mod Menu by magicz
 Author: magicz
-Name: magicz
+Name: PUBG GLOBAL Mod Menu by magicz
 http://magiczzz07.github.io/ios/depictions/?p=com.pubgGLOBAL.1.4
 
