@@ -1,0 +1,118 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .dictionary {
+        background: #00bcd4;
+        color: #fff;
+        max-width: 800px;
+        min-height: 100vh;
+        margin: 0 auto;
+      }
+      h1 {
+        margin-top: 0;
+        text-align: center;
+      }
+      .txtBox {
+        appearance: none;
+        -webkit-appearance:none;
+        font-size:16px;
+        padding: 15px;
+        width:100%;
+      }
+      .submit-btn {
+        appearance: none;
+        -webkit-appearance:none;
+        padding: 15px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: grey;
+        color: #fff;
+        font-size: 15px;
+        height: 100%;
+      }
+      form {
+        position: relative;
+      }
+      .search-result{
+        padding:20px;
+      }
+      .search-word{
+        font-style:italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dictionary">
+        <h1>English - Vietnamese Dictionary</h1>
+      <form class="searchForm">
+      <input type="search" class="txtBox">
+      <input type="submit" class="submit-btn" value="submit" onclick="searchDict">
+      </form>
+        <div class="search-result">
+          <h2 class="search-word"></h2>
+          <p class="description">
+            <h1 class="WORD"></h1><br/>
+            <h1 class="SOUND"></h1>
+            <h2 class="ENGLISH_MEAN"></h2><br/>
+            <h2 class="VIETNAMESE_MEAN"></h2><br/>
+            <h2 class="EXAMPLE"></h2>
+          </p>
+        </div>
+    </div>
+    <script>
+      const txtBox = document.querySelector(".txtBox");
+      const form = document.querySelector(".searchForm");
+      const searchWord = document.querySelector(".search-word");
+      const description = document.querySelector(".description");
+      const WORD = document.querySelector(".WORD");
+      const SOUND = document.querySelector(".SOUND");
+      const ENGLISH_MEAN = document.querySelector(".ENGLISH_MEAN");
+      const VIETNAMESE_MEAN = document.querySelector(".VIETNAMESE_MEAN");
+      const EXAMPLE = document.querySelector(".EXAMPLE");      
+      const dictionaryJson = "av.json";//thay bằng đường dẫn chứa từ điển, dạng JSON cẩn thận vụ CORS
+      function searchDict(e) {
+        e.preventDefault();
+        fetch(dictionaryJson)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            e.preventDefault;
+            let word = txtBox.value;
+            console.log(txtBox.value);
+            let searchKeyword = word.toUpperCase();
+            let breaks=true;
+            let pos=9999;
+            WORD.innerHTML="";
+            SOUND.innerHTML ="";
+            ENGLISH_MEAN.innerHTML="";
+            VIETNAMESE_MEAN.innerHTML ="";
+            Object.keys(data).forEach(function(key) {
+              if (data[key].word.toUpperCase().includes(searchKeyword)&&breaks) 
+              {                
+                if(pos>data[key].word.toUpperCase().indexOf(searchKeyword))
+                {
+                  WORD.innerHTML = data[key].word;
+                  SOUND.innerHTML = "<audio controls><source src=\"https://translate.google.com/translate_tts?ie=UTF-8&q="+data[key].word+"&tl=en&total=1&idx=0&textlen=15&tk=350535.255567&client=webapp&prev=input\" type=\"audio/mpeg\"></audio>";
+                  ENGLISH_MEAN.innerHTML = data[key].pro.split("#")[0];
+                  VIETNAMESE_MEAN.innerHTML = "Việt Nam: "+data[key].mean.replace("#","").replace("..",".").replace("..",".");
+                  //EXAMPLE.innerHTML = "Example: " +data[key].EXAMPLE;
+                  pos=data[key].word.toUpperCase().indexOf(searchKeyword);
+                }
+                if(pos===0) breaks=false;
+                console.log(data[key]);
+              }
+            });
+          });
+      }
+      form.addEventListener("submit", searchDict);
+      
+    </script>
+  </body>
+</html>
