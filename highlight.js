@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", function(event) {
+    window.TinyQ.init();
+  });
+
 (function() {
 var t = '';
 var CONTAINER_ID = '5kjl3_container_id';
@@ -209,6 +213,7 @@ function insertHighlightOptionNode(selection, ori) {
     });
 
     // Calculate bounds of range
+    const childPos  = document.getElementById('target').getBoundingClientRect();console.log(childPos);
     var cRects = range.getClientRects(); //console.log(cRects);
     var hBounds = [];
     for (var i = 0; i < cRects.length; i++) {
@@ -218,10 +223,10 @@ function insertHighlightOptionNode(selection, ori) {
     var rLeft = Math.min.apply(null, hBounds);
     var rRight = Math.max.apply(null, hBounds);
 
-    var y = cRects[0].top + window.scrollY;
-    var x = rLeft + window.scrollX + ((rRight - rLeft) / 2);
+    var y = cRects[0].top - childPos.top;
+    var x = rLeft + ((rRight - rLeft) / 2) - childPos.left;
     
-    document.body.appendChild(container);
+    document.getElementById("target").appendChild(container);
 
     var containerHeight = window.getComputedStyle(container).getPropertyValue('height');
     var containerWidth = window.getComputedStyle(container).getPropertyValue('width');
@@ -242,7 +247,7 @@ function insertHighlightOptionNode(selection, ori) {
         top = 0
     }
 
-    setStyle(container, 'z-index', 99999);
+    setStyle(container, 'z-index', 2147483647);
     setStyle(container, 'top', top + 'px');
     setStyle(container, 'visibility', 'visible');
 }
