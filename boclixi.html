@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Bốc thăm lì xì - Happy New Year 2025. Trò chơi vui nhộn với phong bao lì xì may mắn">
+    <meta name="theme-color" content="#c41e3a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Lucky Money 2025</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧧</text></svg>">
+    <style>
+        :root {
+            --primary-color: #c41e3a;
+            --secondary-color: #ffd700;
+            --bg-color: #f8f1e3;
+            --spacing-unit: clamp(10px, 2vw, 20px);
+            --envelope-width: clamp(140px, 40vw, 180px);
+            --envelope-height: clamp(180px, 50vw, 240px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-color);
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: var(--spacing-unit);
+            overflow-x: hidden;
+        }
+
+        .title {
+            color: var(--primary-color);
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            text-align: center;
+            margin: var(--spacing-unit) 0;
+            padding: 0 var(--spacing-unit);
+            line-height: 1.2;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(var(--envelope-width), 1fr));
+            gap: var(--spacing-unit);
+            width: 100%;
+            max-width: 1200px;
+            padding: var(--spacing-unit);
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .envelope {
+            width: 100%;
+            height: var(--envelope-height);
+            background: var(--primary-color);
+            border-radius: 15px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+        }
+
+        @media (hover: hover) {
+            .envelope:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            }
+        }
+
+        .envelope:active {
+            transform: scale(0.98);
+        }
+
+        .envelope.opened {
+            background: linear-gradient(135deg, var(--primary-color), #8b0000);
+        }
+
+        .amount {
+            position: absolute;
+            color: var(--secondary-color);
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transition: all 0.4s ease;
+            padding: var(--spacing-unit);
+            width: 100%;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .envelope.opened .amount {
+            opacity: 1;
+            animation: pulseAmount 1s ease-in-out infinite;
+        }
+
+        .reset {
+            padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 1.5);
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-weight: bold;
+            margin: var(--spacing-unit);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            -webkit-appearance: none;
+        }
+
+        @media (hover: hover) {
+            .reset:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+                background: #8b0000;
+            }
+        }
+
+        .reset:active {
+            transform: translateY(1px);
+        }
+
+        @keyframes pulseAmount {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .icon {
+            width: 60%;
+            height: 60%;
+            position: absolute;
+            transition: all 0.4s ease;
+        }
+
+        .envelope.opened .icon {
+            transform: translateY(-100%) scale(0.8);
+            opacity: 0;
+        }
+
+        .footer {
+            color: var(--primary-color);
+            text-align: center;
+            padding: var(--spacing-unit);
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            width: 100%;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .envelope, .amount, .reset {
+                transition: none;
+            }
+            .envelope.opened .amount {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">🎊 Happy New Year 2025 🎊</h1>
+    
+    <div class="container">
+        <div class="envelope">
+            <svg class="icon" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="#ffd700"/>
+                <text x="50" y="70" font-family="system-ui" font-size="60" text-anchor="middle">🐍</text>
+            </svg>
+            <div class="amount"></div>
+        </div>
+        <div class="envelope">
+            <svg class="icon" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="#ffd700"/>
+                <text x="50" y="70" font-family="system-ui" font-size="60" text-anchor="middle">🏮</text>
+            </svg>
+            <div class="amount"></div>
+        </div>
+        <div class="envelope">
+            <svg class="icon" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="#ffd700"/>
+                <text x="50" y="70" font-family="system-ui" font-size="60" text-anchor="middle">💰</text>
+            </svg>
+            <div class="amount"></div>
+        </div>
+        <div class="envelope">
+            <svg class="icon" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="#ffd700"/>
+                <text x="50" y="70" font-family="system-ui" font-size="60" text-anchor="middle">🎋</text>
+            </svg>
+            <div class="amount"></div>
+        </div>
+    </div>
+
+    <button class="reset" onclick="resetEnvelopes()">🧧 Bốc Lại</button>
+    
+    <div class="footer">Made with ❤️ by Hội Say Xỉn - Happy New Year 2025</div>
+
+    <script>
+        const envelopes = document.querySelectorAll('.envelope');
+        const amounts = ['50.000₫ 🎉', '100.000₫ 🎉', '150.000₫ 🎉', '200.000₫ 🎉'];
+        let opened = false;
+        let touchStartTime;
+
+        function shuffleAmounts() {
+            return [...amounts].sort(() => Math.random() - 0.5);
+        }
+
+        function setEnvelopeAmounts() {
+            const shuffled = shuffleAmounts();
+            envelopes.forEach((envelope, index) => {
+                envelope.querySelector('.amount').textContent = shuffled[index];
+            });
+        }
+
+        envelopes.forEach(envelope => {
+            envelope.addEventListener('touchstart', () => {
+                touchStartTime = new Date().getTime();
+            });
+
+            envelope.addEventListener('touchend', function(e) {
+                const touchEndTime = new Date().getTime();
+                const touchDuration = touchEndTime - touchStartTime;
+                
+                if (touchDuration < 300) {
+                    handleEnvelopeClick.call(this, e);
+                }
+            });
+
+            envelope.addEventListener('click', handleEnvelopeClick);
+        });
+
+        function handleEnvelopeClick(e) {
+            if (!opened && !this.classList.contains('opened')) {
+                this.classList.add('opened');
+                opened = true;
+                
+                // Prevent double-tap zoom on mobile
+                e.preventDefault();
+            }
+        }
+
+        function resetEnvelopes() {
+            envelopes.forEach(envelope => {
+                envelope.classList.remove('opened');
+            });
+            opened = false;
+            setEnvelopeAmounts();
+        }
+        
+        // Initialize
+        setEnvelopeAmounts();
+
+        // Prevent zoom on double tap for iOS
+        document.addEventListener('touchend', function(e) {
+            if (e.target.classList.contains('envelope')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
