@@ -1,0 +1,56 @@
+{
+  "server": "https://magicz-test.trycloudflare.com",
+  "updated_at": 1795150288,
+  "apps": [
+    {
+      "id": "4427422c",
+      "name": "Pulled via Server",
+      "bundle_id": "vn.ricego.demo",
+      "version": "1.2",
+      "build": "5",
+      "min_ios": "",
+      "size": 885,
+      "source": "server",
+      "added_at": 1795150288,
+      "manifest_url": "https://magicz-test.trycloudflare.com/a/4427422c/manifest.plist",
+      "itms_url": "itms-services://?action=download-manifest&url=https%3A%2F%2Fmagicz-test.trycloudflare.com%2Fa%2F4427422c%2Fmanifest.plist",
+      "page_url": "https://magicz-test.trycloudflare.com/a/4427422c",
+      "ipa_url": "https://magicz-test.trycloudflare.com/a/4427422c/app.ipa",
+      "provision": {
+        "profile": "AdHoc",
+        "team": "Rice Go",
+        "kind": "Ad-Hoc",
+        "devices": [
+          "00008030-AAAA"
+        ],
+        "expires": "",
+        "expired": false
+      }
+    },
+    {
+      "id": "aaaa1111",
+      "name": "Demo App",
+      "bundle_id": "vn.ricego.demo",
+      "version": "1.2",
+      "build": "5",
+      "min_ios": "",
+      "size": 885,
+      "source": "server",
+      "added_at": 1795134468,
+      "manifest_url": "https://magicz-test.trycloudflare.com/a/aaaa1111/manifest.plist",
+      "itms_url": "itms-services://?action=download-manifest&url=https%3A%2F%2Fmagicz-test.trycloudflare.com%2Fa%2Faaaa1111%2Fmanifest.plist",
+      "page_url": "https://magicz-test.trycloudflare.com/a/aaaa1111",
+      "ipa_url": "https://magicz-test.trycloudflare.com/a/aaaa1111/app.ipa",
+      "provision": {
+        "profile": "AdHoc",
+        "team": "Rice Go",
+        "kind": "Ad-Hoc",
+        "devices": [
+          "00008030-AAAA"
+        ],
+        "expires": "",
+        "expired": false
+      }
+    }
+  ]
+}
