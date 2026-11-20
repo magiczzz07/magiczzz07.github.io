@@ -42,10 +42,20 @@
     if (!pathEl) return null;
     if (window.MorphIcons && typeof window.MorphIcons.createMorph === "function") {
       try {
-        return window.MorphIcons.createMorph(pathEl, ICON_PATHS[initialKey], {
+        const inst = window.MorphIcons.createMorph(pathEl, ICON_PATHS[initialKey], {
           reducedMotion: "user",
           strokeWidth: 1.75
         });
+        return {
+          to(nextPath) {
+            try {
+              if (typeof inst.morphTo === "function") inst.morphTo(nextPath, "snappy");
+              else pathEl.setAttribute("d", nextPath);
+            } catch (_) {
+              pathEl.setAttribute("d", nextPath);
+            }
+          }
+        };
       } catch (_) {}
     }
     return {
@@ -82,8 +92,12 @@
     svg._morphTo = (nextKey) => {
       const target = ICON_PATHS[nextKey];
       if (!target) return;
-      if (driver && typeof driver.to === "function") driver.to(target);
-      else path.setAttribute("d", target);
+      try {
+        if (driver && typeof driver.morphTo === "function") driver.morphTo(target, "snappy");
+        else path.setAttribute("d", target);
+      } catch (_) {
+        path.setAttribute("d", target);
+      }
     };
     return svg;
   }
