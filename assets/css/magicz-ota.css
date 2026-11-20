@@ -584,9 +584,27 @@ summary:focus-visible,
 
 .app-main {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
+}
+
+.app-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  flex: 1;
+}
+
+.app-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-elevated);
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .app-info {
@@ -809,6 +827,50 @@ summary:focus-visible,
 
 .studio-body {
   padding: 20px;
+}
+
+.locked-gate {
+  padding: 40px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.gate-icon {
+  width: 36px;
+  height: 36px;
+  color: var(--text-muted);
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.advanced-cfg {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.advanced-cfg summary {
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.advanced-body {
+  margin-top: 12px;
+}
+
+/* Native iOS PWA Bottom Tab Bar (Mobile Only) */
+.mobile-tabbar {
+  display: none;
 }
 
 .dropzone {
@@ -1160,7 +1222,13 @@ summary:focus-visible,
 
   .app-main {
     flex-direction: column;
+    align-items: stretch;
     gap: 12px;
+  }
+
+  .app-icon {
+    width: 56px;
+    height: 56px;
   }
 
   .app-actions {
@@ -1168,6 +1236,45 @@ summary:focus-visible,
     display: grid;
     grid-template-columns: 1fr auto auto auto;
     gap: 8px;
+  }
+
+  .page-shell {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--border-strong);
+    background-color: var(--bg-surface);
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mtab {
+    min-height: 48px;
+    border: 0;
+    border-radius: var(--radius-control);
+    background-color: transparent;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 150ms var(--ease-out), background-color 150ms var(--ease-out);
+  }
+
+  .mtab.is-active {
+    color: var(--text-primary);
+    background-color: var(--bg-elevated);
   }
 
   .field-row {

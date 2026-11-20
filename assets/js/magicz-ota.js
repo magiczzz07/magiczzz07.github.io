@@ -1,4 +1,4 @@
-/* MagicZ OTA Workbench Controller (Strix Hardened - Zero innerHTML, Zero-Knowledge UDID Hash, ContentShield) */
+/* MagicZ Private Vault PWA Controller (MorphIcons + Server-Signed HMAC Tokens + Zero innerHTML) */
 (function () {
   "use strict";
 
@@ -13,14 +13,80 @@
     ghToken: "magicz_gh_token"
   };
 
+  /* MorphIcons SVG Path Definitions (24x24 stroke icons) */
+  const ICON_PATHS = {
+    lock: "M7 11V7a5 5 0 0 1 10 0v4M5 11h14v10H5z",
+    unlock: "M7 11V7a5 5 0 0 1 9.9-1M5 11h14v10H5z",
+    download: "M12 4v12M8 12l4 4 4-4M4 19h16",
+    upload: "M12 16V4M8 8l4-4 4 4M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2",
+    check: "M5 13l4 4L19 7",
+    copy: "M8 8h11v11H8zM5 15H4V4h11v1",
+    qr: "M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM18 14h2v2h-2zM14 18h2v2h-2z",
+    trash: "M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3",
+    refresh: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"
+  };
+
   const state = {
     serverUrl: "",
     serverOnline: false,
+    unlocked: false,
     apps: [],
     pendingMeta: null
   };
 
+  const morphs = {};
   const $ = (id) => document.getElementById(id);
+
+  function initMorph(pathId, initialKey) {
+    const pathEl = $(pathId);
+    if (!pathEl) return null;
+    if (window.MorphIcons && typeof window.MorphIcons.createMorph === "function") {
+      try {
+        return window.MorphIcons.createMorph(pathEl, ICON_PATHS[initialKey], {
+          reducedMotion: "user",
+          strokeWidth: 1.75
+        });
+      } catch (_) {}
+    }
+    return {
+      to(nextPath) {
+        pathEl.setAttribute("d", nextPath);
+      }
+    };
+  }
+
+  function makeSvgIcon(pathKey) {
+    const ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("class", "icon");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "1.75");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("aria-hidden", "true");
+    const path = document.createElementNS(ns, "path");
+    path.setAttribute("d", ICON_PATHS[pathKey] || ICON_PATHS.lock);
+    svg.appendChild(path);
+
+    let driver = null;
+    if (window.MorphIcons && typeof window.MorphIcons.createMorph === "function") {
+      try {
+        driver = window.MorphIcons.createMorph(path, ICON_PATHS[pathKey], {
+          reducedMotion: "user",
+          strokeWidth: 1.75
+        });
+      } catch (_) {}
+    }
+    svg._morphTo = (nextKey) => {
+      const target = ICON_PATHS[nextKey];
+      if (!target) return;
+      if (driver && typeof driver.to === "function") driver.to(target);
+      else path.setAttribute("d", target);
+    };
+    return svg;
+  }
 
   function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -37,14 +103,6 @@
   function isBlockedInAppBrowser() {
     const ua = navigator.userAgent || "";
     return isIOSDevice() && /FBAN|FBAV|Zalo|Line\/|Instagram|Telegram|MicroMessenger|CriOS|FxiOS|EdgiOS/i.test(ua);
-  }
-
-  function escapeXml(s) {
-    return String(s == null ? "" : s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
   }
 
   function isSafeItmsUrl(url) {
@@ -64,74 +122,14 @@
   }
 
   function formatSize(bytes) {
-    if (!bytes || bytes <= 0) return "Direct HTTPS";
+    if (!bytes || bytes <= 0) return "Direct";
     return (bytes / 1048576).toFixed(1) + " MB";
-  }
-
-  function normalizeDropboxOrDrive(rawUrl) {
-    const trimmed = rawUrl.trim();
-    try {
-      const u = new URL(trimmed);
-      const host = u.hostname.toLowerCase();
-      if (host === "www.dropbox.com" || host === "dropbox.com") {
-        u.hostname = "dl.dropboxusercontent.com";
-        u.searchParams.delete("dl");
-        u.searchParams.set("raw", "1");
-        return u.toString();
-      }
-      if (host.includes("drive.google.com")) {
-        const m = u.pathname.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-        const gid = m ? m[1] : u.searchParams.get("id");
-        if (gid) {
-          return "https://drive.usercontent.google.com/download?id=" + encodeURIComponent(gid) + "&export=download&confirm=t";
-        }
-      }
-      return u.toString();
-    } catch (_) {
-      return trimmed;
-    }
   }
 
   function randomHex16() {
     const arr = new Uint8Array(8);
     crypto.getRandomValues(arr);
     return Array.from(arr).map((b) => b.toString(16).padStart(2, "0")).join("");
-  }
-
-  function buildManifestXml(ipaUrl, bundleId, version, title) {
-    return [
-      '<?xml version="1.0" encoding="UTF-8"?>',
-      '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">',
-      '<plist version="1.0">',
-      "<dict>",
-      "  <key>items</key>",
-      "  <array>",
-      "    <dict>",
-      "      <key>assets</key>",
-      "      <array>",
-      "        <dict>",
-      "          <key>kind</key>",
-      "          <string>software-package</string>",
-      "          <key>url</key>",
-      "          <string>" + escapeXml(ipaUrl) + "</string>",
-      "        </dict>",
-      "      </array>",
-      "      <key>metadata</key>",
-      "      <dict>",
-      "        <key>bundle-identifier</key>",
-      "        <string>" + escapeXml(bundleId) + "</string>",
-      "        <key>bundle-version</key>",
-      "        <string>" + escapeXml(version || "1.0") + "</string>",
-      "        <key>kind</key>",
-      "        <string>software</string>",
-      "        <key>title</key>",
-      "        <string>" + escapeXml(title || "App") + "</string>",
-      "      </dict>",
-      "    </dict>",
-      "  </array>",
-      "</dict>",
-      "</plist>"
-    ].join("\n");
   }
 
   function getStored(key) {
@@ -164,29 +162,28 @@
         changed = true;
       }
     }
-    const qp = new URLSearchParams(window.location.search);
-    const qsServer = qp.get("server") || qp.get("s");
-    if (qsServer && isSafeHttpsOrLocal(qsServer)) {
-      setStored(STORE_KEYS.server, qsServer.replace(/\/+$/, ""));
-      changed = true;
-    }
     if (changed) {
       window.history.replaceState({}, "", window.location.pathname);
     }
   }
 
-  async function probeServer(url) {
+  async function probeServer(url, pin) {
     if (!isSafeHttpsOrLocal(url)) return null;
     const clean = url.replace(/\/+$/, "");
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 4500);
-      const res = await fetch(clean + "/apps", { signal: ctrl.signal, cache: "no-store" });
+      const timer = setTimeout(() => ctrl.abort(), 5000);
+      const headers = pin ? { "X-Pin": pin } : {};
+      const res = await fetch(clean + "/apps", { signal: ctrl.signal, headers, cache: "no-store" });
       clearTimeout(timer);
       if (!res.ok) return null;
       const data = await res.json();
       if (data && data.ok) {
-        return { url: clean, apps: Array.isArray(data.apps) ? data.apps : [] };
+        return {
+          url: clean,
+          unlocked: Boolean(data.unlocked),
+          apps: Array.isArray(data.apps) ? data.apps : []
+        };
       }
     } catch (_) {}
     return null;
@@ -204,23 +201,22 @@
 
   async function discoverAndLoad() {
     importCredentialsFromLocation();
+    const pin = getStored(STORE_KEYS.pin);
 
     const candidates = [];
-    const saved = getStored(STORE_KEYS.server);
-    if (saved) candidates.push(saved);
-
     const liveJson = await loadCatalogJson("data/live.json");
-    if (liveJson && liveJson.server && isSafeHttpsOrLocal(liveJson.server) && !candidates.includes(liveJson.server)) {
+    if (liveJson && liveJson.server && isSafeHttpsOrLocal(liveJson.server)) {
       candidates.push(liveJson.server);
     }
-
+    const saved = getStored(STORE_KEYS.server);
+    if (saved && !candidates.includes(saved)) candidates.push(saved);
     if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
       candidates.push("http://localhost:8686");
     }
 
     let connected = null;
     for (const c of candidates) {
-      const hit = await probeServer(c);
+      const hit = await probeServer(c, pin);
       if (hit) {
         connected = hit;
         break;
@@ -233,6 +229,7 @@
     if (connected) {
       state.serverUrl = connected.url;
       state.serverOnline = true;
+      state.unlocked = connected.unlocked;
       setStored(STORE_KEYS.server, connected.url);
       const trap = $("honeypot-link");
       if (trap) trap.setAttribute("href", connected.url + "/api/internal/trap");
@@ -241,33 +238,56 @@
     } else {
       state.serverUrl = saved || (liveJson && liveJson.server) || "";
       state.serverOnline = false;
+      state.unlocked = false;
       const livApps = liveJson && Array.isArray(liveJson.apps) ? liveJson.apps : [];
       const ids = new Set(livApps.map((a) => a.id));
       state.apps = livApps.concat(ghApps.filter((a) => !ids.has(a.id)));
     }
 
-    updateConnectionBadge();
+    updateVaultUI();
     renderAppList();
   }
 
-  function updateConnectionBadge() {
-    const btn = $("btn-settings");
-    const pullWrap = $("pull-check-wrap");
-    const ghToken = getStored(STORE_KEYS.ghToken);
-    if (state.serverOnline) {
-      btn.textContent = "Máy chủ sẵn sàng";
-      if (pullWrap) pullWrap.classList.remove("is-hidden");
-    } else if (ghToken) {
-      btn.textContent = "Chế độ GitHub API";
-      if (pullWrap) pullWrap.classList.add("is-hidden");
-    } else {
-      btn.textContent = "Kết nối máy chủ";
-    }
+  function updateVaultUI() {
+    const unlocked = state.unlocked;
+    const nextIcon = unlocked ? ICON_PATHS.unlock : ICON_PATHS.lock;
+    if (morphs.vaultLock) morphs.vaultLock.to(nextIcon);
+    if (morphs.mobileLock) morphs.mobileLock.to(nextIcon);
+    if (morphs.heroAction) morphs.heroAction.to(unlocked ? ICON_PATHS.upload : ICON_PATHS.lock);
+
+    $("vault-label").textContent = unlocked ? "Đã mở khóa" : "Mở khóa";
+    $("mobile-lock-label").textContent = unlocked ? "Đã mở" : "Mở khóa";
+    $("hero-action-label").textContent = unlocked ? "Nạp file IPA mới" : "Mở khóa bằng mã PIN";
+    $("vault-state-pill").textContent = unlocked ? "Đã mở khóa" : "Chế độ xem";
+    $("vault-substate").textContent = unlocked ? "Sẵn sàng tải và quản trị kho" : "Nhập PIN để tải và nạp app";
+    $("stat-apps").textContent = String(state.apps.length);
+    $("stat-access").textContent = unlocked ? "open" : "locked";
+    $("studio-lock-badge").textContent = unlocked ? "Sẵn sàng" : "Đã khóa";
+
+    $("studio-locked-gate").classList.toggle("is-hidden", unlocked);
+    $("studio-unlocked-body").classList.toggle("is-hidden", !unlocked);
+    $("btn-lock-out").classList.toggle("is-hidden", !unlocked);
   }
 
   function buildAppRowDom(a) {
     const li = el("li", "app-row");
     const main = el("div", "app-main");
+    const head = el("div", "app-head");
+
+    const iconImg = document.createElement("img");
+    iconImg.className = "app-icon";
+    iconImg.width = 60;
+    iconImg.height = 60;
+    iconImg.alt = a.name || "App";
+    iconImg.loading = "lazy";
+    iconImg.src = isSafeHttpsOrLocal(a.icon_url) ? a.icon_url : "assets/brand/magicz-mark.svg";
+    iconImg.addEventListener("error", () => {
+      if (!iconImg.src.endsWith("magicz-mark.svg")) {
+        iconImg.src = "assets/brand/magicz-mark.svg";
+      }
+    });
+    head.appendChild(iconImg);
+
     const info = el("div", "app-info");
     const nameRow = el("div", "app-name-row");
     nameRow.appendChild(el("span", "app-name", a.name || "App"));
@@ -282,60 +302,74 @@
     if (p) {
       const bad = Boolean(p.expired || p.kind === "App Store");
       nameRow.appendChild(el("span", "tag " + (bad ? "tag-warn" : "tag-ok"), p.expired ? "Hết hạn" : p.kind || "Signed"));
-      if (p.team) specs.appendChild(el("span", "", p.team));
-      const uCount = typeof p.udid_count === "number" ? p.udid_count : Array.isArray(p.udid_hashes) ? p.udid_hashes.length : 0;
-      specs.appendChild(el("span", "num", uCount + " UDID"));
       if (p.expires) specs.appendChild(el("span", "num", "HSD " + p.expires));
-    } else {
-      nameRow.appendChild(el("span", "tag", a.source === "github" ? "GitHub OTA" : "Direct OTA"));
     }
 
     info.appendChild(nameRow);
     info.appendChild(specs);
+    head.appendChild(info);
 
     const actions = el("div", "app-actions");
-    if (isSafeItmsUrl(a.itms_url)) {
-      const installLink = el("a", "btn btn-primary", "Install");
+    if (state.unlocked && isSafeItmsUrl(a.itms_url)) {
+      const installLink = el("a", "btn btn-primary");
       installLink.setAttribute("href", a.itms_url);
+      const dlSvg = makeSvgIcon("download");
+      installLink.appendChild(dlSvg);
+      installLink.appendChild(el("span", "", "Install"));
+      installLink.addEventListener("click", () => {
+        dlSvg._morphTo("check");
+        setTimeout(() => dlSvg._morphTo("download"), 2200);
+      });
       actions.appendChild(installLink);
-    }
 
-    const shareUrl = isSafeHttpsOrLocal(a.page_url) ? a.page_url : SITE_ORIGIN;
-    const qrBtn = el("button", "btn btn-ghost", "QR");
-    qrBtn.type = "button";
-    qrBtn.addEventListener("click", () => openQrModal(shareUrl, a.name));
-    actions.appendChild(qrBtn);
+      if (isSafeHttpsOrLocal(a.page_url)) {
+        const qrBtn = el("button", "btn btn-ghost");
+        qrBtn.type = "button";
+        qrBtn.setAttribute("aria-label", "Mã QR");
+        qrBtn.appendChild(makeSvgIcon("qr"));
+        qrBtn.addEventListener("click", () => openQrModal(a.page_url, a.name));
+        actions.appendChild(qrBtn);
+      }
 
-    if (isSafeItmsUrl(a.itms_url)) {
-      const copyBtn = el("button", "btn btn-ghost", "Copy");
+      const copyBtn = el("button", "btn btn-ghost");
       copyBtn.type = "button";
+      copyBtn.setAttribute("aria-label", "Sao chép link cài đặt");
+      const cpSvg = makeSvgIcon("copy");
+      copyBtn.appendChild(cpSvg);
       copyBtn.addEventListener("click", () => {
         navigator.clipboard.writeText(a.itms_url).then(() => {
-          copyBtn.textContent = "Đã copy";
-          setTimeout(() => {
-            copyBtn.textContent = "Copy";
-          }, 1400);
+          cpSvg._morphTo("check");
+          setTimeout(() => cpSvg._morphTo("copy"), 1600);
         });
       });
       actions.appendChild(copyBtn);
+
+      const delBtn = el("button", "btn btn-ghost");
+      delBtn.type = "button";
+      delBtn.setAttribute("aria-label", "Xóa ứng dụng");
+      delBtn.appendChild(makeSvgIcon("trash"));
+      delBtn.addEventListener("click", () => deleteApp(a.id));
+      actions.appendChild(delBtn);
+    } else {
+      const lockBtn = el("button", "btn btn-secondary");
+      lockBtn.type = "button";
+      lockBtn.appendChild(makeSvgIcon("lock"));
+      lockBtn.appendChild(el("span", "", "Đã khóa"));
+      lockBtn.addEventListener("click", openSettingsModal);
+      actions.appendChild(lockBtn);
     }
 
-    const delBtn = el("button", "btn btn-ghost", "Xóa");
-    delBtn.type = "button";
-    delBtn.addEventListener("click", () => deleteApp(a.id, a.source || "server"));
-    actions.appendChild(delBtn);
-
-    main.appendChild(info);
+    main.appendChild(head);
     main.appendChild(actions);
     li.appendChild(main);
 
-    if (p && Array.isArray(p.udid_hashes) && p.udid_hashes.length > 0) {
+    if (state.unlocked && p && Array.isArray(p.udid_hashes) && p.udid_hashes.length > 0) {
       const details = el("details", "udid-details");
-      details.appendChild(el("summary", "", "Kiểm tra UDID bảo mật SHA-256 (" + p.udid_hashes.length + " thiết bị)"));
+      details.appendChild(el("summary", "", "Kiểm tra UDID (" + p.udid_hashes.length + " thiết bị)"));
       const box = el("div", "udid-box");
       const inp = el("input", "input input-sm mono");
       inp.type = "text";
-      inp.placeholder = "Dán mã UDID thiết bị vào đây để đối chiếu";
+      inp.placeholder = "Dán mã UDID để kiểm tra nhanh";
       const resultLine = el("div", "status-line", "");
       const hashSet = new Set(p.udid_hashes);
       inp.addEventListener("input", async () => {
@@ -345,11 +379,8 @@
           return;
         }
         const h = await window.MagicZIpaParser.sha256Hex16(val);
-        if (hashSet.has(h)) {
-          setStatus(resultLine, "Khớp: UDID này đã được cấp quyền trong bản dựng", "ok");
-        } else {
-          setStatus(resultLine, "Không tìm thấy UDID này trong danh sách chứng chỉ", "error");
-        }
+        if (hashSet.has(h)) setStatus(resultLine, "Khớp: thiết bị đã nằm trong chứng chỉ", "ok");
+        else setStatus(resultLine, "Không tìm thấy UDID này trong bản dựng", "error");
       });
       box.appendChild(inp);
       box.appendChild(resultLine);
@@ -365,7 +396,7 @@
     const emptyEl = $("empty-state");
     const countEl = $("app-count");
 
-    countEl.textContent = state.apps.length + " bản dựng";
+    countEl.textContent = state.apps.length + " ứng dụng";
     listEl.replaceChildren();
     if (!state.apps.length) {
       emptyEl.classList.remove("is-hidden");
@@ -387,20 +418,8 @@
     const line1 = el("div", "");
     line1.appendChild(el("strong", "", meta.name));
     line1.appendChild(document.createTextNode(" - v" + meta.version + " (" + formatSize(fileSize) + ")"));
-    const line2 = el("div", "mono", meta.bundle_id);
-    const provText = meta.provision
-      ? meta.provision.kind +
-        " - " +
-        (meta.provision.team || "") +
-        " - " +
-        meta.provision.udid_count +
-        " UDID" +
-        (meta.provision.expires ? " (HSD " + meta.provision.expires + ")" : "")
-      : "Không kèm mobileprovision";
-    const line3 = el("div", "", provText);
     preview.appendChild(line1);
-    preview.appendChild(line2);
-    preview.appendChild(line3);
+    preview.appendChild(el("div", "mono", meta.bundle_id));
     preview.classList.add("is-visible");
   }
 
@@ -434,60 +453,9 @@
         if (xhr.status >= 200 && xhr.status < 300) resolve(xhr.responseText);
         else reject(new Error(xhr.responseText || "HTTP " + xhr.status));
       };
-      xhr.onerror = () => reject(new Error("Không kết nối được máy chủ upload"));
+      xhr.onerror = () => reject(new Error("Không kết nối được máy chủ"));
       xhr.send(blob);
     });
-  }
-
-  function arrayBufferToBase64(buf) {
-    const bytes = new Uint8Array(buf);
-    const chunk = 0x8000;
-    const parts = [];
-    for (let i = 0; i < bytes.length; i += chunk) {
-      parts.push(String.fromCharCode.apply(null, bytes.subarray(i, i + chunk)));
-    }
-    return btoa(parts.join(""));
-  }
-
-  async function ghPutFile(token, path, base64Content, message) {
-    const api = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + path;
-    const headers = {
-      Authorization: "Bearer " + token,
-      Accept: "application/vnd.github+json",
-      "Content-Type": "application/json"
-    };
-    let sha = undefined;
-    const check = await fetch(api, { headers });
-    if (check.ok) {
-      const existing = await check.json();
-      sha = existing.sha;
-    }
-    const body = { message, content: base64Content };
-    if (sha) body.sha = sha;
-    const put = await fetch(api, { method: "PUT", headers, body: JSON.stringify(body) });
-    if (!put.ok) {
-      const errText = await put.text();
-      throw new Error("GitHub API (" + put.status + "): " + errText.slice(0, 140));
-    }
-    return await put.json();
-  }
-
-  async function publishToGitHubCatalog(token, appEntry, manifestXml, ipaFile) {
-    const id = appEntry.id;
-    if (ipaFile) {
-      const buf = await ipaFile.arrayBuffer();
-      const b64 = arrayBufferToBase64(buf);
-      await ghPutFile(token, "data/packages/" + id + ".ipa", b64, "chore(data): upload ipa " + id);
-      appEntry.ipa_url = SITE_ORIGIN + "/data/packages/" + id + ".ipa";
-    }
-    const plistBytes = new TextEncoder().encode(manifestXml);
-    await ghPutFile(token, "data/manifests/" + id + ".plist", arrayBufferToBase64(plistBytes.buffer), "chore(data): manifest " + id);
-
-    const current = (await loadCatalogJson("data/catalog.json")) || { apps: [] };
-    const filtered = (current.apps || []).filter((x) => x.id !== id);
-    filtered.unshift(appEntry);
-    const catBytes = new TextEncoder().encode(JSON.stringify({ updated_at: Math.floor(Date.now() / 1000), apps: filtered }, null, 2));
-    await ghPutFile(token, "data/catalog.json", arrayBufferToBase64(catBytes.buffer), "chore(data): update catalog");
   }
 
   async function handleFilesSelected(fileList) {
@@ -500,12 +468,15 @@
       setStatus(st, "Vui lòng chọn file có đuôi .ipa", "error");
       return;
     }
+    if (!state.unlocked || !state.serverUrl) {
+      openSettingsModal();
+      return;
+    }
 
     const file = files[0];
-    setStatus(st, "Đang kiểm tra cấu trúc IPA trên trình duyệt...", "");
-    let localMeta = null;
+    setStatus(st, "Đang phân tích file IPA...", "");
     try {
-      localMeta = await window.MagicZIpaParser.inspectIpaFile(file);
+      const localMeta = await window.MagicZIpaParser.inspectIpaFile(file);
       if (localMeta) {
         state.pendingMeta = localMeta;
         renderParsedPreview(localMeta, file.size);
@@ -517,97 +488,44 @@
     }
 
     const pin = getStored(STORE_KEYS.pin);
-    const ghToken = getStored(STORE_KEYS.ghToken);
+    try {
+      const uid = randomHex16();
+      const totalChunks = Math.max(1, Math.ceil(file.size / CHUNK_SIZE));
+      setProgress(pw, pf, 0.02);
 
-    if (state.serverOnline && state.serverUrl) {
-      if (!pin) {
-        openSettingsModal();
-        setStatus(st, "Nhập mã PIN quản trị của máy chủ MagicZ để tải file lên", "error");
-        return;
-      }
-      try {
-        const uid = randomHex16();
-        const totalChunks = Math.max(1, Math.ceil(file.size / CHUNK_SIZE));
-        setProgress(pw, pf, 0.02);
-
-        for (let i = 0; i < totalChunks; i++) {
-          const start = i * CHUNK_SIZE;
-          const end = Math.min(file.size, (i + 1) * CHUNK_SIZE);
-          const slice = file.slice(start, end);
-          await sendChunkXhr(
-            state.serverUrl + "/upload/chunk?uid=" + uid + "&idx=" + i,
-            slice,
-            pin,
-            (loadedInChunk) => {
-              const overall = (start + loadedInChunk) / file.size;
-              setProgress(pw, pf, overall);
-              setStatus(st, "Đang tải lên máy chủ: " + Math.round(overall * 100) + "% (" + formatSize(start + loadedInChunk) + " / " + formatSize(file.size) + ")", "");
-            }
-          );
-        }
-
-        setStatus(st, "Đang khởi tạo manifest OTA...", "");
-        const rawRes = await sendChunkXhr(
-          state.serverUrl + "/upload/finish?uid=" + uid,
-          new Blob([]),
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * CHUNK_SIZE;
+        const end = Math.min(file.size, (i + 1) * CHUNK_SIZE);
+        const slice = file.slice(start, end);
+        await sendChunkXhr(
+          state.serverUrl + "/upload/chunk?uid=" + uid + "&idx=" + i,
+          slice,
           pin,
-          null
+          (loadedInChunk) => {
+            const overall = (start + loadedInChunk) / file.size;
+            setProgress(pw, pf, overall);
+            setStatus(st, "Đang tải lên: " + Math.round(overall * 100) + "% (" + formatSize(start + loadedInChunk) + " / " + formatSize(file.size) + ")", "");
+          }
         );
-        const created = JSON.parse(rawRes);
-        setProgress(pw, pf, 1);
-        setStatus(st, "Đã sẵn sàng cài đặt: " + created.name, "ok");
-        await discoverAndLoad();
-        if (isIOSDevice() && !isBlockedInAppBrowser() && isSafeItmsUrl(created.itms_url)) {
-          window.location.href = created.itms_url;
-        }
-        return;
-      } catch (err) {
-        setProgress(pw, pf, null);
-        setStatus(st, "Lỗi tải lên máy chủ: " + err.message, "error");
-        return;
       }
-    }
 
-    if (ghToken && localMeta) {
-      if (file.size > 72 * 1024 * 1024) {
-        setStatus(st, "File trên 72 MB: hãy bật máy chủ MagicZ hoặc tải file lên Dropbox rồi dán link sang tab bên cạnh", "error");
-        return;
+      setStatus(st, "Đang tách icon và tạo gói cài đặt...", "");
+      const rawRes = await sendChunkXhr(state.serverUrl + "/upload/finish?uid=" + uid, new Blob([]), pin, null);
+      const created = JSON.parse(rawRes);
+      setProgress(pw, pf, 1);
+      if (morphs.uploadState) {
+        morphs.uploadState.to(ICON_PATHS.check);
+        setTimeout(() => morphs.uploadState.to(ICON_PATHS.upload), 2200);
       }
-      try {
-        setProgress(pw, pf, 0.35);
-        setStatus(st, "Đang đẩy IPA và manifest lên GitHub Pages...", "");
-        const id = randomHex16();
-        const ipaUrl = SITE_ORIGIN + "/data/packages/" + id + ".ipa";
-        const manifestUrl = SITE_ORIGIN + "/data/manifests/" + id + ".plist";
-        const itms = "itms-services://?action=download-manifest&url=" + encodeURIComponent(manifestUrl);
-        const xml = buildManifestXml(ipaUrl, localMeta.bundle_id, localMeta.version, localMeta.name);
-        const entry = {
-          id: id,
-          name: localMeta.name,
-          bundle_id: localMeta.bundle_id,
-          version: localMeta.version,
-          build: localMeta.build,
-          size: file.size,
-          source: "github",
-          manifest_url: manifestUrl,
-          itms_url: itms,
-          page_url: SITE_ORIGIN,
-          provision: localMeta.provision
-        };
-        await publishToGitHubCatalog(ghToken, entry, xml, file);
-        setProgress(pw, pf, 1);
-        setStatus(st, "Đã đẩy lên GitHub Pages. Đợi khoảng 20 giây để CDN đồng bộ rồi bấm Install", "ok");
-        state.apps.unshift(entry);
-        renderAppList();
-      } catch (err) {
-        setProgress(pw, pf, null);
-        setStatus(st, err.message, "error");
+      setStatus(st, "Đã thêm vào kho: " + created.name, "ok");
+      await discoverAndLoad();
+      if (isIOSDevice() && !isBlockedInAppBrowser() && isSafeItmsUrl(created.itms_url)) {
+        window.location.href = created.itms_url;
       }
-      return;
+    } catch (err) {
+      setProgress(pw, pf, null);
+      setStatus(st, err.message, "error");
     }
-
-    openSettingsModal();
-    setStatus(st, "Hãy mở từ link quản trị CAI_IPA.bat hoặc nhập mã PIN / GitHub Token", "error");
   }
 
   async function handleRemoteSubmit(ev) {
@@ -620,162 +538,90 @@
     const pw = $("remote-progress-wrap");
     const pf = $("remote-progress-fill");
 
-    if (!rawUrl || !rawUrl.toLowerCase().startsWith("https://")) {
-      setStatus(st, "Chỉ chấp nhận đường dẫn bắt đầu bằng https://", "error");
+    if (!rawUrl.toLowerCase().startsWith("https://")) {
+      setStatus(st, "Chỉ chấp nhận đường dẫn HTTPS", "error");
+      return;
+    }
+    if (!state.unlocked || !state.serverUrl) {
+      openSettingsModal();
       return;
     }
 
     const pin = getStored(STORE_KEYS.pin);
-    const ghToken = getStored(STORE_KEYS.ghToken);
+    try {
+      setProgress(pw, pf, 0.05);
+      setStatus(st, pullViaServer ? "Đang tải file về kho..." : "Đang tạo liên kết cài đặt...", "");
+      const res = await fetch(state.serverUrl + "/remote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Pin": pin },
+        body: JSON.stringify({ url: rawUrl, bundle_id: bundleId, name: appName, pull: pullViaServer })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
 
-    if (state.serverOnline && state.serverUrl) {
-      if (!pin) {
-        openSettingsModal();
-        setStatus(st, "Nhập mã PIN quản trị của máy chủ MagicZ trước khi kéo file", "error");
-        return;
-      }
-      try {
-        setProgress(pw, pf, 0.05);
-        setStatus(st, pullViaServer ? "Máy chủ đang kiểm tra bảo mật SSRF và tải file IPA về..." : "Đang kiểm tra link và tạo manifest...", "");
-        const res = await fetch(state.serverUrl + "/remote", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "X-Pin": pin },
-          body: JSON.stringify({ url: rawUrl, bundle_id: bundleId, name: appName, pull: pullViaServer })
-        });
-        if (!res.ok) throw new Error(await res.text());
-        const data = await res.json();
-
-        if (res.status === 202 && data.id) {
-          const jobId = data.id;
-          while (true) {
-            await new Promise((r) => setTimeout(r, 900));
-            const jr = await fetch(state.serverUrl + "/remote/status?job=" + encodeURIComponent(jobId), {
-              headers: { "X-Pin": pin },
-              cache: "no-store"
-            });
-            if (!jr.ok) throw new Error("Mất kết nối tiến trình tải");
-            const job = await jr.json();
-            if (job.state === "error") throw new Error(job.error || "Tải file thất bại");
-            if (job.state === "done" && job.app) {
-              setProgress(pw, pf, 1);
-              setStatus(st, "Máy chủ đã tải xong: " + job.app.name, "ok");
-              $("remote-url").value = "";
-              await discoverAndLoad();
-              if (isIOSDevice() && !isBlockedInAppBrowser() && isSafeItmsUrl(job.app.itms_url)) {
-                window.location.href = job.app.itms_url;
-              }
-              return;
+      if (res.status === 202 && data.id) {
+        const jobId = data.id;
+        while (true) {
+          await new Promise((r) => setTimeout(r, 900));
+          const jr = await fetch(state.serverUrl + "/remote/status?job=" + encodeURIComponent(jobId), {
+            headers: { "X-Pin": pin },
+            cache: "no-store"
+          });
+          if (!jr.ok) throw new Error("Mất kết nối tiến trình tải");
+          const job = await jr.json();
+          if (job.state === "error") throw new Error(job.error || "Tải file thất bại");
+          if (job.state === "done" && job.app) {
+            setProgress(pw, pf, 1);
+            setStatus(st, "Đã tải xong: " + job.app.name, "ok");
+            $("remote-url").value = "";
+            await discoverAndLoad();
+            if (isIOSDevice() && !isBlockedInAppBrowser() && isSafeItmsUrl(job.app.itms_url)) {
+              window.location.href = job.app.itms_url;
             }
-            if (job.total > 0) {
-              const r = job.downloaded / job.total;
-              setProgress(pw, pf, r);
-              setStatus(st, "Máy chủ đang tải về: " + Math.round(r * 100) + "% (" + formatSize(job.downloaded) + " / " + formatSize(job.total) + ")", "");
-            } else {
-              setStatus(st, "Máy chủ đang tải về: " + formatSize(job.downloaded), "");
-            }
+            return;
           }
-        } else {
-          setProgress(pw, pf, 1);
-          setStatus(st, "Đã tạo link cài đặt: " + data.name, "ok");
-          $("remote-url").value = "";
-          await discoverAndLoad();
-          if (isIOSDevice() && !isBlockedInAppBrowser() && isSafeItmsUrl(data.itms_url)) {
-            window.location.href = data.itms_url;
+          if (job.total > 0) {
+            const r = job.downloaded / job.total;
+            setProgress(pw, pf, r);
+            setStatus(st, "Đang tải: " + Math.round(r * 100) + "% (" + formatSize(job.downloaded) + " / " + formatSize(job.total) + ")", "");
+          } else {
+            setStatus(st, "Đang tải: " + formatSize(job.downloaded), "");
           }
-          return;
         }
-      } catch (err) {
-        setProgress(pw, pf, null);
-        setStatus(st, err.message, "error");
-        return;
-      }
-    }
-
-    if (ghToken) {
-      const directUrl = normalizeDropboxOrDrive(rawUrl);
-      const finalBid = bundleId || (state.pendingMeta && state.pendingMeta.bundle_id) || "";
-      const finalName = appName || (state.pendingMeta && state.pendingMeta.name) || "MagicZ App";
-      const finalVer = (state.pendingMeta && state.pendingMeta.version) || "1.0";
-      if (!/^[A-Za-z0-9.-]{2,160}$/.test(finalBid)) {
-        setStatus(st, "Khi tắt máy chủ, hãy điền Bundle ID hợp lệ (hoặc chọn file .ipa ở tab bên cạnh để tự đọc Bundle ID)", "error");
-        return;
-      }
-      try {
-        setProgress(pw, pf, 0.5);
-        setStatus(st, "Đang tạo manifest.plist trên GitHub Pages...", "");
-        const id = randomHex16();
-        const manifestUrl = SITE_ORIGIN + "/data/manifests/" + id + ".plist";
-        const itms = "itms-services://?action=download-manifest&url=" + encodeURIComponent(manifestUrl);
-        const xml = buildManifestXml(directUrl, finalBid, finalVer, finalName);
-        const entry = {
-          id: id,
-          name: finalName,
-          bundle_id: finalBid,
-          version: finalVer,
-          size: 0,
-          source: "github",
-          ipa_url: directUrl,
-          manifest_url: manifestUrl,
-          itms_url: itms,
-          page_url: SITE_ORIGIN,
-          provision: state.pendingMeta ? state.pendingMeta.provision : null
-        };
-        await publishToGitHubCatalog(ghToken, entry, xml, null);
+      } else {
         setProgress(pw, pf, 1);
-        setStatus(st, "Đã tạo xong. Chờ khoảng 20 giây để GitHub Pages đồng bộ rồi bấm Install", "ok");
+        setStatus(st, "Đã thêm vào kho: " + data.name, "ok");
         $("remote-url").value = "";
-        state.apps.unshift(entry);
-        renderAppList();
-      } catch (err) {
-        setProgress(pw, pf, null);
-        setStatus(st, err.message, "error");
+        await discoverAndLoad();
       }
-      return;
+    } catch (err) {
+      setProgress(pw, pf, null);
+      setStatus(st, err.message, "error");
     }
-
-    openSettingsModal();
-    setStatus(st, "Hãy kết nối máy chủ MagicZ hoặc nhập GitHub Token", "error");
   }
 
-  async function deleteApp(id, source) {
-    if (!window.confirm("Xóa bản dựng IPA này khỏi danh sách?")) return;
+  async function deleteApp(id) {
+    if (!window.confirm("Xóa ứng dụng này khỏi kho?")) return;
     const pin = getStored(STORE_KEYS.pin);
-    if (source !== "github" && state.serverOnline && state.serverUrl) {
-      if (!pin) {
-        openSettingsModal();
-        return;
-      }
-      const r = await fetch(state.serverUrl + "/a/" + encodeURIComponent(id), {
-        method: "DELETE",
-        headers: { "X-Pin": pin }
-      });
-      if (!r.ok) {
-        window.alert(await r.text());
-        return;
-      }
-      await discoverAndLoad();
+    if (!state.serverUrl || !pin) return;
+    const r = await fetch(state.serverUrl + "/a/" + encodeURIComponent(id), {
+      method: "DELETE",
+      headers: { "X-Pin": pin }
+    });
+    if (!r.ok) {
+      window.alert(await r.text());
       return;
     }
-    const ghToken = getStored(STORE_KEYS.ghToken);
-    if (ghToken) {
-      try {
-        const current = (await loadCatalogJson("data/catalog.json")) || { apps: [] };
-        const next = (current.apps || []).filter((x) => x.id !== id);
-        const catBytes = new TextEncoder().encode(JSON.stringify({ updated_at: Math.floor(Date.now() / 1000), apps: next }, null, 2));
-        await ghPutFile(ghToken, "data/catalog.json", arrayBufferToBase64(catBytes.buffer), "chore(data): remove " + id);
-        state.apps = state.apps.filter((x) => x.id !== id);
-        renderAppList();
-      } catch (err) {
-        window.alert(err.message);
-      }
-    }
+    await discoverAndLoad();
   }
 
   function openSettingsModal() {
     $("cfg-server").value = getStored(STORE_KEYS.server) || state.serverUrl || "";
     $("cfg-pin").value = getStored(STORE_KEYS.pin);
     $("cfg-gh-token").value = getStored(STORE_KEYS.ghToken);
+    setStatus($("pin-verify-status"), "", "");
     $("modal-settings").classList.add("is-open");
+    setTimeout(() => $("cfg-pin").focus(), 80);
   }
 
   function openQrModal(url, title) {
@@ -785,19 +631,15 @@
     $("modal-qr").classList.add("is-open");
   }
 
-  /* Strix ContentShield: Anti-Copy / Anti-Scraper DOM Protection (allows normal form inputs) */
-  function activateStrixContentShield() {
+  function activateContentShield() {
     document.body.classList.add("content-shield");
     const isEditable = (target) => Boolean(target && target.closest && target.closest("input, textarea"));
-
     document.addEventListener("contextmenu", (e) => {
       if (!isEditable(e.target)) e.preventDefault();
     });
-
     document.addEventListener("copy", (e) => {
       if (!isEditable(e.target)) e.preventDefault();
     });
-
     document.addEventListener("keydown", (e) => {
       if (!isEditable(e.target) && (e.ctrlKey || e.metaKey) && ["u", "s"].includes(e.key.toLowerCase())) {
         e.preventDefault();
@@ -805,8 +647,21 @@
     });
   }
 
+  function registerPwaServiceWorker() {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    }
+  }
+
   function bindEvents() {
-    activateStrixContentShield();
+    activateContentShield();
+    registerPwaServiceWorker();
+
+    morphs.vaultLock = initMorph("icon-vault-lock", "lock");
+    morphs.mobileLock = initMorph("icon-mobile-lock", "lock");
+    morphs.heroAction = initMorph("icon-hero-action", "lock");
+    morphs.refresh = initMorph("icon-refresh", "refresh");
+    morphs.uploadState = initMorph("icon-upload-state", "upload");
 
     if (isBlockedInAppBrowser()) {
       $("safari-alert").classList.add("is-visible");
@@ -832,8 +687,7 @@
     });
 
     const dz = $("dropzone");
-    const fileInput = $("file-input");
-    fileInput.addEventListener("change", (e) => handleFilesSelected(e.target.files));
+    $("file-input").addEventListener("change", (e) => handleFilesSelected(e.target.files));
     ["dragenter", "dragover"].forEach((evName) => {
       dz.addEventListener(evName, (e) => {
         e.preventDefault();
@@ -849,8 +703,50 @@
     dz.addEventListener("drop", (e) => handleFilesSelected(e.dataTransfer.files));
 
     $("remote-form").addEventListener("submit", handleRemoteSubmit);
-    $("btn-refresh").addEventListener("click", () => discoverAndLoad());
+
+    $("btn-refresh").addEventListener("click", async () => {
+      await discoverAndLoad();
+      if (morphs.refresh) {
+        morphs.refresh.to(ICON_PATHS.check);
+        setTimeout(() => morphs.refresh.to(ICON_PATHS.refresh), 1200);
+      }
+    });
+
     $("btn-settings").addEventListener("click", openSettingsModal);
+    $("btn-gate-unlock").addEventListener("click", openSettingsModal);
+    $("btn-hero-unlock").addEventListener("click", () => {
+      if (state.unlocked) {
+        $("section-studio").scrollIntoView({ behavior: "smooth" });
+      } else {
+        openSettingsModal();
+      }
+    });
+
+    /* Mobile PWA Native Bottom Tab Bar */
+    const setMobileTab = (activeId) => {
+      ["mnav-store", "mnav-upload", "mnav-lock"].forEach((id) => {
+        $(id).classList.toggle("is-active", id === activeId);
+      });
+    };
+    $("mnav-store").addEventListener("click", () => {
+      setMobileTab("mnav-store");
+      $("section-registry").scrollIntoView({ behavior: "smooth" });
+    });
+    $("mnav-upload").addEventListener("click", () => {
+      setMobileTab("mnav-upload");
+      if (!state.unlocked) openSettingsModal();
+      else $("section-studio").scrollIntoView({ behavior: "smooth" });
+    });
+    $("mnav-lock").addEventListener("click", () => {
+      setMobileTab("mnav-lock");
+      openSettingsModal();
+    });
+
+    $("btn-lock-out").addEventListener("click", async () => {
+      setStored(STORE_KEYS.pin, "");
+      $("modal-settings").classList.remove("is-open");
+      await discoverAndLoad();
+    });
 
     document.querySelectorAll("[data-close-modal]").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -866,11 +762,33 @@
 
     $("settings-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-      setStored(STORE_KEYS.server, $("cfg-server").value);
-      setStored(STORE_KEYS.pin, $("cfg-pin").value);
-      setStored(STORE_KEYS.ghToken, $("cfg-gh-token").value);
-      $("modal-settings").classList.remove("is-open");
-      await discoverAndLoad();
+      const st = $("pin-verify-status");
+      const pinVal = $("cfg-pin").value.trim();
+      const srvVal = $("cfg-server").value.trim();
+      const targetSrv = (srvVal && isSafeHttpsOrLocal(srvVal) ? srvVal : state.serverUrl).replace(/\/+$/, "");
+
+      if (!targetSrv) {
+        setStatus(st, "Chưa tìm thấy máy chủ đồng bộ", "error");
+        return;
+      }
+      setStatus(st, "Đang xác thực mã PIN với máy chủ...", "");
+      try {
+        const res = await fetch(targetSrv + "/auth/verify", {
+          method: "POST",
+          headers: { "X-Pin": pinVal }
+        });
+        if (!res.ok) {
+          setStatus(st, "Mã PIN không chính xác", "error");
+          return;
+        }
+        setStored(STORE_KEYS.pin, pinVal);
+        if (srvVal) setStored(STORE_KEYS.server, srvVal);
+        setStored(STORE_KEYS.ghToken, $("cfg-gh-token").value);
+        $("modal-settings").classList.remove("is-open");
+        await discoverAndLoad();
+      } catch (_) {
+        setStatus(st, "Không thể kết nối máy chủ xác thực", "error");
+      }
     });
   }
 
