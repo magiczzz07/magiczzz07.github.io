@@ -1,356 +1,219 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MagicZ - Cài đặt IPA trực tiếp cho iOS</title>
+  <meta name="description" content="Cổng cài đặt file IPA đã ký UDID trực tiếp qua giao thức OTA cho iPhone và iPad.">
+  <meta name="theme-color" content="#0d0e11">
 
-		<title>Home | MagicZ Site</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
 
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="">
-		<meta name="keywords" content="">
-		<meta name="author" content="Erilisdesign.com">
+  <link rel="stylesheet" href="assets/css/magicz-ota.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="/" class="brand">
+        <img src="assets/brand/magicz-mark.svg" alt="MagicZ" class="brand-mark" width="36" height="36">
+        <span class="brand-name">MagicZ</span>
+        <span class="brand-sub">iOS OTA Installer</span>
+      </a>
+      <nav class="nav-actions" aria-label="Công cụ hệ thống">
+        <a href="uuid/enroll.mobileconfig" class="btn btn-ghost">Lấy UDID</a>
+        <button type="button" id="btn-settings" class="btn btn-secondary">Kết nối máy chủ</button>
+      </nav>
+    </div>
+  </header>
 
-		<link rel="stylesheet" href="assets/css/bootstrap.min.css">
-		<link rel="stylesheet" href="assets/css/style.css">
-		<link rel="stylesheet" href="assets/css/utilities.css">
+  <div class="container">
+    <div id="safari-alert" class="safari-alert" role="alert">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M12 8v5M12 16h.01" stroke-linecap="round"></path>
+      </svg>
+      <span>Trình duyệt hiện tại chặn giao thức cài đặt của Apple. Hãy bấm Chia sẻ và chọn Mở bằng Safari.</span>
+    </div>
+  </div>
 
-		<link rel="stylesheet" href="assets/css/custom.css">
+  <main class="workbench">
+    <div class="container workbench-grid">
+      <section aria-labelledby="hero-heading">
+        <div class="intro">
+          <img src="assets/brand/magicz-emblem.webp" alt="Biểu tượng MagicZ" class="intro-emblem" width="76" height="76">
+          <div>
+            <h1 id="hero-heading" class="intro-title">Cài IPA trực tiếp trên iPhone</h1>
+            <p class="intro-desc">Tải lên bản dựng đã ký từ ESign hoặc dán link Dropbox để cài ngay qua Safari</p>
+          </div>
+        </div>
 
-		<link rel="stylesheet" href="assets/css/jquery.fullpage.min.css" type="text/css">
-		<link rel="stylesheet" href="assets/css/slick.min.css" type="text/css">
-		<link rel="stylesheet" href="assets/css/vegas.min.css" type="text/css">
-		<link rel="stylesheet" href="assets/css/fontawesome/all.min.css" type="text/css">
-		<link rel="stylesheet" href="assets/css/themify-icons.css" type="text/css">
+        <div class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Danh sách bản dựng</h2>
+            <div class="nav-actions">
+              <span id="app-count" class="panel-meta num">0 bản dựng</span>
+              <button type="button" id="btn-refresh" class="btn btn-ghost">Làm mới</button>
+            </div>
+          </div>
 
-		<link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,700%7CMRoboto:300,400,500,700" rel="stylesheet">
+          <ul id="app-list" class="app-list"></ul>
 
-		<link rel="shortcut icon" href="assets/images/favicon.ico">
+          <div id="empty-state" class="empty-state">
+            <p class="empty-title">Chưa có file IPA nào sẵn sàng</p>
+            <p class="empty-sub">Chọn file .ipa từ thiết bị hoặc dán link Dropbox ở khung bên cạnh để tạo nút Install</p>
+          </div>
+        </div>
+      </section>
 
-	</head>
-	<body class="slideshow-background">
+      <aside class="panel" aria-label="Nạp file IPA mới">
+        <div class="tabs" role="tablist">
+          <button type="button" id="tab-file" class="tab-btn is-active" role="tab" aria-selected="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M12 16V4m0 0L8 8m4-4l4 4M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span>Tải file .ipa</span>
+          </button>
+          <button type="button" id="tab-link" class="tab-btn" role="tab" aria-selected="false">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M10 14a3.5 3.5 0 005 0l4-4a3.5 3.5 0 00-5-5l-1.5 1.5M14 10a3.5 3.5 0 00-5 0l-4 4a3.5 3.5 0 005 5L11.5 17.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span>Link Dropbox / Direct</span>
+          </button>
+        </div>
 
-		<div id="preloader" class="preloader preloader-dark">
-			<div class="loader-status">
-				<div class="circle-side"></div>
-			</div>
-		</div>
+        <div id="pane-file" class="studio-body">
+          <label for="file-input" id="dropzone" class="dropzone">
+            <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M14 3v4a1 1 0 001 1h4M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="dropzone-title">Chọn hoặc kéo thả file .ipa vào đây</span>
+            <span class="dropzone-hint">Hỗ trợ file xuất từ ESign trên iPhone hoặc máy tính, tự đọc Bundle ID và UDID</span>
+            <input type="file" id="file-input" accept=".ipa,application/octet-stream" hidden>
+          </label>
 
-		<!-- Global Overlay -->
-		<div class="global-overlay">
-			<div class="overlay-inner bg-black opacity-75"></div>
-		</div>
+          <div id="parsed-preview" class="parsed-preview"></div>
 
-		<!-- Frame -->
-		<div class="frame d-none d-lg-block">
-			<div class="frame-left"></div>
-			<div class="frame-right"></div>
-			<div class="frame-top"></div>
-			<div class="frame-bottom"></div>
-		</div>
+          <div id="upload-progress-wrap" class="progress-wrap">
+            <div class="progress-track">
+              <div id="upload-progress-fill" class="progress-fill"></div>
+            </div>
+          </div>
+          <div id="upload-status" class="status-line" aria-live="polite"></div>
+        </div>
 
-		<div class="site-container">
+        <div id="pane-link" class="studio-body is-hidden">
+          <form id="remote-form">
+            <div class="field">
+              <label for="remote-url" class="field-label">Đường dẫn Dropbox hoặc Direct HTTPS</label>
+              <input type="url" id="remote-url" class="input" placeholder="https://www.dropbox.com/scl/fi/.../app.ipa?dl=0" required>
+            </div>
 
-			<!-- Site Header -->
-			<header class="site-header header-fixed">
-				<div class="overlay d-xl-none">
-					<div class="overlay-inner bg-dark opacity-95"></div>
-				</div>
-				<nav class="navbar navbar-expand-xl navbar-dark">
-					<!-- Logo -->
-					<a href="#" class="navbar-brand logo">
-						<img src="assets/images/logo-light.png" alt="">
-					</a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#site-navbar" aria-controls="siteNavbar" aria-expanded="false" aria-label="Toggle navigation">
-						<span></span>
-					</button>
-					<div class="collapse navbar-collapse" id="site-navbar">
-						<ul id="navigation" class="navbar-nav ml-auto">
-							<li data-menuanchor="home" class="nav-item">
-								<a href="#home" class="nav-link">Home</a>
-							</li>
-							<li data-menuanchor="subscribe" class="nav-item">
-								<a href="#subscribe" class="nav-link">Subscribe</a>
-							</li>
-							<li data-menuanchor="about" class="nav-item">
-								<a href="#about" class="nav-link">About</a>
-							</li>
-							<li data-menuanchor="services" class="nav-item">
-								<a href="#services" class="nav-link">Services</a>
-							</li>
-							<li data-menuanchor="contact" class="nav-item">
-								<a href="#contact" class="nav-link">Contact</a>
-							</li>
-						</ul>
-					</div>
-				</nav>
-			</header>
+            <div class="field-row">
+              <div class="field">
+                <label for="remote-name" class="field-label">Tên hiển thị (tùy chọn)</label>
+                <input type="text" id="remote-name" class="input" placeholder="Tự động lấy từ IPA">
+              </div>
+              <div class="field">
+                <label for="remote-bid" class="field-label">Bundle ID (tùy chọn)</label>
+                <input type="text" id="remote-bid" class="input mono" placeholder="com.example.app">
+              </div>
+            </div>
 
-			<!-- Button - Back to Top -->
-			<button type="button" class="back-to-top">
-				<i class="fas fa-angle-up"></i>
-			</button>
+            <label id="pull-check-wrap" class="check-row">
+              <input type="checkbox" id="remote-pull" checked>
+              <span>Tải file về qua máy chủ để tránh lỗi chuyển hướng Dropbox</span>
+            </label>
 
-			<!-- Page Content - Fullpage -->
-			<div class="oli-fullpage">
+            <button type="submit" class="btn btn-primary btn-full">Tải về và tạo nút Install</button>
 
-				<section class="oli-section d-flex min-vh--100" data-anchor="home" data-tooltip="Home">
-					<div class="container align-self-center text-center text-white">
-						<div class="row">
-							<div class="col-12 col-lg-9 mx-lg-auto">
-								<div class="slider mb-3" data-slick='{"adaptiveHeight":true,"arrows":false,"autoplay":true,"autoplaySpeed":4000,"fade":true}'>
-									<div>
-										<h1 class="display--lg-3 font-extralight">I'd love <span class="font-medium">sharing<br>Tweaks</span> from any site</h1>
-									</div>
-									<div>
-										<h1 class="display--lg-3 font-extralight"><span class="font-medium">Awesome</span> apps<br>on <span class="font-medium">my repository</span></h1>
-									</div>
-								</div>
-								<p class="lead mb-5">I would provide all apps, tweaks, cracked and unique method for mobile phone</p>
-								<a href="#about" class="btn rounded-0 btn-white btn-shadow scrollto">Cydia & Sileo & Zebra</a>
-								<a href="#subscribe" class="btn btn-outline-white rounded-0 scrollto">Notify Me</a>
-							</div>
-						</div>
-					</div>
-				</section>
+            <div id="remote-progress-wrap" class="progress-wrap">
+              <div class="progress-track">
+                <div id="remote-progress-fill" class="progress-fill"></div>
+              </div>
+            </div>
+            <div id="remote-status" class="status-line" aria-live="polite"></div>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </main>
 
-				<section class="oli-section d-flex min-vh-lg--100" data-anchor="subscribe" data-tooltip="Subscribe">
-					<div class="container align-self-center text-white">
-						<div class="row mb-5">
-							<div class="col-12 col-lg-9 mx-lg-auto text-center">
-								<h2 class="mb-3">Get our latest content in your inbox</h2>
-								<p>Fill in your email and subcribe from my site</p>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12 col-lg-5 mx-lg-auto">
-								<div class="subscribe-form">
-									<form class="mb-0" id="sf" name="sf" action="include/subscribe.php" method="post" autocomplete="off">
-										<div class="row">
+  <section class="notes-section" aria-labelledby="notes-heading">
+    <div class="container">
+      <h2 id="notes-heading" class="notes-heading">Lưu ý khi cài đặt trên iOS 16 đến iOS 18</h2>
+      <div class="notes-grid">
+        <div class="note-item">
+          <h3 class="note-title">Mở trực tiếp trên Safari</h3>
+          <p class="note-text">Giao thức cài đặt OTA của Apple chỉ chạy trên Safari. Nếu nhận link qua Zalo hoặc Telegram, hãy chọn Mở bằng Safari.</p>
+        </div>
+        <div class="note-item">
+          <h3 class="note-title">Chứng chỉ UDID và Developer Mode</h3>
+          <p class="note-text">File IPA cần ký chứng chỉ có chứa UDID của máy. Từ iOS 16 trở lên, bật Chế độ nhà phát triển trong mục Quyền riêng tư và Bảo mật.</p>
+        </div>
+        <div class="note-item">
+          <h3 class="note-title">Ghim ra màn hình chính</h3>
+          <p class="note-text">Trong Safari, chọn Chia sẻ rồi bấm Thêm vào MH chính để mở nhanh MagicZ như một ứng dụng độc lập.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-											<div class="form-process"></div>
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>MagicZ OTA Distribution</span>
+      <div class="footer-links">
+        <a href="uuid/enroll.mobileconfig">Hồ sơ lấy UDID</a>
+        <a href="boclixi.html">Tiện ích</a>
+      </div>
+    </div>
+  </footer>
 
-											<div class="col-12">
-												<div class="form-group text-white mb-0">
-													<input type="email" id="sf-email" name="sf-email" placeholder="Enter Your Email Address" class="form-control rounded-0 border--transparent required">
-												</div>
-											</div>
+  <div id="modal-settings" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="modal">
+      <div class="panel-head">
+        <h2 id="settings-title" class="panel-title">Cấu hình kết nối máy chủ</h2>
+        <button type="button" class="btn btn-ghost" data-close-modal>Đóng</button>
+      </div>
+      <div class="modal-body">
+        <form id="settings-form">
+          <div class="field">
+            <label for="cfg-server" class="field-label">Địa chỉ máy chủ MagicZ (HTTPS Tunnel)</label>
+            <input type="url" id="cfg-server" class="input mono" placeholder="https://ten-tunnel.trycloudflare.com">
+          </div>
+          <div class="field">
+            <label for="cfg-pin" class="field-label">Mã PIN bảo vệ máy chủ (nếu đặt IPA_PIN)</label>
+            <input type="password" id="cfg-pin" class="input" placeholder="Để trống nếu không bật PIN">
+          </div>
+          <div class="field">
+            <label for="cfg-gh-token" class="field-label">GitHub Personal Access Token (tùy chọn khi tắt máy chủ)</label>
+            <input type="password" id="cfg-gh-token" class="input mono" placeholder="github_pat_...">
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Lưu cấu hình</button>
+        </form>
+      </div>
+    </div>
+  </div>
 
-											<div class="col-12 d-none">
-												<input type="text" id="sf-botcheck" name="sf-botcheck" value="" class="form-control">
-											</div>
+  <div id="modal-qr" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="qr-title">
+    <div class="modal">
+      <div class="panel-head">
+        <h2 id="qr-title" class="panel-title">Quét mã QR bằng Camera iPhone</h2>
+        <button type="button" class="btn btn-ghost" data-close-modal>Đóng</button>
+      </div>
+      <div class="modal-body modal-center">
+        <div class="qr-frame">
+          <img id="qr-img" src="assets/brand/magicz-mark.svg" alt="Mã QR cài đặt" width="184" height="184">
+        </div>
+        <div id="qr-link" class="mono panel-meta break-all"></div>
+      </div>
+    </div>
+  </div>
 
-											<div class="col-12">
-												<button class="btn btn-primary rounded-0 btn-block" type="submit" id="sf-submit" name="sf-submit">Notify Me</button>
-											</div>
-
-										</div>
-									</form>
-									<div class="subscribe-form-result"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-
-				<section class="oli-section d-flex min-vh-lg--100" data-anchor="about" data-tooltip="About">
-					<div class="container align-self-center text-white">
-						<div class="row mb-4">
-							<div class="col-12 col-lg-10 mx-lg-auto text-center">
-								<h2 class="mb-3">My Repository</h2>
-								<p> <a href="cydia://url/https://cydia.saurik.com/api/share#?source=https://magiczzz07.github.io/ios/" target="_blank">
-									<img class="icon" src="//magiczzz07.github.io/icon/CydiaIcon.png" />
-									<div>
-									<div>
-									<label>
-									<p>Add in Cydia<sup><small>™</small></sup></p>
-									</label>
-									</div>
-									</div>
-									</a>
-									<a href="sileo://source/https://magiczzz07.github.io/ios/" target="_blank">
-									<img class="icon" src="//magiczzz07.github.io/icon/SileoIcon2.png" />
-									<div>
-									<div>
-									<label>
-									<p>Add in Sileo<sup><small>™</small></sup></p>
-									</label>
-									</div>
-									</div>
-									</a>
-									<a href="zbra://sources/add/https://magiczzz07.github.io/ios/" target="_blank">
-									<img class="icon" src="//magiczzz07.github.io/icon/ZebraIcon2.png" />
-									<div>
-									<div>
-									<label>
-									<p>Add in Zebra<sup><small>™</small></sup></p>
-									</label>
-									</div>
-									</div>
-									</a>
-								</p>
-							</div>
-						</div>
-					</div>
-				</section>
-
-				<section class="oli-section d-flex min-vh-lg--100" data-anchor="services" data-tooltip="Services">
-					<div class="container align-self-center text-white">
-						<div class="row mb-5">
-							<div class="col-12 col-lg-10 mx-lg-auto text-center">
-								<h2 class="mb-3">Testing Install App </h2>
-								<p><strong>....</strong> <a href="itms-services://?action=download-manifest&amp;url=https://dl.dropboxusercontent.com/s/"> DONE </a><br></p>
-							</div>
-						</div>
-						<div class="row">
-
-							<div class="col-12 col-md-6">
-								<div class="feature-block d-flex mb-5">
-									<div class="feature-icon text-primary mb-3 mr-4">
-										<div>
-											<i class="ti-timer"></i>
-										</div>
-									</div>
-									<div>
-										<h3 class="h4 mb-2">OTA Distribution</h3>
-										<p><strong>IPA OTA Builder </strong> <a href="https://magiczzz07.github.io/otabuild/assets/"> OTA Builder </a><br></p>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-12 col-md-6">
-								<div class="feature-block d-flex mb-5">
-									<div class="feature-icon text-primary mb-3 mr-4">
-										<div>
-											<i class="ti-brush-alt"></i>
-										</div>
-									</div>
-									<div>
-										<h3 class="h4 mb-2">APP Design</h3>
-										<p>Build APP as demand such as Tweak, cracked...</p>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-12 col-md-6">
-								<div class="feature-block d-flex mb-5 mb-md-0">
-									<div class="feature-icon text-primary mb-3 mr-4">
-										<div>
-											<i class="ti-book"></i>
-										</div>
-									</div>
-									<div>
-										<h3 class="h4 mb-2">Co-operate Store </h3>
-										<p>HSK's Store Linkin....</p>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-12 col-md-6">
-								<div class="feature-block d-flex">
-									<div class="feature-icon text-primary mb-3 mr-4">
-										<div>
-											<i class="ti-layers"></i>
-										</div>
-									</div>
-									<div>
-										<h3 class="h4 mb-2">Multiple Resigning Serive</h3>
-										<p>Tired of Revoke ???? </p>
-									</div>
-								</div>
-							</div>
-
-						</div>
-					</div>
-				</section>
-
-				<section class="oli-section d-flex min-vh-lg--100" data-anchor="contact" data-tooltip="Contact">
-					<div class="container align-self-center text-white">
-						<div class="row mb-5">
-							<div class="col-12 col-lg-9 col-xl-12 mx-lg-auto text-center">
-								<h2 class="mb-3">Got a Question?</h2>
-								<p>You needs a little push. I strive to figure out ways to help you grow.</p>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12 col-lg-10 mx-lg-auto">
-								<div class="contact-form">
-									<form class="mb-0" id="cf" name="cf" action="include/sendemail.php" method="post" autocomplete="off">
-										<div class="form-process"></div>
-
-										<div class="form-row">
-
-											<div class="col-12 col-md-6 form-group">
-												<input type="text" id="cf-name" name="cf-name" placeholder="Enter your name" class="form-control fc-semi-white rounded-0 required">
-											</div>
-
-											<div class="col-12 col-md-6 form-group">
-												<input type="email" id="cf-email" name="cf-email" placeholder="Enter your email address" class="form-control fc-semi-white rounded-0 required">
-											</div>
-
-											<div class="col-12 form-group">
-												<input type="text" id="cf-subject" name="cf-subject" placeholder="Subject (Optional)" class="form-control fc-semi-white rounded-0">
-											</div>
-
-											<div class="col-12 mb-4 form-group mb-5">
-												<textarea name="cf-message" id="cf-message" placeholder="Here goes your message" class="form-control fc-semi-white rounded-0 required" rows="7"></textarea>
-											</div>
-
-											<div class="col-12 d-none">
-												<input type="text" id="cf-botcheck" name="cf-botcheck" value="" class="form-control fc-semi-white rounded-0" />
-											</div>
-
-											<div class="col-12 text-center">
-												<button class="btn btn-primary btn-shadow rounded-0" type="submit" id="cf-submit" name="cf-submit">Send Message</button>
-											</div>
-
-										</div>
-									</form>
-									<div class="contact-form-result"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-
-			</div><!-- .oli-fullpage end -->
-
-			<!-- Site Footer -->
-			<footer class="site-footer footer-fixed footer-mobile-dark footer-light">
-				<div class="container-fluid d-md-flex align-items-md-center justify-content-md-between">
-					<nav class="social-nav social-nav-pinned">
-						<ul>
-							<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="https://twitter.com/magiczzz07"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a></li>
-							<li><a href="https://www.pinterest.com/magiczzz07"><i class="fab fa-pinterest"></i></a></li>
-						</ul>
-					</nav>
-					<p class="mb-2 mb-xl-0">© 2019 MagicZ</p>
-					<nav class="usefull-nav">
-						<ul>
-							<li><a href="#">Terms of Service</a></li>
-							<li><a href="#">Privacy Policy</a></li>
-						</ul>
-					</nav>
-				</div>
-			</footer>
-
-		</div>
-
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.easing.min.js"></script>
-		<script src="assets/js/bootstrap.bundle.min.js"></script>
-		<script src="assets/js/scrolloverflow.min.js"></script>
-		<script src="assets/js/jquery.fullpage.min.js"></script>
-		<script src="assets/js/jquery.validate.min.js"></script>
-		<script src="assets/js/jquery.form.min.js"></script>
-		<script src="assets/js/jquery.countdown.min.js"></script>
-		<script src="assets/js/granim.min.js"></script>
-		<script src="assets/js/slick.min.js"></script>
-		<script src="assets/js/vegas.min.js"></script>
-		<script src="assets/js/jquery.mb.YTPlayer.min.js"></script>
-
-		<script src="assets/js/main.js"></script>
-
-	</body>
+  <script src="assets/js/ipa-parser.js"></script>
+  <script src="assets/js/magicz-ota.js"></script>
+</body>
 </html>
