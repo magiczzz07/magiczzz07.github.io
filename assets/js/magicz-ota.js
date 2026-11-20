@@ -616,7 +616,7 @@
   }
 
   function openSettingsModal() {
-    $("cfg-server").value = getStored(STORE_KEYS.server) || state.serverUrl || "";
+    $("cfg-server").value = state.serverOnline ? state.serverUrl : "";
     $("cfg-pin").value = getStored(STORE_KEYS.pin);
     $("cfg-gh-token").value = getStored(STORE_KEYS.ghToken);
     setStatus($("pin-verify-status"), "", "");
@@ -764,25 +764,50 @@
       e.preventDefault();
       const st = $("pin-verify-status");
       const pinVal = $("cfg-pin").value.trim();
-      const srvVal = $("cfg-server").value.trim();
-      const targetSrv = (srvVal && isSafeHttpsOrLocal(srvVal) ? srvVal : state.serverUrl).replace(/\/+$/, "");
+      const srvInput = $("cfg-server").value.trim().replace(/\/+$/, "");
 
+      setStatus(st, "Đang xác thực mã PIN...", "");
+      let targetSrv = state.serverOnline ? state.serverUrl : "";
+      if (srvInput && isSafeHttpsOrLocal(srvInput)) {
+        targetSrv = srvInput;
+      }
+      if (!targetSrv) {
+        const freshLive = await loadCatalogJson("data/live.json");
+        if (freshLive && freshLive.server && isSafeHttpsOrLocal(freshLive.server)) {
+          targetSrv = freshLive.server.replace(/\/+$/, "");
+        }
+      }
       if (!targetSrv) {
         setStatus(st, "Chưa tìm thấy máy chủ đồng bộ", "error");
         return;
       }
-      setStatus(st, "Đang xác thực mã PIN với máy chủ...", "");
-      try {
-        const res = await fetch(targetSrv + "/auth/verify", {
+
+      async function tryVerify(url) {
+        return await fetch(url + "/auth/verify", {
           method: "POST",
           headers: { "X-Pin": pinVal }
         });
+      }
+
+      try {
+        let res;
+        try {
+          res = await tryVerify(targetSrv);
+        } catch (_) {
+          const freshLive = await loadCatalogJson("data/live.json");
+          if (freshLive && freshLive.server && freshLive.server !== targetSrv) {
+            targetSrv = freshLive.server.replace(/\/+$/, "");
+            res = await tryVerify(targetSrv);
+          } else {
+            throw new Error("network");
+          }
+        }
         if (!res.ok) {
           setStatus(st, "Mã PIN không chính xác", "error");
           return;
         }
         setStored(STORE_KEYS.pin, pinVal);
-        if (srvVal) setStored(STORE_KEYS.server, srvVal);
+        setStored(STORE_KEYS.server, targetSrv);
         setStored(STORE_KEYS.ghToken, $("cfg-gh-token").value);
         $("modal-settings").classList.remove("is-open");
         await discoverAndLoad();
