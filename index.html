@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
   <meta charset="utf-8">
@@ -9,16 +9,14 @@
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://api.qrserver.com; connect-src 'self' https://*.trycloudflare.com https://api.github.com http://localhost:8686 http://127.0.0.1:8686; object-src 'none'; base-uri 'self'; form-action 'self';">
-  <title>MagicZ - Cài đặt IPA trực tiếp cho iOS</title>
-  <meta name="description" content="Cổng cài đặt file IPA đã ký UDID trực tiếp qua giao thức OTA cho iPhone và iPad.">
-  <meta name="theme-color" content="#0d0e11">
-
+  <meta name="theme-color" content="#07080b">
+  <title>MagicZ | Cài đặt IPA trực tiếp cho iOS</title>
+  <meta name="description" content="Cổng phân phối và cài đặt file IPA đã ký UDID trực tiếp qua giao thức OTA cho iPhone và iPad.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-
   <link rel="stylesheet" href="assets/css/magicz-ota.css">
 </head>
 <body>
@@ -27,66 +25,125 @@
 
   <header class="topbar">
     <div class="container topbar-inner">
-      <a href="/" class="brand">
-        <img src="assets/brand/magicz-mark.svg" alt="MagicZ" class="brand-mark" width="36" height="36">
+      <a href="/" class="brand" aria-label="Trang chủ MagicZ">
+        <img src="assets/brand/magicz-mark.svg" alt="" class="brand-mark" width="36" height="36">
         <span class="brand-name">MagicZ</span>
-        <span class="brand-sub">iOS OTA Installer</span>
+        <span class="brand-sub">iOS OTA Console</span>
       </a>
-      <nav class="nav-actions" aria-label="Công cụ hệ thống">
+      <nav class="nav-actions" aria-label="Điều khiển hệ thống">
         <a href="uuid/enroll.mobileconfig" class="btn btn-ghost">Lấy UDID</a>
         <button type="button" id="btn-settings" class="btn btn-secondary">Kết nối máy chủ</button>
       </nav>
     </div>
   </header>
 
-  <div class="container">
-    <div id="safari-alert" class="safari-alert" role="alert">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <circle cx="12" cy="12" r="9"></circle>
-        <path d="M12 8v5M12 16h.01" stroke-linecap="round"></path>
-      </svg>
-      <span>Trình duyệt hiện tại chặn giao thức cài đặt của Apple. Hãy bấm Chia sẻ và chọn Mở bằng Safari.</span>
-    </div>
-  </div>
+  <main class="container page-shell">
+    <section class="hero-frame" aria-labelledby="hero-heading">
+      <div class="hero-art" aria-hidden="true"></div>
+      <div class="hero-corner hero-corner-tl" aria-hidden="true"></div>
+      <div class="hero-corner hero-corner-br" aria-hidden="true"></div>
 
-  <main class="workbench">
-    <div class="container workbench-grid">
-      <section aria-labelledby="hero-heading">
-        <div class="intro">
-          <img src="assets/brand/magicz-emblem.webp" alt="Biểu tượng MagicZ" class="intro-emblem" width="76" height="76">
-          <div>
-            <h1 id="hero-heading" class="intro-title">Cài IPA trực tiếp trên iPhone</h1>
-            <p class="intro-desc">Tải lên bản dựng đã ký từ ESign hoặc dán link Dropbox để cài ngay qua Safari</p>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <img src="assets/brand/magicz-wordmark.webp" class="wordmark" alt="MagicZ" width="180" height="44">
+          <h1 id="hero-heading">Cài IPA trực tiếp trên iPhone</h1>
+          <p>Tải bản dựng đã ký từ ESign hoặc kéo trực tiếp từ Dropbox qua máy chủ N100 và cài ngay trên Safari.</p>
+          <div class="hero-actions">
+            <a href="#studio-title" class="btn btn-primary">Nạp file IPA ngay</a>
+            <a href="uuid/enroll.mobileconfig" class="btn btn-ghost">Cài hồ sơ lấy UDID</a>
           </div>
         </div>
 
-        <div class="panel">
-          <div class="panel-head">
-            <h2 class="panel-title">Danh sách bản dựng</h2>
-            <div class="nav-actions">
-              <span id="app-count" class="panel-meta num">0 bản dựng</span>
-              <button type="button" id="btn-refresh" class="btn btn-ghost">Làm mới</button>
+        <div class="hero-telemetry" aria-label="Trạng thái hệ thống phân phối">
+          <div class="telemetry-head">
+            <span>Trạng thái nút mạng</span>
+            <span class="live-state">Hoạt động</span>
+          </div>
+          <div class="telemetry-brand">
+            <img src="assets/brand/magicz-emblem.webp" alt="Biểu tượng MagicZ" width="52" height="52">
+            <div>
+              <strong>Strix Defense</strong>
+              <span>N100 Edge Node</span>
             </div>
           </div>
-
-          <ul id="app-list" class="app-list"></ul>
-
-          <div id="empty-state" class="empty-state">
-            <p class="empty-title">Chưa có file IPA nào sẵn sàng</p>
-            <p class="empty-sub">Chọn file .ipa từ thiết bị hoặc dán link Dropbox ở khung bên cạnh để tạo nút Install</p>
+          <div class="telemetry-rule"></div>
+          <div class="telemetry-stats">
+            <div><span>Giao thức</span><b class="mono">itms-ota</b></div>
+            <div><span>Bảo mật</span><b class="mono">sha-256</b></div>
+            <div><span>Mã hóa</span><b class="mono">tls-1.3</b></div>
+          </div>
+          <div class="telemetry-foot">
+            <span class="mono">Sẵn sàng nhận file</span>
+            <span class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
           </div>
         </div>
+      </div>
+
+      <div id="safari-alert" class="safari-alert" role="alert">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 8v5M12 16h.01" stroke-linecap="round"></path>
+        </svg>
+        <span>Trình duyệt hiện tại chặn giao thức cài đặt của Apple. Hãy bấm Chia sẻ và chọn Mở bằng Safari.</span>
+      </div>
+    </section>
+
+    <section class="workbench" aria-label="Bàn điều khiển cài đặt IPA">
+      <section class="registry panel" aria-labelledby="registry-title">
+        <div class="panel-head">
+          <div>
+            <h2 id="registry-title" class="panel-title">Kho bản dựng sẵn sàng</h2>
+            <p class="panel-caption">Bấm Install trực tiếp trên Safari iPhone hoặc quét mã QR từ máy tính</p>
+          </div>
+          <div class="registry-controls">
+            <span id="app-count" class="panel-meta mono">0 bản dựng</span>
+            <button type="button" id="btn-refresh" class="btn btn-ghost">Làm mới</button>
+          </div>
+        </div>
+
+        <ul id="app-list" class="app-list"></ul>
+
+        <div id="empty-state" class="empty-state">
+          <div class="empty-symbol" aria-hidden="true"><span></span><span></span><span></span></div>
+          <p class="empty-title">Chưa có file IPA nào trong kho</p>
+          <p class="empty-sub">Chọn file .ipa đã ký từ thiết bị hoặc dán link Dropbox ở khung bên cạnh để bắt đầu</p>
+        </div>
+
+        <details class="udid-console">
+          <summary>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M4 6h16M4 12h10M4 18h6" stroke-linecap="round"></path>
+            </svg>
+            <span>Tra cứu và lấy mã UDID thiết bị</span>
+            <span class="console-status">Hồ sơ Apple mobileconfig</span>
+          </summary>
+          <div class="udid-content">
+            <div class="terminal-line">
+              <span class="terminal-prompt mono">mz://udid</span>
+              <a href="uuid/enroll.mobileconfig">Tải hồ sơ lấy UDID cho iPhone</a>
+            </div>
+            <p>Cài hồ sơ này trên iPhone để lấy mã UDID chính xác, đồng thời mọi bản dựng tải lên đều tự băm SHA-256 để bạn đối chiếu UDID an toàn.</p>
+          </div>
+        </details>
       </section>
 
-      <aside class="panel" aria-label="Nạp file IPA mới">
-        <div class="tabs" role="tablist">
-          <button type="button" id="tab-file" class="tab-btn is-active" role="tab" aria-selected="true">
+      <aside class="studio panel" aria-labelledby="studio-title">
+        <div class="studio-heading">
+          <div>
+            <h2 id="studio-title" class="panel-title">Nạp bản dựng IPA</h2>
+            <p class="panel-caption">Tải file từ máy hoặc kéo qua máy chủ N100</p>
+          </div>
+          <span class="studio-badge mono">Gói .ipa</span>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Nguồn nạp bản dựng">
+          <button type="button" id="tab-file" class="tab-btn is-active" role="tab" aria-selected="true" aria-controls="pane-file">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
               <path d="M12 16V4m0 0L8 8m4-4l4 4M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
             <span>Tải file .ipa</span>
           </button>
-          <button type="button" id="tab-link" class="tab-btn" role="tab" aria-selected="false">
+          <button type="button" id="tab-link" class="tab-btn" role="tab" aria-selected="false" aria-controls="pane-link">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
               <path d="M10 14a3.5 3.5 0 005 0l4-4a3.5 3.5 0 00-5-5l-1.5 1.5M14 10a3.5 3.5 0 00-5 0l-4 4a3.5 3.5 0 005 5L11.5 17.5" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
@@ -94,13 +151,19 @@
           </button>
         </div>
 
-        <div id="pane-file" class="studio-body">
+        <div id="pane-file" class="studio-body" role="tabpanel" aria-labelledby="tab-file">
           <label for="file-input" id="dropzone" class="dropzone">
-            <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <path d="M14 3v4a1 1 0 001 1h4M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
+            <span class="drop-corner drop-corner-tl" aria-hidden="true"></span>
+            <span class="drop-corner drop-corner-tr" aria-hidden="true"></span>
+            <span class="drop-corner drop-corner-bl" aria-hidden="true"></span>
+            <span class="drop-corner drop-corner-br" aria-hidden="true"></span>
+            <span class="upload-glyph" aria-hidden="true">
+              <svg viewBox="0 0 40 40" fill="none">
+                <path d="M20 26V8m0 0-7 7m7-7 7 7M8 24v8h24v-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+              </svg>
+            </span>
             <span class="dropzone-title">Chọn hoặc kéo thả file .ipa vào đây</span>
-            <span class="dropzone-hint">Hỗ trợ file xuất từ ESign trên iPhone hoặc máy tính, tự đọc Bundle ID và băm bảo mật UDID</span>
+            <span class="dropzone-hint">Hỗ trợ file xuất từ ESign trên iPhone hoặc máy tính, tự phân tích Bundle ID</span>
             <input type="file" id="file-input" accept=".ipa,application/octet-stream" hidden>
           </label>
 
@@ -114,27 +177,27 @@
           <div id="upload-status" class="status-line" aria-live="polite"></div>
         </div>
 
-        <div id="pane-link" class="studio-body is-hidden">
+        <div id="pane-link" class="studio-body is-hidden" role="tabpanel" aria-labelledby="tab-link">
           <form id="remote-form">
             <div class="field">
               <label for="remote-url" class="field-label">Đường dẫn Dropbox hoặc Direct HTTPS</label>
-              <input type="url" id="remote-url" class="input" placeholder="https://www.dropbox.com/scl/fi/.../app.ipa?dl=0" required>
+              <input type="url" id="remote-url" class="input mono" placeholder="https://www.dropbox.com/scl/fi/.../app.ipa?dl=0" required autocomplete="url">
             </div>
 
             <div class="field-row">
               <div class="field">
                 <label for="remote-name" class="field-label">Tên hiển thị (tùy chọn)</label>
-                <input type="text" id="remote-name" class="input" placeholder="Tự động lấy từ IPA">
+                <input type="text" id="remote-name" class="input" placeholder="Tự đọc từ IPA">
               </div>
               <div class="field">
                 <label for="remote-bid" class="field-label">Bundle ID (tùy chọn)</label>
-                <input type="text" id="remote-bid" class="input mono" placeholder="com.example.app">
+                <input type="text" id="remote-bid" class="input mono" placeholder="com.example.app" autocapitalize="none" spellcheck="false">
               </div>
             </div>
 
             <label id="pull-check-wrap" class="check-row">
               <input type="checkbox" id="remote-pull" checked>
-              <span>Tải file về qua máy chủ để tránh lỗi chuyển hướng Dropbox</span>
+              <span>Tải file về qua máy chủ N100 để tránh lỗi chuyển hướng Dropbox</span>
             </label>
 
             <button type="submit" class="btn btn-primary btn-full">Tải về và tạo nút Install</button>
@@ -147,59 +210,55 @@
             <div id="remote-status" class="status-line" aria-live="polite"></div>
           </form>
         </div>
+
+        <div class="studio-foot">
+          <span>Bảo vệ truyền tải Strix</span>
+          <span class="mono">TLS 1.3</span>
+        </div>
       </aside>
-    </div>
-  </main>
+    </section>
 
-  <section class="notes-section" aria-labelledby="notes-heading">
-    <div class="container">
-      <h2 id="notes-heading" class="notes-heading">Lưu ý khi cài đặt trên iOS 16 đến iOS 18</h2>
-      <div class="notes-grid">
-        <div class="note-item">
-          <h3 class="note-title">Mở trực tiếp trên Safari</h3>
-          <p class="note-text">Giao thức cài đặt OTA của Apple chỉ chạy trên Safari. Nếu nhận link qua Zalo hoặc Telegram, hãy chọn Mở bằng Safari.</p>
-        </div>
-        <div class="note-item">
-          <h3 class="note-title">Chứng chỉ UDID và Developer Mode</h3>
-          <p class="note-text">File IPA cần ký chứng chỉ có chứa UDID của máy. Từ iOS 16 trở lên, bật Chế độ nhà phát triển trong mục Quyền riêng tư và Bảo mật.</p>
-        </div>
-        <div class="note-item">
-          <h3 class="note-title">Ghim ra màn hình chính</h3>
-          <p class="note-text">Trong Safari, chọn Chia sẻ rồi bấm Thêm vào MH chính để mở nhanh MagicZ như một ứng dụng độc lập.</p>
-        </div>
-      </div>
+    <div class="safety-strip">
+      <svg class="icon safety-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M12 3l7 4v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V7l7-4z" stroke-linejoin="round"></path>
+      </svg>
+      <p><strong>Bắt buộc mở bằng Safari trên iOS.</strong> Từ iOS 16 trở lên, bật Chế độ nhà phát triển (Developer Mode) trong Quyền riêng tư và Bảo mật trước khi cài bản dựng ký UDID.</p>
+      <a href="uuid/enroll.mobileconfig" class="btn btn-ghost">Hồ sơ UDID</a>
     </div>
-  </section>
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <span>MagicZ OTA Distribution</span>
+    <footer class="footer">
+      <a href="/" class="footer-brand">
+        <img src="assets/brand/magicz-mark.svg" alt="" width="20" height="20">
+        <span>MagicZ</span>
+      </a>
+      <span class="footer-copy">Hệ thống cài đặt IPA nội bộ</span>
       <div class="footer-links">
-        <a href="uuid/enroll.mobileconfig">Hồ sơ lấy UDID</a>
+        <a href="uuid/enroll.mobileconfig">Lấy UDID</a>
         <a href="boclixi.html">Tiện ích</a>
       </div>
-    </div>
-  </footer>
+    </footer>
+  </main>
 
   <div id="modal-settings" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="settings-title">
     <div class="modal">
+      <div class="modal-grab" aria-hidden="true"></div>
       <div class="panel-head">
         <h2 id="settings-title" class="panel-title">Cấu hình kết nối máy chủ</h2>
-        <button type="button" class="btn btn-ghost" data-close-modal>Đóng</button>
+        <button type="button" class="btn btn-ghost" data-close-modal aria-label="Đóng">Đóng</button>
       </div>
       <div class="modal-body">
         <form id="settings-form">
           <div class="field">
             <label for="cfg-server" class="field-label">Địa chỉ máy chủ MagicZ (HTTPS Tunnel)</label>
-            <input type="url" id="cfg-server" class="input mono" placeholder="https://ten-tunnel.trycloudflare.com">
+            <input type="url" id="cfg-server" class="input mono" placeholder="https://ten-tunnel.trycloudflare.com" autocomplete="url">
           </div>
           <div class="field">
             <label for="cfg-pin" class="field-label">Mã PIN quản trị máy chủ</label>
-            <input type="password" id="cfg-pin" class="input" placeholder="Mã PIN in trên cửa sổ CAI_IPA.bat">
+            <input type="password" id="cfg-pin" class="input mono" placeholder="Nhập mã PIN quản trị" autocomplete="current-password">
           </div>
           <div class="field">
-            <label for="cfg-gh-token" class="field-label">GitHub Personal Access Token (tùy chọn khi tắt máy chủ)</label>
-            <input type="password" id="cfg-gh-token" class="input mono" placeholder="github_pat_...">
+            <label for="cfg-gh-token" class="field-label">GitHub Token (tùy chọn khi tắt máy chủ)</label>
+            <input type="password" id="cfg-gh-token" class="input mono" placeholder="github_pat_..." autocomplete="off">
           </div>
           <button type="submit" class="btn btn-primary btn-full">Lưu cấu hình</button>
         </form>
@@ -208,10 +267,11 @@
   </div>
 
   <div id="modal-qr" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="qr-title">
-    <div class="modal">
+    <div class="modal modal-qr">
+      <div class="modal-grab" aria-hidden="true"></div>
       <div class="panel-head">
         <h2 id="qr-title" class="panel-title">Quét mã QR bằng Camera iPhone</h2>
-        <button type="button" class="btn btn-ghost" data-close-modal>Đóng</button>
+        <button type="button" class="btn btn-ghost" data-close-modal aria-label="Đóng">Đóng</button>
       </div>
       <div class="modal-body modal-center">
         <div class="qr-frame">
