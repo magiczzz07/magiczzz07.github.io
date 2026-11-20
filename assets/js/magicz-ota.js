@@ -1,4 +1,4 @@
-/* MagicZ OTA Workbench Controller */
+/* MagicZ OTA Workbench Controller (Strix Hardened - Zero innerHTML, Zero-Knowledge UDID Hash, ContentShield) */
 (function () {
   "use strict";
 
@@ -22,6 +22,13 @@
 
   const $ = (id) => document.getElementById(id);
 
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null) node.textContent = String(text);
+    return node;
+  }
+
   function isIOSDevice() {
     const ua = navigator.userAgent || "";
     return /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -32,12 +39,28 @@
     return isIOSDevice() && /FBAN|FBAV|Zalo|Line\/|Instagram|Telegram|MicroMessenger|CriOS|FxiOS|EdgiOS/i.test(ua);
   }
 
-  function escapeHtml(s) {
+  function escapeXml(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  function isSafeItmsUrl(url) {
+    return typeof url === "string" && /^itms-services:\/\/\?action=download-manifest&url=https(%3A|:)/i.test(url);
+  }
+
+  function isSafeHttpsOrLocal(url) {
+    if (!url || typeof url !== "string") return false;
+    try {
+      const u = new URL(url);
+      if (u.protocol === "https:") return true;
+      if (u.protocol === "http:" && (u.hostname === "localhost" || u.hostname === "127.0.0.1")) return true;
+      return false;
+    } catch (_) {
+      return false;
+    }
   }
 
   function formatSize(bytes) {
@@ -69,6 +92,12 @@
     }
   }
 
+  function randomHex16() {
+    const arr = new Uint8Array(8);
+    crypto.getRandomValues(arr);
+    return Array.from(arr).map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+
   function buildManifestXml(ipaUrl, bundleId, version, title) {
     return [
       '<?xml version="1.0" encoding="UTF-8"?>',
@@ -84,19 +113,19 @@
       "          <key>kind</key>",
       "          <string>software-package</string>",
       "          <key>url</key>",
-      "          <string>" + escapeHtml(ipaUrl) + "</string>",
+      "          <string>" + escapeXml(ipaUrl) + "</string>",
       "        </dict>",
       "      </array>",
       "      <key>metadata</key>",
       "      <dict>",
       "        <key>bundle-identifier</key>",
-      "        <string>" + escapeHtml(bundleId) + "</string>",
+      "        <string>" + escapeXml(bundleId) + "</string>",
       "        <key>bundle-version</key>",
-      "        <string>" + escapeHtml(version || "1.0") + "</string>",
+      "        <string>" + escapeXml(version || "1.0") + "</string>",
       "        <key>kind</key>",
       "        <string>software</string>",
       "        <key>title</key>",
-      "        <string>" + escapeHtml(title || "App") + "</string>",
+      "        <string>" + escapeXml(title || "App") + "</string>",
       "      </dict>",
       "    </dict>",
       "  </array>",
@@ -120,8 +149,34 @@
     } catch (_) {}
   }
 
+  function importCredentialsFromLocation() {
+    let changed = false;
+    if (window.location.hash && window.location.hash.length > 1) {
+      const hp = new URLSearchParams(window.location.hash.slice(1));
+      const hs = hp.get("server") || hp.get("s");
+      const hpin = hp.get("pin");
+      if (hs && isSafeHttpsOrLocal(hs)) {
+        setStored(STORE_KEYS.server, hs.replace(/\/+$/, ""));
+        changed = true;
+      }
+      if (hpin) {
+        setStored(STORE_KEYS.pin, hpin);
+        changed = true;
+      }
+    }
+    const qp = new URLSearchParams(window.location.search);
+    const qsServer = qp.get("server") || qp.get("s");
+    if (qsServer && isSafeHttpsOrLocal(qsServer)) {
+      setStored(STORE_KEYS.server, qsServer.replace(/\/+$/, ""));
+      changed = true;
+    }
+    if (changed) {
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }
+
   async function probeServer(url) {
-    if (!url) return null;
+    if (!isSafeHttpsOrLocal(url)) return null;
     const clean = url.replace(/\/+$/, "");
     try {
       const ctrl = new AbortController();
@@ -148,19 +203,14 @@
   }
 
   async function discoverAndLoad() {
-    const params = new URLSearchParams(window.location.search);
-    const paramServer = params.get("server") || params.get("s");
-    if (paramServer) {
-      setStored(STORE_KEYS.server, paramServer.replace(/\/+$/, ""));
-      window.history.replaceState({}, "", window.location.pathname);
-    }
+    importCredentialsFromLocation();
 
     const candidates = [];
     const saved = getStored(STORE_KEYS.server);
     if (saved) candidates.push(saved);
 
     const liveJson = await loadCatalogJson("ota/live.json");
-    if (liveJson && liveJson.server && !candidates.includes(liveJson.server)) {
+    if (liveJson && liveJson.server && isSafeHttpsOrLocal(liveJson.server) && !candidates.includes(liveJson.server)) {
       candidates.push(liveJson.server);
     }
 
@@ -184,12 +234,16 @@
       state.serverUrl = connected.url;
       state.serverOnline = true;
       setStored(STORE_KEYS.server, connected.url);
+      const trap = $("honeypot-link");
+      if (trap) trap.setAttribute("href", connected.url + "/api/internal/trap");
       const ids = new Set(connected.apps.map((a) => a.id));
       state.apps = connected.apps.concat(ghApps.filter((a) => !ids.has(a.id)));
     } else {
       state.serverUrl = saved || (liveJson && liveJson.server) || "";
       state.serverOnline = false;
-      state.apps = ghApps;
+      const livApps = liveJson && Array.isArray(liveJson.apps) ? liveJson.apps : [];
+      const ids = new Set(livApps.map((a) => a.id));
+      state.apps = livApps.concat(ghApps.filter((a) => !ids.has(a.id)));
     }
 
     updateConnectionBadge();
@@ -211,114 +265,143 @@
     }
   }
 
+  function buildAppRowDom(a) {
+    const li = el("li", "app-row");
+    const main = el("div", "app-main");
+    const info = el("div", "app-info");
+    const nameRow = el("div", "app-name-row");
+    nameRow.appendChild(el("span", "app-name", a.name || "App"));
+
+    const p = a.provision;
+    const specs = el("div", "app-specs");
+    specs.appendChild(el("span", "mono", a.bundle_id || ""));
+    const verLabel = "v" + String(a.version || "1.0") + (a.build && a.build !== a.version ? " (" + String(a.build) + ")" : "");
+    specs.appendChild(el("span", "num", verLabel));
+    specs.appendChild(el("span", "num", formatSize(a.size)));
+
+    if (p) {
+      const bad = Boolean(p.expired || p.kind === "App Store");
+      nameRow.appendChild(el("span", "tag " + (bad ? "tag-warn" : "tag-ok"), p.expired ? "Hết hạn" : p.kind || "Signed"));
+      if (p.team) specs.appendChild(el("span", "", p.team));
+      const uCount = typeof p.udid_count === "number" ? p.udid_count : Array.isArray(p.udid_hashes) ? p.udid_hashes.length : 0;
+      specs.appendChild(el("span", "num", uCount + " UDID"));
+      if (p.expires) specs.appendChild(el("span", "num", "HSD " + p.expires));
+    } else {
+      nameRow.appendChild(el("span", "tag", a.source === "github" ? "GitHub OTA" : "Direct OTA"));
+    }
+
+    info.appendChild(nameRow);
+    info.appendChild(specs);
+
+    const actions = el("div", "app-actions");
+    if (isSafeItmsUrl(a.itms_url)) {
+      const installLink = el("a", "btn btn-primary", "Install");
+      installLink.setAttribute("href", a.itms_url);
+      actions.appendChild(installLink);
+    }
+
+    const shareUrl = isSafeHttpsOrLocal(a.page_url) ? a.page_url : SITE_ORIGIN;
+    const qrBtn = el("button", "btn btn-ghost", "QR");
+    qrBtn.type = "button";
+    qrBtn.addEventListener("click", () => openQrModal(shareUrl, a.name));
+    actions.appendChild(qrBtn);
+
+    if (isSafeItmsUrl(a.itms_url)) {
+      const copyBtn = el("button", "btn btn-ghost", "Copy");
+      copyBtn.type = "button";
+      copyBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(a.itms_url).then(() => {
+          copyBtn.textContent = "Đã copy";
+          setTimeout(() => {
+            copyBtn.textContent = "Copy";
+          }, 1400);
+        });
+      });
+      actions.appendChild(copyBtn);
+    }
+
+    const delBtn = el("button", "btn btn-ghost", "Xóa");
+    delBtn.type = "button";
+    delBtn.addEventListener("click", () => deleteApp(a.id, a.source || "server"));
+    actions.appendChild(delBtn);
+
+    main.appendChild(info);
+    main.appendChild(actions);
+    li.appendChild(main);
+
+    if (p && Array.isArray(p.udid_hashes) && p.udid_hashes.length > 0) {
+      const details = el("details", "udid-details");
+      details.appendChild(el("summary", "", "Kiểm tra UDID bảo mật SHA-256 (" + p.udid_hashes.length + " thiết bị)"));
+      const box = el("div", "udid-box");
+      const inp = el("input", "input input-sm mono");
+      inp.type = "text";
+      inp.placeholder = "Dán mã UDID thiết bị vào đây để đối chiếu";
+      const resultLine = el("div", "status-line", "");
+      const hashSet = new Set(p.udid_hashes);
+      inp.addEventListener("input", async () => {
+        const val = inp.value.trim();
+        if (!val) {
+          setStatus(resultLine, "", "");
+          return;
+        }
+        const h = await window.MagicZIpaParser.sha256Hex16(val);
+        if (hashSet.has(h)) {
+          setStatus(resultLine, "Khớp: UDID này đã được cấp quyền trong bản dựng", "ok");
+        } else {
+          setStatus(resultLine, "Không tìm thấy UDID này trong danh sách chứng chỉ", "error");
+        }
+      });
+      box.appendChild(inp);
+      box.appendChild(resultLine);
+      details.appendChild(box);
+      li.appendChild(details);
+    }
+
+    return li;
+  }
+
   function renderAppList() {
     const listEl = $("app-list");
     const emptyEl = $("empty-state");
     const countEl = $("app-count");
 
     countEl.textContent = state.apps.length + " bản dựng";
+    listEl.replaceChildren();
     if (!state.apps.length) {
-      listEl.innerHTML = "";
       emptyEl.classList.remove("is-hidden");
       return;
     }
     emptyEl.classList.add("is-hidden");
+    const frag = document.createDocumentFragment();
+    state.apps.forEach((a) => frag.appendChild(buildAppRowDom(a)));
+    listEl.appendChild(frag);
+  }
 
-    listEl.innerHTML = state.apps
-      .map((a) => {
-        const p = a.provision;
-        let tagHtml = "";
-        let provSpecs = "";
-        let udidHtml = "";
-
-        if (p) {
-          const bad = p.expired || p.kind === "App Store";
-          tagHtml =
-            '<span class="tag ' +
-            (bad ? "tag-warn" : "tag-ok") +
-            '">' +
-            escapeHtml(p.expired ? "Hết hạn" : p.kind) +
-            "</span>";
-          provSpecs =
-            "<span>" +
-            escapeHtml(p.team || "Signed") +
-            "</span>" +
-            '<span class="num">' +
-            (Array.isArray(p.devices) ? p.devices.length : 0) +
-            " UDID</span>" +
-            (p.expires ? '<span class="num">HSD ' + escapeHtml(p.expires) + "</span>" : "");
-
-          if (Array.isArray(p.devices) && p.devices.length > 0) {
-            const rows = p.devices.map((d) => "<div>" + escapeHtml(d) + "</div>").join("");
-            udidHtml =
-              '<details class="udid-details">' +
-              "<summary>Tra cứu danh sách UDID (" +
-              p.devices.length +
-              ")</summary>" +
-              '<div class="udid-box">' +
-              '<input type="text" class="input input-sm mono" placeholder="Nhập mã UDID cần kiểm tra" data-udid-filter="' +
-              escapeHtml(a.id) +
-              '">' +
-              '<div class="udid-list" id="udid-list-' +
-              escapeHtml(a.id) +
-              '">' +
-              rows +
-              "</div></div></details>";
-          }
-        } else {
-          tagHtml = '<span class="tag">' + escapeHtml(a.source === "github" ? "GitHub OTA" : "Direct OTA") + "</span>";
-        }
-
-        const verLabel = "v" + escapeHtml(a.version || "1.0") + (a.build && a.build !== a.version ? " (" + escapeHtml(a.build) + ")" : "");
-        const shareUrl = a.page_url || SITE_ORIGIN + "/?app=" + encodeURIComponent(a.id);
-
-        return (
-          '<li class="app-row">' +
-          '<div class="app-main">' +
-          '<div class="app-info">' +
-          '<div class="app-name-row">' +
-          '<span class="app-name">' +
-          escapeHtml(a.name) +
-          "</span>" +
-          tagHtml +
-          "</div>" +
-          '<div class="app-specs">' +
-          '<span class="mono">' +
-          escapeHtml(a.bundle_id) +
-          "</span>" +
-          '<span class="num">' +
-          verLabel +
-          "</span>" +
-          '<span class="num">' +
-          formatSize(a.size) +
-          "</span>" +
-          provSpecs +
-          "</div>" +
-          "</div>" +
-          '<div class="app-actions">' +
-          '<a class="btn btn-primary" href="' +
-          escapeHtml(a.itms_url) +
-          '">Install</a>' +
-          '<button type="button" class="btn btn-ghost" data-qr="' +
-          escapeHtml(shareUrl) +
-          '" data-qr-name="' +
-          escapeHtml(a.name) +
-          '">QR</button>' +
-          '<button type="button" class="btn btn-ghost" data-copy="' +
-          escapeHtml(a.itms_url) +
-          '">Copy</button>' +
-          '<button type="button" class="btn btn-ghost" data-del="' +
-          escapeHtml(a.id) +
-          '" data-source="' +
-          escapeHtml(a.source || "server") +
-          '">Xóa</button>' +
-          "</div>" +
-          "</div>" +
-          udidHtml +
-          "</li>"
-        );
-      })
-      .join("");
+  function renderParsedPreview(meta, fileSize) {
+    const preview = $("parsed-preview");
+    preview.replaceChildren();
+    if (!meta) {
+      preview.classList.remove("is-visible");
+      return;
+    }
+    const line1 = el("div", "");
+    line1.appendChild(el("strong", "", meta.name));
+    line1.appendChild(document.createTextNode(" - v" + meta.version + " (" + formatSize(fileSize) + ")"));
+    const line2 = el("div", "mono", meta.bundle_id);
+    const provText = meta.provision
+      ? meta.provision.kind +
+        " - " +
+        (meta.provision.team || "") +
+        " - " +
+        meta.provision.udid_count +
+        " UDID" +
+        (meta.provision.expires ? " (HSD " + meta.provision.expires + ")" : "")
+      : "Không kèm mobileprovision";
+    const line3 = el("div", "", provText);
+    preview.appendChild(line1);
+    preview.appendChild(line2);
+    preview.appendChild(line3);
+    preview.classList.add("is-visible");
   }
 
   function setProgress(elWrap, elFill, ratio) {
@@ -332,9 +415,9 @@
     elFill.style.transform = "scaleX(" + clamped.toFixed(4) + ")";
   }
 
-  function setStatus(el, msg, kind) {
-    el.textContent = msg || "";
-    el.className = "status-line" + (kind === "error" ? " is-error" : kind === "ok" ? " is-ok" : "");
+  function setStatus(elNode, msg, kind) {
+    elNode.textContent = msg || "";
+    elNode.className = "status-line" + (kind === "error" ? " is-error" : kind === "ok" ? " is-ok" : "");
   }
 
   function sendChunkXhr(url, blob, pin, onProgress) {
@@ -412,7 +495,6 @@
     const st = $("upload-status");
     const pw = $("upload-progress-wrap");
     const pf = $("upload-progress-fill");
-    const preview = $("parsed-preview");
 
     if (!files.length) {
       setStatus(st, "Vui lòng chọn file có đuôi .ipa", "error");
@@ -426,33 +508,10 @@
       localMeta = await window.MagicZIpaParser.inspectIpaFile(file);
       if (localMeta) {
         state.pendingMeta = localMeta;
-        const provText = localMeta.provision
-          ? localMeta.provision.kind +
-            " - " +
-            (localMeta.provision.team || "") +
-            " - " +
-            localMeta.provision.devices.length +
-            " UDID" +
-            (localMeta.provision.expires ? " (HSD " + localMeta.provision.expires + ")" : "")
-          : "Không kèm mobileprovision";
-        preview.innerHTML =
-          "<div><strong>" +
-          escapeHtml(localMeta.name) +
-          "</strong> - v" +
-          escapeHtml(localMeta.version) +
-          " (" +
-          formatSize(file.size) +
-          ")</div>" +
-          '<div class="mono">' +
-          escapeHtml(localMeta.bundle_id) +
-          "</div>" +
-          "<div>" +
-          escapeHtml(provText) +
-          "</div>";
-        preview.classList.add("is-visible");
+        renderParsedPreview(localMeta, file.size);
       }
     } catch (err) {
-      preview.classList.remove("is-visible");
+      renderParsedPreview(null, 0);
       setStatus(st, err.message, "error");
       return;
     }
@@ -461,8 +520,13 @@
     const ghToken = getStored(STORE_KEYS.ghToken);
 
     if (state.serverOnline && state.serverUrl) {
+      if (!pin) {
+        openSettingsModal();
+        setStatus(st, "Nhập mã PIN quản trị của máy chủ MagicZ để tải file lên", "error");
+        return;
+      }
       try {
-        const uid = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+        const uid = randomHex16();
         const totalChunks = Math.max(1, Math.ceil(file.size / CHUNK_SIZE));
         setProgress(pw, pf, 0.02);
 
@@ -484,7 +548,7 @@
 
         setStatus(st, "Đang khởi tạo manifest OTA...", "");
         const rawRes = await sendChunkXhr(
-          state.serverUrl + "/upload/finish?uid=" + uid + "&name=" + encodeURIComponent(file.name),
+          state.serverUrl + "/upload/finish?uid=" + uid,
           new Blob([]),
           pin,
           null
@@ -493,7 +557,7 @@
         setProgress(pw, pf, 1);
         setStatus(st, "Đã sẵn sàng cài đặt: " + created.name, "ok");
         await discoverAndLoad();
-        if (isIOSDevice() && !isBlockedInAppBrowser()) {
+        if (isIOSDevice() && !isBlockedInAppBrowser() && isSafeItmsUrl(created.itms_url)) {
           window.location.href = created.itms_url;
         }
         return;
@@ -512,7 +576,7 @@
       try {
         setProgress(pw, pf, 0.35);
         setStatus(st, "Đang đẩy IPA và manifest lên GitHub Pages...", "");
-        const id = Math.random().toString(16).slice(2, 10);
+        const id = randomHex16();
         const ipaUrl = SITE_ORIGIN + "/ota/packages/" + id + ".ipa";
         const manifestUrl = SITE_ORIGIN + "/ota/manifests/" + id + ".plist";
         const itms = "itms-services://?action=download-manifest&url=" + encodeURIComponent(manifestUrl);
@@ -527,7 +591,7 @@
           source: "github",
           manifest_url: manifestUrl,
           itms_url: itms,
-          page_url: SITE_ORIGIN + "/?app=" + id,
+          page_url: SITE_ORIGIN,
           provision: localMeta.provision
         };
         await publishToGitHubCatalog(ghToken, entry, xml, file);
@@ -543,7 +607,7 @@
     }
 
     openSettingsModal();
-    setStatus(st, "Hãy bật CAI_IPA.bat hoặc nhập Server URL / GitHub Token trong mục Kết nối", "error");
+    setStatus(st, "Hãy mở từ link quản trị CAI_IPA.bat hoặc nhập mã PIN / GitHub Token", "error");
   }
 
   async function handleRemoteSubmit(ev) {
@@ -556,8 +620,8 @@
     const pw = $("remote-progress-wrap");
     const pf = $("remote-progress-fill");
 
-    if (!rawUrl) {
-      setStatus(st, "Vui lòng dán link Dropbox hoặc Direct HTTPS của file .ipa", "error");
+    if (!rawUrl || !rawUrl.toLowerCase().startsWith("https://")) {
+      setStatus(st, "Chỉ chấp nhận đường dẫn bắt đầu bằng https://", "error");
       return;
     }
 
@@ -565,24 +629,30 @@
     const ghToken = getStored(STORE_KEYS.ghToken);
 
     if (state.serverOnline && state.serverUrl) {
+      if (!pin) {
+        openSettingsModal();
+        setStatus(st, "Nhập mã PIN quản trị của máy chủ MagicZ trước khi kéo file", "error");
+        return;
+      }
       try {
         setProgress(pw, pf, 0.05);
-        setStatus(st, pullViaServer ? "Máy chủ đang kết nối và tải file IPA về..." : "Đang kiểm tra link và tạo manifest...", "");
+        setStatus(st, pullViaServer ? "Máy chủ đang kiểm tra bảo mật SSRF và tải file IPA về..." : "Đang kiểm tra link và tạo manifest...", "");
         const res = await fetch(state.serverUrl + "/remote", {
           method: "POST",
-          headers: Object.assign({ "Content-Type": "application/json" }, pin ? { "X-Pin": pin } : {}),
+          headers: { "Content-Type": "application/json", "X-Pin": pin },
           body: JSON.stringify({ url: rawUrl, bundle_id: bundleId, name: appName, pull: pullViaServer })
         });
-        if (!res.ok) {
-          throw new Error(await res.text());
-        }
+        if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
 
         if (res.status === 202 && data.id) {
           const jobId = data.id;
           while (true) {
             await new Promise((r) => setTimeout(r, 900));
-            const jr = await fetch(state.serverUrl + "/remote/status?job=" + encodeURIComponent(jobId), { cache: "no-store" });
+            const jr = await fetch(state.serverUrl + "/remote/status?job=" + encodeURIComponent(jobId), {
+              headers: { "X-Pin": pin },
+              cache: "no-store"
+            });
             if (!jr.ok) throw new Error("Mất kết nối tiến trình tải");
             const job = await jr.json();
             if (job.state === "error") throw new Error(job.error || "Tải file thất bại");
@@ -591,7 +661,7 @@
               setStatus(st, "Máy chủ đã tải xong: " + job.app.name, "ok");
               $("remote-url").value = "";
               await discoverAndLoad();
-              if (isIOSDevice() && !isBlockedInAppBrowser()) {
+              if (isIOSDevice() && !isBlockedInAppBrowser() && isSafeItmsUrl(job.app.itms_url)) {
                 window.location.href = job.app.itms_url;
               }
               return;
@@ -609,7 +679,7 @@
           setStatus(st, "Đã tạo link cài đặt: " + data.name, "ok");
           $("remote-url").value = "";
           await discoverAndLoad();
-          if (isIOSDevice() && !isBlockedInAppBrowser()) {
+          if (isIOSDevice() && !isBlockedInAppBrowser() && isSafeItmsUrl(data.itms_url)) {
             window.location.href = data.itms_url;
           }
           return;
@@ -626,14 +696,14 @@
       const finalBid = bundleId || (state.pendingMeta && state.pendingMeta.bundle_id) || "";
       const finalName = appName || (state.pendingMeta && state.pendingMeta.name) || "MagicZ App";
       const finalVer = (state.pendingMeta && state.pendingMeta.version) || "1.0";
-      if (!finalBid) {
-        setStatus(st, "Khi tắt máy chủ, hãy điền Bundle ID (hoặc chọn file .ipa ở tab bên cạnh để tự đọc Bundle ID)", "error");
+      if (!/^[A-Za-z0-9.-]{2,160}$/.test(finalBid)) {
+        setStatus(st, "Khi tắt máy chủ, hãy điền Bundle ID hợp lệ (hoặc chọn file .ipa ở tab bên cạnh để tự đọc Bundle ID)", "error");
         return;
       }
       try {
         setProgress(pw, pf, 0.5);
         setStatus(st, "Đang tạo manifest.plist trên GitHub Pages...", "");
-        const id = Math.random().toString(16).slice(2, 10);
+        const id = randomHex16();
         const manifestUrl = SITE_ORIGIN + "/ota/manifests/" + id + ".plist";
         const itms = "itms-services://?action=download-manifest&url=" + encodeURIComponent(manifestUrl);
         const xml = buildManifestXml(directUrl, finalBid, finalVer, finalName);
@@ -647,7 +717,7 @@
           ipa_url: directUrl,
           manifest_url: manifestUrl,
           itms_url: itms,
-          page_url: SITE_ORIGIN + "/?app=" + id,
+          page_url: SITE_ORIGIN,
           provision: state.pendingMeta ? state.pendingMeta.provision : null
         };
         await publishToGitHubCatalog(ghToken, entry, xml, null);
@@ -671,9 +741,13 @@
     if (!window.confirm("Xóa bản dựng IPA này khỏi danh sách?")) return;
     const pin = getStored(STORE_KEYS.pin);
     if (source !== "github" && state.serverOnline && state.serverUrl) {
+      if (!pin) {
+        openSettingsModal();
+        return;
+      }
       const r = await fetch(state.serverUrl + "/a/" + encodeURIComponent(id), {
         method: "DELETE",
-        headers: pin ? { "X-Pin": pin } : {}
+        headers: { "X-Pin": pin }
       });
       if (!r.ok) {
         window.alert(await r.text());
@@ -711,7 +785,29 @@
     $("modal-qr").classList.add("is-open");
   }
 
+  /* Strix ContentShield: Anti-Copy / Anti-Scraper DOM Protection (allows normal form inputs) */
+  function activateStrixContentShield() {
+    document.body.classList.add("content-shield");
+    const isEditable = (target) => Boolean(target && target.closest && target.closest("input, textarea"));
+
+    document.addEventListener("contextmenu", (e) => {
+      if (!isEditable(e.target)) e.preventDefault();
+    });
+
+    document.addEventListener("copy", (e) => {
+      if (!isEditable(e.target)) e.preventDefault();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (!isEditable(e.target) && (e.ctrlKey || e.metaKey) && ["u", "s"].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+      }
+    });
+  }
+
   function bindEvents() {
+    activateStrixContentShield();
+
     if (isBlockedInAppBrowser()) {
       $("safari-alert").classList.add("is-visible");
     }
@@ -753,41 +849,6 @@
     dz.addEventListener("drop", (e) => handleFilesSelected(e.dataTransfer.files));
 
     $("remote-form").addEventListener("submit", handleRemoteSubmit);
-
-    $("app-list").addEventListener("click", (e) => {
-      const qrBtn = e.target.closest("[data-qr]");
-      if (qrBtn) {
-        openQrModal(qrBtn.getAttribute("data-qr"), qrBtn.getAttribute("data-qr-name"));
-        return;
-      }
-      const copyBtn = e.target.closest("[data-copy]");
-      if (copyBtn) {
-        navigator.clipboard.writeText(copyBtn.getAttribute("data-copy")).then(() => {
-          const prev = copyBtn.textContent;
-          copyBtn.textContent = "Đã copy";
-          setTimeout(() => {
-            copyBtn.textContent = prev;
-          }, 1400);
-        });
-        return;
-      }
-      const delBtn = e.target.closest("[data-del]");
-      if (delBtn) {
-        deleteApp(delBtn.getAttribute("data-del"), delBtn.getAttribute("data-source"));
-      }
-    });
-
-    $("app-list").addEventListener("input", (e) => {
-      const filterId = e.target.getAttribute("data-udid-filter");
-      if (!filterId) return;
-      const q = e.target.value.trim().toLowerCase();
-      const box = $("udid-list-" + filterId);
-      if (!box) return;
-      Array.from(box.children).forEach((row) => {
-        row.style.display = !q || row.textContent.toLowerCase().includes(q) ? "" : "none";
-      });
-    });
-
     $("btn-refresh").addEventListener("click", () => discoverAndLoad());
     $("btn-settings").addEventListener("click", openSettingsModal);
 

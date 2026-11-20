@@ -1,4 +1,4 @@
-/* MagicZ Client-Side IPA Inspector (ZIP Central Directory + bplist00 + XML Plist) */
+/* MagicZ Client-Side IPA Inspector (ZIP Central Directory + bplist00 + XML Plist + SHA-256 UDID Privacy) */
 (function (global) {
   "use strict";
 
@@ -21,9 +21,16 @@
     return val;
   }
 
+  async function sha256Hex16(str) {
+    const data = new TextEncoder().encode(String(str).trim().toUpperCase());
+    const buf = await crypto.subtle.digest("SHA-256", data);
+    const arr = Array.from(new Uint8Array(buf));
+    return arr.map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 16);
+  }
+
   async function inflateRaw(u8) {
     if (typeof DecompressionStream === "undefined") {
-      throw new Error("Trinh duyet khong ho tro DecompressionStream");
+      throw new Error("Trình duyệt không hỗ trợ DecompressionStream");
     }
     const ds = new DecompressionStream("deflate-raw");
     const writer = ds.writable.getWriter();
@@ -33,7 +40,6 @@
     return new Uint8Array(buf);
   }
 
-  /* Apple Binary Plist (bplist00) Parser */
   function parseBinaryPlist(u8) {
     if (u8.length < 40) return null;
     const trailerOff = u8.length - 32;
@@ -116,7 +122,6 @@
     return parseObj(topObject);
   }
 
-  /* XML Plist Parser */
   function parseXmlPlistNode(el) {
     if (!el) return null;
     const tag = el.tagName;
@@ -130,9 +135,7 @@
       }
       return obj;
     }
-    if (tag === "array") {
-      return Array.from(el.children).map(parseXmlPlistNode);
-    }
+    if (tag === "array") return Array.from(el.children).map(parseXmlPlistNode);
     if (tag === "string") return el.textContent || "";
     if (tag === "integer" || tag === "real") return Number(el.textContent || 0);
     if (tag === "true") return true;
@@ -143,24 +146,21 @@
 
   function parsePlistBytes(u8) {
     const head = tdLatin.decode(u8.subarray(0, 8));
-    if (head.startsWith("bplist00")) {
-      return parseBinaryPlist(u8);
-    }
+    if (head.startsWith("bplist00")) return parseBinaryPlist(u8);
     const xmlStr = tdUtf8.decode(u8);
     const doc = new DOMParser().parseFromString(xmlStr, "application/xml");
     const rootPlist = doc.querySelector("plist");
     return rootPlist ? parseXmlPlistNode(rootPlist.firstElementChild) : null;
   }
 
-  function parseMobileProvision(u8) {
+  async function parseMobileProvision(u8) {
     const raw = tdLatin.decode(u8);
     const s = raw.indexOf("<?xml");
     const e = raw.indexOf("</plist>");
     if (s < 0 || e < 0) return null;
-    const xmlBytes = u8.subarray(s, e + 8);
-    const p = parsePlistBytes(xmlBytes);
+    const p = parsePlistBytes(u8.subarray(s, e + 8));
     if (!p) return null;
-    const devices = Array.isArray(p.ProvisionedDevices) ? p.ProvisionedDevices : [];
+    const devices = Array.isArray(p.ProvisionedDevices) ? p.ProvisionedDevices.map(String) : [];
     let kind = "App Store";
     if (p.ProvisionsAllDevices) kind = "Enterprise";
     else if (p.Entitlements && p.Entitlements["get-task-allow"]) kind = "Development";
@@ -172,21 +172,26 @@
       expires = p.ExpirationDate.toISOString().slice(0, 10);
       expired = p.ExpirationDate.getTime() < Date.now();
     }
+    const hashes = await Promise.all(devices.map(sha256Hex16));
     return {
-      profile: p.Name || "",
-      team: p.TeamName || "",
+      profile: String(p.Name || "").slice(0, 120),
+      team: String(p.TeamName || "").slice(0, 120),
       kind: kind,
-      devices: devices,
+      udid_count: devices.length,
+      udid_hashes: hashes,
       expires: expires,
       expired: expired
     };
   }
 
   async function readEntryFromZip(file, entry) {
+    if (entry.compSize > 2 * 1024 * 1024) {
+      throw new Error("Tệp cấu hình trong IPA vượt giới hạn an toàn");
+    }
     const headerBuf = await file.slice(entry.localOffset, entry.localOffset + 30).arrayBuffer();
     const hv = new Uint8Array(headerBuf);
     if (readU32LE(hv, 0) !== 0x04034b50) {
-      throw new Error("Local ZIP header khong hop le");
+      throw new Error("Local ZIP header không hợp lệ");
     }
     const fnameLen = readU16LE(hv, 26);
     const extraLen = readU16LE(hv, 28);
@@ -194,7 +199,7 @@
     const compBytes = new Uint8Array(await file.slice(dataStart, dataStart + entry.compSize).arrayBuffer());
     if (entry.method === 0) return compBytes;
     if (entry.method === 8) return await inflateRaw(compBytes);
-    throw new Error("Phuong thuc nen ZIP khong ho tro: " + entry.method);
+    throw new Error("Phương thức nén ZIP không hỗ trợ: " + entry.method);
   }
 
   async function inspectIpaFile(file) {
@@ -209,23 +214,18 @@
         break;
       }
     }
-    if (eocdPos < 0) {
-      throw new Error("File khong phai dinh dang IPA / ZIP hop le");
-    }
+    if (eocdPos < 0) throw new Error("Tệp không phải định dạng IPA / ZIP hợp lệ");
 
     const cdSize = readU32LE(tail, eocdPos + 12);
     const cdOffset = readU32LE(tail, eocdPos + 16);
-    if (cdOffset === 0xffffffff) {
-      return null; // ZIP64 (>4GB) - server will parse
-    }
+    if (cdOffset === 0xffffffff) return null;
 
     const cd = new Uint8Array(await file.slice(cdOffset, cdOffset + cdSize).arrayBuffer());
     let ptr = 0;
     let infoEntry = null;
-    let provEntry = null;
     let appPrefix = "";
-
     const entries = [];
+
     while (ptr + 46 <= cd.length) {
       if (readU32LE(cd, ptr) !== 0x02014b50) break;
       const method = readU16LE(cd, ptr + 10);
@@ -243,35 +243,34 @@
       ptr += 46 + nameLen + extraLen + commentLen;
     }
 
-    if (!infoEntry) {
-      throw new Error("Khong tim thay Payload/*.app/Info.plist trong file IPA");
-    }
-    provEntry = entries.find((e) => e.name === appPrefix + "embedded.mobileprovision") || null;
+    if (!infoEntry) throw new Error("Không tìm thấy Payload/*.app/Info.plist trong file IPA");
+    const provEntry = entries.find((e) => e.name === appPrefix + "embedded.mobileprovision") || null;
 
     const infoBytes = await readEntryFromZip(file, infoEntry);
     const info = parsePlistBytes(infoBytes);
-    if (!info || !info.CFBundleIdentifier) {
-      throw new Error("Khong doc duoc Bundle ID tu Info.plist");
+    const bid = info && info.CFBundleIdentifier ? String(info.CFBundleIdentifier).trim() : "";
+    if (!/^[A-Za-z0-9.-]{2,160}$/.test(bid)) {
+      throw new Error("Bundle ID trong Info.plist không hợp lệ");
     }
 
     let provision = null;
     if (provEntry) {
       try {
         const provBytes = await readEntryFromZip(file, provEntry);
-        provision = parseMobileProvision(provBytes);
+        provision = await parseMobileProvision(provBytes);
       } catch (_) {}
     }
 
     return {
-      name: info.CFBundleDisplayName || info.CFBundleName || file.name.replace(/\.ipa$/i, ""),
-      bundle_id: String(info.CFBundleIdentifier),
-      version: String(info.CFBundleShortVersionString || info.CFBundleVersion || "1.0"),
-      build: String(info.CFBundleVersion || ""),
-      min_ios: info.MinimumOSVersion ? String(info.MinimumOSVersion) : "",
+      name: String(info.CFBundleDisplayName || info.CFBundleName || file.name.replace(/\.ipa$/i, "")).slice(0, 100),
+      bundle_id: bid,
+      version: String(info.CFBundleShortVersionString || info.CFBundleVersion || "1.0").slice(0, 40),
+      build: String(info.CFBundleVersion || "").slice(0, 40),
+      min_ios: info.MinimumOSVersion ? String(info.MinimumOSVersion).slice(0, 20) : "",
       size: file.size,
       provision: provision
     };
   }
 
-  global.MagicZIpaParser = { inspectIpaFile: inspectIpaFile };
+  global.MagicZIpaParser = { inspectIpaFile: inspectIpaFile, sha256Hex16: sha256Hex16 };
 })(window);
