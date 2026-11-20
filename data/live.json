@@ -1,5 +1,21 @@
 {
   "server": "https://hamburg-employee-leaf-extraction.trycloudflare.com",
-  "updated_at": 1795154520,
-  "apps": []
+  "updated_at": 1795156143,
+  "apps": [
+    {
+      "id": "b477334e5a38c8b6",
+      "name": "Instagram",
+      "bundle_id": "com.burbn.instagram",
+      "version": "454.1.0",
+      "build": "1106185088",
+      "min_ios": "10.0",
+      "size": 382605234,
+      "source": "server",
+      "added_at": 1795156142,
+      "manifest_url": "https://hamburg-employee-leaf-extraction.trycloudflare.com/a/b477334e5a38c8b6/manifest.plist",
+      "itms_url": "itms-services://?action=download-manifest&url=https%3A%2F%2Fhamburg-employee-leaf-extraction.trycloudflare.com%2Fa%2Fb477334e5a38c8b6%2Fmanifest.plist",
+      "page_url": "https://hamburg-employee-leaf-extraction.trycloudflare.com/a/b477334e5a38c8b6",
+      "provision": null
+    }
+  ]
 }
