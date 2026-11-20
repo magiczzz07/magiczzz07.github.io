@@ -209,7 +209,7 @@
     const saved = getStored(STORE_KEYS.server);
     if (saved) candidates.push(saved);
 
-    const liveJson = await loadCatalogJson("ota/live.json");
+    const liveJson = await loadCatalogJson("data/live.json");
     if (liveJson && liveJson.server && isSafeHttpsOrLocal(liveJson.server) && !candidates.includes(liveJson.server)) {
       candidates.push(liveJson.server);
     }
@@ -227,7 +227,7 @@
       }
     }
 
-    const catalogJson = await loadCatalogJson("ota/catalog.json");
+    const catalogJson = await loadCatalogJson("data/catalog.json");
     const ghApps = catalogJson && Array.isArray(catalogJson.apps) ? catalogJson.apps : [];
 
     if (connected) {
@@ -477,17 +477,17 @@
     if (ipaFile) {
       const buf = await ipaFile.arrayBuffer();
       const b64 = arrayBufferToBase64(buf);
-      await ghPutFile(token, "ota/packages/" + id + ".ipa", b64, "chore(ota): upload ipa " + id);
-      appEntry.ipa_url = SITE_ORIGIN + "/ota/packages/" + id + ".ipa";
+      await ghPutFile(token, "data/packages/" + id + ".ipa", b64, "chore(data): upload ipa " + id);
+      appEntry.ipa_url = SITE_ORIGIN + "/data/packages/" + id + ".ipa";
     }
     const plistBytes = new TextEncoder().encode(manifestXml);
-    await ghPutFile(token, "ota/manifests/" + id + ".plist", arrayBufferToBase64(plistBytes.buffer), "chore(ota): manifest " + id);
+    await ghPutFile(token, "data/manifests/" + id + ".plist", arrayBufferToBase64(plistBytes.buffer), "chore(data): manifest " + id);
 
-    const current = (await loadCatalogJson("ota/catalog.json")) || { apps: [] };
+    const current = (await loadCatalogJson("data/catalog.json")) || { apps: [] };
     const filtered = (current.apps || []).filter((x) => x.id !== id);
     filtered.unshift(appEntry);
     const catBytes = new TextEncoder().encode(JSON.stringify({ updated_at: Math.floor(Date.now() / 1000), apps: filtered }, null, 2));
-    await ghPutFile(token, "ota/catalog.json", arrayBufferToBase64(catBytes.buffer), "chore(ota): update catalog");
+    await ghPutFile(token, "data/catalog.json", arrayBufferToBase64(catBytes.buffer), "chore(data): update catalog");
   }
 
   async function handleFilesSelected(fileList) {
@@ -577,8 +577,8 @@
         setProgress(pw, pf, 0.35);
         setStatus(st, "Đang đẩy IPA và manifest lên GitHub Pages...", "");
         const id = randomHex16();
-        const ipaUrl = SITE_ORIGIN + "/ota/packages/" + id + ".ipa";
-        const manifestUrl = SITE_ORIGIN + "/ota/manifests/" + id + ".plist";
+        const ipaUrl = SITE_ORIGIN + "/data/packages/" + id + ".ipa";
+        const manifestUrl = SITE_ORIGIN + "/data/manifests/" + id + ".plist";
         const itms = "itms-services://?action=download-manifest&url=" + encodeURIComponent(manifestUrl);
         const xml = buildManifestXml(ipaUrl, localMeta.bundle_id, localMeta.version, localMeta.name);
         const entry = {
@@ -704,7 +704,7 @@
         setProgress(pw, pf, 0.5);
         setStatus(st, "Đang tạo manifest.plist trên GitHub Pages...", "");
         const id = randomHex16();
-        const manifestUrl = SITE_ORIGIN + "/ota/manifests/" + id + ".plist";
+        const manifestUrl = SITE_ORIGIN + "/data/manifests/" + id + ".plist";
         const itms = "itms-services://?action=download-manifest&url=" + encodeURIComponent(manifestUrl);
         const xml = buildManifestXml(directUrl, finalBid, finalVer, finalName);
         const entry = {
@@ -759,10 +759,10 @@
     const ghToken = getStored(STORE_KEYS.ghToken);
     if (ghToken) {
       try {
-        const current = (await loadCatalogJson("ota/catalog.json")) || { apps: [] };
+        const current = (await loadCatalogJson("data/catalog.json")) || { apps: [] };
         const next = (current.apps || []).filter((x) => x.id !== id);
         const catBytes = new TextEncoder().encode(JSON.stringify({ updated_at: Math.floor(Date.now() / 1000), apps: next }, null, 2));
-        await ghPutFile(ghToken, "ota/catalog.json", arrayBufferToBase64(catBytes.buffer), "chore(ota): remove " + id);
+        await ghPutFile(ghToken, "data/catalog.json", arrayBufferToBase64(catBytes.buffer), "chore(data): remove " + id);
         state.apps = state.apps.filter((x) => x.id !== id);
         renderAppList();
       } catch (err) {
