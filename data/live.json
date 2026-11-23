@@ -1,24 +1,7 @@
 {
   "server": "https://instrumental-comes-multimedia-aim.trycloudflare.com",
-  "updated_at": 1795440998,
+  "updated_at": 1795463087,
   "apps": [
-    {
-      "id": "f74d2365d814f164",
-      "name": "Shadowrocket - Modos.site",
-      "bundle_id": "com.liguangming.Shadowrocket",
-      "version": "2.2.75",
-      "build": "2965",
-      "min_ios": "10.0",
-      "size": 21346737,
-      "source": "vault",
-      "added_at": 1795440994,
-      "icon_url": "https://instrumental-comes-multimedia-aim.trycloudflare.com/a/f74d2365d814f164/icon.png",
-      "locked": true,
-      "provision": null,
-      "manifest_url": null,
-      "itms_url": null,
-      "page_url": null
-    },
     {
       "id": "b477334e5a38c8b6",
       "name": "Instagram",
