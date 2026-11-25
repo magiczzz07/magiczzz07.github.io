@@ -1,6 +1,6 @@
 {
-  "server": "https://instrumental-comes-multimedia-aim.trycloudflare.com",
-  "updated_at": 1795463087,
+  "server": "https://worcester-bids-standards-erp.trycloudflare.com",
+  "updated_at": 1795586916,
   "apps": [
     {
       "id": "b477334e5a38c8b6",
@@ -12,7 +12,7 @@
       "size": 382605234,
       "source": "vault",
       "added_at": 1795156142,
-      "icon_url": "https://instrumental-comes-multimedia-aim.trycloudflare.com/a/b477334e5a38c8b6/icon.png",
+      "icon_url": "https://worcester-bids-standards-erp.trycloudflare.com/a/b477334e5a38c8b6/icon.png",
       "locked": true,
       "provision": null,
       "manifest_url": null,
